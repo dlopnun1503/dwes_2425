@@ -7,4 +7,4 @@
 
       // modelo no hace falta
       // vista: formulario inicial de la calculadora
-      include "viewIndex.php";
+      include "views/viewIndex.php";

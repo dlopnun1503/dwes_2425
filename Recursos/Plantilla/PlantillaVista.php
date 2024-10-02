@@ -15,12 +15,12 @@
 
     <!-- cabecera documento -->
      <header class="pb-3 mb-4 border-bottom">
-        <i class="bi bi-calculator"></i>
+        <i class="bi bi-calculator"></i> <!-- !!!!!!!! Depende que hagamos cambiamos el icono !!!!!!!! -->
         <span class="fs-6">Proyecto 2.1 - Calculadora Básica</span>
      </header>
 
     <!-- Pie del documento -->
-     <footer class="footer mt-auto py-3 fixed-bottom bg-ligth">
+    <footer class="footer mt-auto py-3 fixed-bottom bg-ligth">
         <div class="container">
             <span class="text-muted">© 2024 David López Núñez - DWES - 2º DAW - Curso 24/25</span>
         </div>
