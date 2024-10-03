@@ -17,7 +17,7 @@
 
         <!-- cabecera documento -->
         <header class="pb-3 mb-4 border-bottom">
-            <i class="bi bi-calculator"></i>
+            <i class="bi bi-rocket-fill"></i>
             <span class="fs-6">Proyecto 2.2 - Proyectiles</span>
         </header>
 
@@ -31,42 +31,42 @@
         <table class="table table-hover">
             <tbody>
                 <tr>
-                    <th scope="row">Valores Iniciales:</th>
+                    <th scope="row" colspan="2" >Valores Iniciales:</th>
                 </tr>
                 <tr>
                     <td>Velocidad Inicial:</td>
-                    <td></td>
+                    <td><?= $velocidad_inicial ?> m/s</td>
                 </tr>
                 <tr>
                     <td>Ángulo de Inclinación:</td>
-                    <td></td>
+                    <td><?= $angulo_lanzamiento ?>°</td>
                 </tr>
                 <tr>
-                    <th scope="row">Resultados del lanzamiento:</th>
+                    <th scope="row" colspan="2">Resultados del lanzamiento:</th>
                 </tr>
                 <tr>
                     <td>Ángulo Radianes:</td>
-                    <td></td>
+                    <td><?= $radianes ?> Radianes</td>
                 </tr>
                 <tr>
                     <td>Velocida Inicial X:</td>
-                    <td></td>
+                    <td><?= $V_InicialX ?> m/s</td>
                 </tr>
                 <tr>
                     <td>Velocida Inicial Y:</td>
-                    <td></td>
+                    <td><?= $V_InicialY ?> m/s</td>
                 </tr>
                 <tr>
                     <td>Alcance máximo del proyectil:</td>
-                    <td></td>
+                    <td><?= $alcance_maximo ?> m</td>
                 </tr>
                 <tr>
                     <td>Tiempo de vuelo del proyectil:</td>
-                    <td></td>
+                    <td><?= $tiempo_vuelo ?> s</td>
                 </tr>
                 <tr>
                     <td>Altura máxima del proyectil:</td>
-                    <td></td>
+                    <td><?= $altura_maxima ?> m</td>
                 </tr>
                 
               

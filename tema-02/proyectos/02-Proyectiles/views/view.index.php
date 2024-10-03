@@ -17,41 +17,46 @@
 
     <!-- cabecera documento -->
     <header class="pb-3 mb-4 border-bottom">
-      <i class="bi bi-calculator"></i>
+      <i class="bi bi-rocket-fill"></i>
       <span class="fs-6">Proyecto 2.2 - Proyectiles</span>
     </header>
 
     <!-- Formulario -->
     <legend>Lanzamiento de Proyectiles</legend> <!-- legend permite poner un titulo -->
-    
+    <br>
+
     <!-- Fin del formulario -->
     <form method="POST">
-    
 
-      <!-- Valor 1 -->
-       <!-- 
+
+      <!-- Velocidad inicial -->
+      <!-- 
       En el input text cambiamos el tipo de dato que acepta 
       el step sirve para indicar la cantidad de decimales que acepta
       plceholder para que aparezca un valor por defecto
        -->
-      <div class="input-group mb-3">
-        <span class="input-group-text" id="inputGroup-sizing-default">Velocida inicial</span>
+      <div class="input-group">
+        <span class="input-group-text" id="inputGroup-sizing-default">Velocidad inicial</span>
         <input type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" step="0.01" placeholder="0.00" name="Velocidad_Inicial">
       </div>
+      <div class="form-text" id="basic-addon4">Velocidad en m/s</div>
+      <br>
 
-      <!-- Valor 2 -->
-       <div class="input-group mb-3">
+      <!-- Angulo  -->
+      <div class="input-group">
         <span class="input-group-text" id="inputGroup-sizing-default">Angulo Lanzamiento</span>
         <input type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" step="0.01" placeholder="0.00" name="Angulo_Lanzamiento">
       </div>
+      <div class="form-text" id="basic-addon4">Ángulo en grados</div>
+      <br>
 
       <!-- Botones de acción -->
-       <div class="btn-group" role="group">
+      <div class="btn-group" role="group">
         <button type="reset" class="btn btn-secondary">Borrar</button>
         <button type="submit" class="btn btn-primary" formaction="calcular.php">Calcular</button>
-       </div>
+      </div>
     </form>
-    
+
 
     <!-- Pie del documento -->
     <footer class="footer mt-auto py-3 fixed-bottom bg-ligth">
