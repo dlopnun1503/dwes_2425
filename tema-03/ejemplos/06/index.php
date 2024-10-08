@@ -1,5 +1,5 @@
     <!--
-     * ejemplo 5
+     * ejemplo 6
      * uso vistas - if alternativo
     -->
 
@@ -10,7 +10,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>2.1 Calculadora Básica</title>
+        <title>Ejemplo 3.6</title>
         <!-- css bootstrap 533 -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
@@ -38,9 +38,14 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Link</a>
                 </li>
+
+                <!-- Generacion dinamica enlace admin -->
+                <?php if ($perfil == "Admin"): ?>
+
                 <li class="nav-item">
-                    <a class="nav-link <?= ($perfil != "Admin") ? 'disabled' : null ?>" href="#">Admin</a>
+                    <a class="nav-link" href="#">Admin</a>
                 </li>
+                <?php endif;?>
             </ul>
             </nav>
 
