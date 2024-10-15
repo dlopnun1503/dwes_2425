@@ -20,6 +20,7 @@
       <i class="bi bi-calculator"></i> <!-- !!!!!!!! Depende que hagamos cambiamos el icono !!!!!!!! -->
       <span class="fs-6">Tabla de Libros</span>
     </header>
+    <legend>Actividad 3.1 - Tema 3 PHP</legend>
 
     <<div
       class="table-responsive">
