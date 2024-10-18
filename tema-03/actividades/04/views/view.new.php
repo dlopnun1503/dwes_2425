@@ -3,7 +3,7 @@
 
 <head>
   <?php include 'views/layouts/head.html' ?>
-  <title>Actividad 3.3 - CRUD Libros Array</title>
+  <title>Actividad 3.4 - CRUD Libros Array</title>
 </head>
 
 <body>
