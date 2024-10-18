@@ -48,6 +48,10 @@
                 <!-- Boton editar-->
                 <a href="edit.php?id=<?= $registro['id'] ?>" title="Editar">
                 <i class="bi bi-pencil-square"></i></a>
+
+                <!-- Boton mostrar-->
+                <a href="show.php?id=<?= $registro['id'] ?>" title="Mostrar">
+                <i class="bi bi-search"></i>
               </td>
             </tr>
           <?php endforeach; ?>

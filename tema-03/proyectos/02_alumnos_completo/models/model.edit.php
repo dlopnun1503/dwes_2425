@@ -2,10 +2,10 @@
 
 
         /*
-         model.delete.php
-         elimina un elemento de la lista
+         model.edit.php
+         edita un elemento de la lista
          Metodo get: 
-        - id alumno que se desea eliminar   
+        - id alumno que se desea editar   
         */
 
 
