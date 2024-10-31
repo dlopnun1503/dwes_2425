@@ -77,4 +77,14 @@ class Class_libro extends Class_producto
      páginas: " . $this->getNumPaginas();
         return $resumen;
     }
+
+    public function MuestraLibro(){
+        echo $this->id;
+        echo '<br>';
+        echo $this->titulo;
+        echo '<br>';
+        echo $this->precio;
+        echo '<br>';
+        echo $this->numPaginas;
+    }
 }
