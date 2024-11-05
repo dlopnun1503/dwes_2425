@@ -40,7 +40,7 @@
                             <td><?= $articulo->getDescripcion() ?></td>
                             <td><?= $articulo->getModelo() ?></td>
                             <td><?= $marcas[$articulo->getMarca()] ?></td>
-                            <td><?= implode (', ', $articulo->getCategorias()) ?></td>
+                            <td><?= implode (', ', $articulos->mostrar_nombre_categorias($articulo->getCategorias())) ?></td>
                             <td class='text-end'><?= number_format($articulo->getUnidades(), 0, ',', '.') ?></td>
                             <td class='text-end'><?= number_format($articulo->getPrecio(), 2, ',', '.'). ' €' ?></td>
                             
