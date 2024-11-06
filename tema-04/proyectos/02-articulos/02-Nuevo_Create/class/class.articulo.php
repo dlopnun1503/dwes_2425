@@ -1,14 +1,12 @@
-<?php 
+<?php
 
- 
-     /**
-      * class.articulo.php
-      * define la clase articulo con propiedad de encapsulamiento
-      */
+    /*
+        archivo:class.articulo.php
+        descripcion: define la clase artículo con propiead encapsulamiento
+    */
 
+    class Class_articulo {
 
-      class Class_articulo{
-       
         private $id;
         private $descripcion;
         private $modelo;
@@ -17,27 +15,23 @@
         private $unidades;
         private $precio;
 
-        public function __construct
-        (
+        public function __construct(
             $id = null,
-            $descripcion = null,
-            $modelo = null,
-            $marca = null,
-            $categorias = [],
-            $unidades = null,
+            $descripcion = null, 
+            $modelo = null, 
+            $marca = null, 
+            $categorias = [], 
+            $unidades = null, 
             $precio = null
-        )
-        {
-            $this->id = $id;
-            $this->descripcion = $descripcion;
-            $this->modelo = $modelo;
-            $this->marca = $marca;
-            $this->categorias = $categorias;
-            $this->unidades = $unidades;
-            $this->precio = $precio;
-        }
-
-        
+            ) {
+                $this->id = $id;
+                $this->descripcion = $descripcion;
+                $this->modelo = $modelo;
+                $this->marca = $marca;
+                $this->categorias = $categorias;
+                $this->unidades = $unidades;
+                $this->precio = $precio;
+            } 
 
         /**
          * Get the value of id
@@ -57,8 +51,6 @@
                 return $this;
         }
 
-
-
         /**
          * Get the value of descripcion
          */
@@ -76,8 +68,6 @@
 
                 return $this;
         }
-
-
 
         /**
          * Get the value of modelo
@@ -97,8 +87,6 @@
                 return $this;
         }
 
-
-
         /**
          * Get the value of marca
          */
@@ -116,8 +104,6 @@
 
                 return $this;
         }
-
-
 
         /**
          * Get the value of categorias
@@ -137,8 +123,6 @@
                 return $this;
         }
 
-
-
         /**
          * Get the value of unidades
          */
@@ -157,8 +141,6 @@
                 return $this;
         }
 
-
-        
         /**
          * Get the value of precio
          */
@@ -176,4 +158,4 @@
 
                 return $this;
         }
-      }
+    }
