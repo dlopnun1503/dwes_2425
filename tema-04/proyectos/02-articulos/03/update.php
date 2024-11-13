@@ -1,8 +1,8 @@
 <?php
 
-    /*
-        controlador: index.php
-        descripción: muestra los detalles de los artículos
+/*
+        controlador: update.php
+        descripción: actualiza los detalles de un artículo
     */
 
     # Clases
@@ -12,7 +12,7 @@
     # Librerias
 
     # Model
-    include 'models/model.index.php';
+    include 'models/model.update.php';
 
     # Vista
     include 'views/view.index.php';

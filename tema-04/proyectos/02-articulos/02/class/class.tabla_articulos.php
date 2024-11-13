@@ -43,7 +43,8 @@ class Class_tabla_articulos
             'Nokia',
             'Apple',
             'Lenovo',
-            'IBM'
+            'IBM',
+            'Racer'
         ];
 
         asort($marcas);
@@ -169,6 +170,18 @@ class Class_tabla_articulos
         # Ordeno
         asort($nombre_categorias);
         return $nombre_categorias;
+    }
+
+    /*
+        método: create()
+        descripcion: permite añadir un objeto de la clase artículo a la tabla
+        parámetros:
+
+            - $articulo - objeto de la clase artículos
+
+    */
+    public function create(Class_articulo $articulo){
+        $this->tabla[] = $articulo;
     }
 
 }

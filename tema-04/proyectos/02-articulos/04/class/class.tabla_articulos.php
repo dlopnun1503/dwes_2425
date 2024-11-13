@@ -43,7 +43,8 @@ class Class_tabla_articulos
             'Nokia',
             'Apple',
             'Lenovo',
-            'IBM'
+            'IBM',
+            'Racer'
         ];
 
         asort($marcas);
@@ -171,4 +172,54 @@ class Class_tabla_articulos
         return $nombre_categorias;
     }
 
+    /*
+        método: create()
+        descripcion: permite añadir un objeto de la clase artículo a la tabla
+        parámetros:
+
+            - $articulo - objeto de la clase artículos
+
+    */
+    public function create(Class_articulo $articulo){
+        $this->tabla[] = $articulo;
+    }
+
+    /*
+        método: read()
+        descripcion: permite obtener el objeto de la clase artículo correspondiente a un índice 
+        de la tabla
+
+        parámetros:
+
+            - $indice - índice de la tabla
+    */
+    public function read($indice) {
+        return $this->tabla[$indice];
+    }
+
+    /*
+        método: update()
+        descripcion: permite actualizar los detalles de un artículo en la tabla
+
+        parámetros:
+
+            - $articulo - objeto de la clase artículo, con los detalles actualizados de dicho artículo
+            - $indice - índice de la tabla
+    */
+    public function update(Class_articulo $articulo, $indice) {
+        $this->tabla[$indice] = $articulo;
+    }
+    
+
+    /*
+        método: delete()
+        descripcion: permite eliminar un artículo de la tabla
+
+        parámetros:
+
+            - $indice - índice de la tabla en la que se encuentra el artículo
+    */
+    public function delete($indice) {
+        unset($this->tabla[$indice]);
+    }
 }

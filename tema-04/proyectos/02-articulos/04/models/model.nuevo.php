@@ -1,8 +1,8 @@
 <?php
 
     /*
-        Modelo: model.index.php
-        Descripción: genera array objetos de la clase artículos
+        Modelo: model.nuevo.php
+        Descripción: genera los datos necesarios para añadir nuevo artículo
     */
 
     # Símbolo monetario local
@@ -17,9 +17,5 @@
     # Cargo tabla de categorías
     $categorias = $obj_tabla_articulos->getCategorias();
 
-    # Relleno el array de objetos
-    $obj_tabla_articulos->getDatos();
-
-    # Obtener tabla de artículos
-    $array_articulos = $obj_tabla_articulos->getTabla();
+    
 

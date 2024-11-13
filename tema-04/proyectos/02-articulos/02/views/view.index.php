@@ -46,9 +46,11 @@
                             
                             <!-- Columna de acciones -->
                             <td>
-                                <a href="eliminar.php?id=<?=$articulo->getId()?>" title="Eliminar"><i class="bi bi-trash-fill"></i></a>
-                                <a href="editar.php?id=<?=$articulo->getId()?>" title="Editar"><i class="bi bi-pencil-square"></i></a>
-                                <a href="mostrar.php?id=<?=$articulo->getId()?>" title="Mostrar"><i class="bi bi-eye-fill"></i></a>
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                <a href="eliminar.php?id=<?=$articulo->getId()?>" title="Eliminar" class="btn btn-danger" onclick="return confirm('Confimar elimación del artículo')"><i class="bi bi-trash-fill"></i></a>
+                                <a href="editar.php?id=<?=$articulo->getId()?>" title="Editar" class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
+                                <a href="mostrar.php?id=<?=$articulo->getId()?>" title="Mostrar" class="btn btn-warning"><i class="bi bi-eye-fill"></i></a>
+                            </div>
                             </td>
                         </tr>
                     <?php endforeach; ?>   
