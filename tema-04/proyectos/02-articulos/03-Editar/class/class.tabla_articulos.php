@@ -195,18 +195,14 @@ class Class_tabla_articulos
         return $this->tabla[$indice];
      }
 
-
-     /**
-      * metodo devolver_indice()
-      * devuelve el indice donde se encuentra el articulo a partir de su id
-      */
-
-      function devolver_indice($id){
-        foreach($this->tabla as $indice => $data){ // $data ES UN OBJETO DE LA CLASE ARTICULO
-            if($data->getId() == $id){
-                return $indice;
+      public function update(Class_articulo $articulo) {
+        foreach ($this->tabla as $indice => $data) {
+            if ($articulo->getId() == $articulo->getId()) {
+                
+                $this->tabla[$indice] = $articulo;
+                return true; 
             }
-            return false;
         }
-      }
+        return false; 
+    }
 }
