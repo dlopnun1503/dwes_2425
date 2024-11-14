@@ -1,8 +1,8 @@
 <?php
 
     /*
-        Modelo: model.nuevo.php
-        Descripción: genera los datos necesarios para añadir nuevo libro
+        Modelo: model.index.php
+        Descripción: genera array objetos de la clase libros
     */
 
     # Símbolo monetario local
@@ -17,5 +17,9 @@
     # Cargo tabla de etiquetas
     $etiquetas = $obj_tabla_libros->getEtiquetas();
 
-    
+    # Relleno el array de objetos
+    $obj_tabla_libros->getDatos();
+
+    # Obtener tabla de libros
+    $array_libros = $obj_tabla_libros->tabla;
 
