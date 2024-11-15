@@ -2,12 +2,12 @@
 
     /*
         controlador: create.php
-        descripción: añade nuevo libro a la tabla
+        descripción: añade nuevo profesor a la tabla
     */
 
     # Clases
-    include 'class/class.libro.php';
-    include 'class/class.tabla_libros.php';
+    include 'class/class.profesor.php';
+    include 'class/class.tabla_profesores.php';
 
     # Librerias
 

@@ -2,24 +2,24 @@
 
     /*
         Modelo: model.index.php
-        Descripción: genera array objetos de la clase libros
+        Descripción: genera array objetos de la clase profesores
     */
 
     # Símbolo monetario local
     setlocale(LC_MONETARY,"es_ES");
 
-    # Creo un objeto de la clase tabla libros
-    $obj_tabla_libros = new Class_tabla_libros();
+    # Creo un objeto de la clase tabla profesores
+    $obj_tabla_profesores = new Class_tabla_profesores();
 
-    # Cargo tabla de materias
-    $materias = $obj_tabla_libros->getMaterias();
+    # Cargo tabla de especialidades
+    $especialidades = $obj_tabla_profesores->getEspecialidad();
 
-    # Cargo tabla de etiquetas
-    $etiquetas = $obj_tabla_libros->getEtiquetas();
+    # Cargo tabla de asignaturas
+    $asignaturas = $obj_tabla_profesores->getAsignaturas();
 
     # Relleno el array de objetos
-    $obj_tabla_libros->getDatos();
+    $obj_tabla_profesores->getDatos();
 
-    # Obtener tabla de libros
-    $array_libros = $obj_tabla_libros->tabla;
+    # Obtener tabla de profesores
+    $array_profesores = $obj_tabla_profesores->tabla;
 

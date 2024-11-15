@@ -14,70 +14,71 @@
         <!-- cabecera documento -->
         <?php include "views/partials/partial.header.php" ?>
 
-        <legend>Libro seleccionado</legend>
+        <legend>Profesor seleccionado</legend>
         <form>
 
             <!-- id -->
             <div class="mb-3 row">
                 <label for="inputid" class="col-sm-2 col-form-label">Id:</label>
                 <div class="col-sm-10">
-                    <input type="number" class="form-control" id="inputid" name="id" value="<?= $libro->id ?>" disabled>
+                    <input type="number" class="form-control" id="inputid" name="id" value="<?= $profesor->id ?>" disabled>
                 </div>
             </div>
 
-            <!-- titulo -->
+            <!-- nombre -->
             <div class="mb-3 row">
-                <label for="inputtitulo" class="col-sm-2 col-form-label">Título:</label>
+                <label for="inputnombre" class="col-sm-2 col-form-label">Nombre:</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputtitulo" name="titulo" value="<?= $libro->titulo ?>" disabled>
+                    <input type="text" class="form-control" id="inputnombre" name="nombre" value="<?= $profesor->nombre ?>" disabled>
                 </div>
             </div>
 
-            <!-- autor -->
+            <!-- apellidos -->
             <div class="mb-3 row">
-                <label for="inputautor" class="col-sm-2 col-form-label">Autor:</label>
+                <label for="inputapellidos" class="col-sm-2 col-form-label">Apellidos:</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputautor" name="autor" value="<?= $libro->autor ?>" disabled>
+                    <input type="text" class="form-control" id="inputapellidos" name="apellidos" value="<?= $profesor->apellidos ?>" disabled>
                 </div>
             </div>
 
-            <!-- editorial -->
+            <!-- nrp -->
             <div class="mb-3 row">
-                <label for="inputeditorial" class="col-sm-2 col-form-label">Editorial:</label>
+                <label for="inputnrp" class="col-sm-2 col-form-label">nrp:</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputeditorial" name="autor" value="<?= $libro->editorial ?>" disabled>
+                    <input type="number" class="form-control" id="inputnrp" name="apellidos" value="<?= $profesor->nrp ?>" disabled>
                 </div>
             </div>
 
-            <!-- fecha_edicion -->
+            <!-- fecha_nacimiento -->
             <div class="mb-3 row">
-                <label for="inputfecha_edicion" class="col-sm-2 col-form-label">Fecha Edición:</label>
+                <label for="inputfecha_nacimiento" class="col-sm-2 col-form-label">Fecha Nacimiento:</label>
                 <div class="col-sm-10">
-                    <input type="date" class="form-control" id="inputfecha_edicion" name="autor" value="<?= $libro->fecha_edicion ?>" disabled>
+                    <input type="date" class="form-control" id="inputfecha_nacimiento" name="apellidos" value="<?= $profesor->fecha_nacimiento ?>" disabled>
                 </div>
             </div>
 
-            <!-- Materia -->
+            <!-- poblacion -->
             <div class="mb-3 row">
-                <label for="inputmateria" class="col-sm-2 col-form-label">Materia:</label>
+                <label for="inputpoblacion" class="col-sm-2 col-form-label">Población:</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputmateria" name="materia" value="<?= $materias[$libro->materia] ?>" disabled>
+                    <input type="text" class="form-control" id="inputpoblacion" name="poblacion" value="<?= $profesor->poblacion ?>" disabled>
                 </div>
             </div>
 
-            <!-- etiquetas -->
+
+            <!-- especialidad -->
             <div class="mb-3 row">
-                <label for="inputetiquetas" class="col-sm-2 col-form-label">Etiquetas:</label>
+                <label for="inputespecialidad" class="col-sm-2 col-form-label">Especialidad:</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputetiquetas" name="etiquetas" value="<?= implode(', ', $obj_tabla_libros->mostrar_nombre_etiquetas($libro->etiquetas))  ?>" disabled>
+                    <input type="text" class="form-control" id="inputespecialidad" name="especialidad" value="<?= $especialidades[$profesor->especialidad] ?>" disabled>
                 </div>
             </div>
 
-            <!-- Precio -->
+            <!-- asignaturas -->
             <div class="mb-3 row">
-                <label for="inputprecio" class="col-sm-2 col-form-label">Precio:</label>
+                <label for="inputasignaturas" class="col-sm-2 col-form-label">Asignaturas:</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="inputprecio" name="precio" value="<?= number_format($libro->precio, 2, ',', '.'). '€'  ?>" disabled>
+                    <input type="text" class="form-control" id="inputasignaturas" name="asignaturas" value="<?= implode(', ', $obj_tabla_profesores->mostrar_nombre_asignaturas($profesor->asignaturas))  ?>" disabled>
                 </div>
             </div>
 

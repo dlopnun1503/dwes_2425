@@ -2,27 +2,27 @@
 
     /*
         modelo: model.eliminar.php
-        descripción: elimina un libro de la tabla
+        descripción: elimina un profesor de la tabla
         
         Método GET:
 
-            - indice: de la tabla donde se encuentra el libro que voy a eliminar
+            - indice: de la tabla donde se encuentra el profesor que voy a eliminar
     */
 
-    # Cargamos el indice del libro
+    # Cargamos el indice del profesor
     $indice = $_GET['indice'];
 
-    # Creo un objeto de la clase tabla de libros
-    $obj_tabla_libros = new Class_tabla_libros();
+    # Creo un objeto de la clase tabla de profesores
+    $obj_tabla_profesores = new Class_tabla_profesores();
 
-    #  Cargo los datos de libros
-    $obj_tabla_libros->getDatos();
+    #  Cargo los datos de profesores
+    $obj_tabla_profesores->getDatos();
     
-    # Cargo el array de materia - lista desplegable dinámica
-    $materias = $obj_tabla_libros->getMaterias();
+    # Cargo el array de especialidades - lista desplegable dinámica
+    $especialidades = $obj_tabla_profesores->getEspecialidad();
 
-    # Obtener el objeto de la clase libro correspondiente a ese índice
-    $obj_tabla_libros->delete($indice);
+    # Obtener el objeto de la clase profesor correspondiente a ese índice
+    $obj_tabla_profesores->delete($indice);
 
     # Obtengo la tabla de artículos actualizada para la vista
-    $array_libros = $obj_tabla_libros->tabla;
+    $array_profesores = $obj_tabla_profesores->tabla;

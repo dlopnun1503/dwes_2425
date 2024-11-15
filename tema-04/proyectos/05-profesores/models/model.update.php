@@ -4,15 +4,15 @@
         Modelo: model.update.php
         Descripción: actualiza los datos del registro a partir de los detalles del formulario
 
-        Método POST:
-                    - id
-                    - titulo
-                    - autor
-                    - editorial
-                    - fecha_edicion
-                    - materia 
-                    - etiquetas 
-                    - precio
+        Métod POST:
+            - id
+            - nombre
+            - apellidos
+            - nrp
+            - fecha_nacimiento
+            - poblacion 
+            - especialidad 
+            - asignaturas 
         
         Método GET:
                     - indice (indice de la tabla correspondiente a dicho registro)
@@ -23,44 +23,43 @@
 
     # Cargo los detalles del  formulario
     $id = $_POST['id'];
-    $titulo = $_POST['titulo'];
-    $autor = $_POST['autor'];
-    $editorial = $_POST['editorial'];
-    $fecha_edicion = $_POST['fecha_edicion'];
-    $materia = $_POST['materia'];
-    $etiquetas = $_POST['etiquetas'];
-    $precio = $_POST['precio'];
-    
+    $nombre = $_POST['nombre'];
+    $apellidos = $_POST['apellidos'];
+    $nrp = $_POST['nrp'];
+    $fecha_nacimiento = $_POST['fecha_nacimiento'];
+    $poblacion = $_POST['poblacion'];
+    $especialidad = $_POST['especialidad'];
+    $asignaturas = $_POST['asignaturas'];
 
-    # Crear un objeto de la clase libros a partir de los detalles del formulario
-    $libro = new Class_libro(
+    # Crear un objeto de la clase profesor a partir de los detalles del formulario
+    $profesor = new Class_profesor(
         $id,
-        $titulo,
-        $autor,
-        $editorial,
-        $fecha_edicion,
-        $materia,
-        $etiquetas,
-        $precio
+        $nombre,
+        $apellidos,
+        $nrp,
+        $fecha_nacimiento,
+        $poblacion,
+        $especialidad,
+        $asignaturas
     );
 
-    # Cargo el índice de la tabla donde se encuentra el artículo
+    # Cargo el índice de la tabla donde se encuentra el profesor
     $indice = $_GET['indice'];
     
-    # Creo un objeto de la clase tabla libros
-    $obj_tabla_libros = new Class_tabla_libros();
+    # Creo un objeto de la clase tabla profesores
+    $obj_tabla_profesores = new Class_tabla_profesores();
 
-    # Cargo los datos en el objeto de la clase tabla de libros
-    $obj_tabla_libros->getDatos();
+    # Cargo los datos en el objeto de la clase tabla de profesores
+    $obj_tabla_profesores->getDatos();
 
     # Actualizo la tabla 
-    $obj_tabla_libros->update($libro, $indice);
+    $obj_tabla_profesores->update($profesor, $indice);
 
     # Extraer la tabla para la vista
-    $array_libros = $obj_tabla_libros->tabla;
+    $array_profesores = $obj_tabla_profesores->tabla;
 
-    # Extraer array de materias para la vista
-    $materias = $obj_tabla_libros->getMaterias();
+    # Extraer array de especialidades para la vista
+    $especialidades = $obj_tabla_profesores->getEspecialidad();
 
 
     

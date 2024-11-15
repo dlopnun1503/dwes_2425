@@ -1,17 +1,17 @@
 <?php
     /*
         controlador: editar.php
-        descripción: muestra los detalles de un libro en modo edición
+        descripción: muestra los detalles de un profesor en modo edición
 
         parámetros:
 
             - Método GET:
-                - id  id del libro que deseo editar
+                - id  id del profesor que deseo editar
     */
 
     # Clases
-    include 'class/class.libro.php';
-    include 'class/class.tabla_libros.php';
+    include 'class/class.profesor.php';
+    include 'class/class.tabla_profesores.php';
 
     # Librerias
 

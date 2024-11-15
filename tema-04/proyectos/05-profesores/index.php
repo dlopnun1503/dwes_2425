@@ -2,12 +2,12 @@
 
     /*
         controlador: index.php
-        descripción: muestra los detalles de los libros
+        descripción: muestra los detalles de los profesors
     */
 
     # Clases
-    include 'class/class.libro.php';
-    include 'class/class.tabla_libros.php';
+    include 'class/class.profesor.php';
+    include 'class/class.tabla_profesores.php';
 
     # Librerias
 

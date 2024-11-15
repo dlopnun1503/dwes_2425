@@ -2,12 +2,12 @@
 
 /*
         controlador: update.php
-        descripción: actualiza los detalles de un libro
+        descripción: actualiza los detalles de un profesor
     */
 
     # Clases
-    include 'class/class.libro.php';
-    include 'class/class.tabla_libros.php';
+    include 'class/class.profesor.php';
+    include 'class/class.tabla_profesores.php';
 
     # Librerias
 

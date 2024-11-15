@@ -1,17 +1,17 @@
 <?php
     /*
         controlador: eliminar.php
-        descripción: elimina un libro de la tabla
+        descripción: elimina un profesor de la tabla
 
         parámetros:
 
             - Método GET:
-                - indice - indice del libro que voy a eliminar
+                - indice - indice del profesor que voy a eliminar
     */
 
     # Clases
-    include 'class/class.libro.php';
-    include 'class/class.tabla_libros.php';
+    include 'class/class.profesor.php';
+    include 'class/class.tabla_profesores.php';
 
     # Librerias
 

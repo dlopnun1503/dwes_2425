@@ -1,58 +1,61 @@
 <?php
     /*
         modelo: model.create.php
-        descripción: añade el nuevo libro a la tabla
+        descripción: añade el nuevo profesor a la tabla
         
         Métod POST:
             - id
-            - titulo
-            - autor
-            - editorial
-            - fecha_edicion
-            - materia 
-            - etiquetas 
-            - precio 
+            - nombre
+            - apellidos
+            - nrp
+            - fecha_nacimiento
+            - poblacion 
+            - especialidad 
+            - asignaturas 
     */
 
     # Cargo los detalles del  formulario
     $id = $_POST['id'];
-    $titulo = $_POST['titulo'];
-    $autor = $_POST['autor'];
-    $editorial = $_POST['editorial'];
-    $fecha_edicion = $_POST['fecha_edicion'];
-    $materia = $_POST['materia'];
-    $etiquetas = $_POST['etiquetas'];
-    $precio = $_POST['precio'];
+    $nombre = $_POST['nombre'];
+    $apellidos = $_POST['apellidos'];
+    $nrp = $_POST['nrp'];
+    $fecha_nacimiento = $_POST['fecha_nacimiento'];
+    $poblacion = $_POST['poblacion'];
+    $especialidad = $_POST['especialidad'];
+    $asignaturas = $_POST['asignaturas'];
     
+
 
     # Validación
 
-    # Crear un objeto de la clase tabla_libros
-    $obj_tabla_libros = new Class_tabla_libros();
-
-    # Cargo los libros
-    $obj_tabla_libros->getDatos();
-
-    # Obtengo el array de materia
-    $materias = $obj_tabla_libros->getMaterias();
-
-    # Obtengo el  array de etiquetas
-    $array_etiquetas = $obj_tabla_libros->getEtiquetas();
-
-    # Crear un objeto de la clase libros a partir de los detalles del formulario
-    $libro = new Class_libro(
+    # Crear un objeto de la clase profesores a partir de los detalles del formulario
+    $profesor = new Class_profesor(
         $id,
-        $titulo,
-        $autor,
-        $editorial,
-        $fecha_edicion,
-        $materia,
-        $etiquetas,
-        $precio
+        $nombre,
+        $apellidos,
+        $nrp,
+        $fecha_nacimiento,
+        $poblacion,
+        $especialidad,
+        $asignaturas
     );
 
-    # Añadir el libro a la tabla
-    $obj_tabla_libros->create($libro);
+    # Crear un objeto de la clase tabla_profesores
+    $obj_tabla_profesores = new Class_tabla_profesores();
 
-    # Obtener la array libros
-    $array_libros = $obj_tabla_libros->tabla;
+    # Cargo los profesores
+    $obj_tabla_profesores->getDatos();
+
+    # Obtengo el array de Asignaturas
+    $asignaturas = $obj_tabla_profesores->getAsignaturas();
+
+    # Obtengo el  array de especialidad
+    $especialidades = $obj_tabla_profesores->getEspecialidad();
+
+    
+
+    # Añadir el profesor a la tabla
+    $obj_tabla_profesores->create($profesor);
+
+    # Obtener la array profesores
+    $array_profesores = $obj_tabla_profesores->tabla;

@@ -2,23 +2,23 @@
 
 
 
-// Obtener etiquetas, materia y cargar el libro
+// Obtener asignaturas, especialidad y cargar el PROFESOR
 
 setlocale(LC_MONETARY, "es_ES");
 
-# Creo un objeto de la clase tabla libros
-$obj_tabla_libros = new Class_tabla_libros();
+# Creo un objeto de la clase tabla profesores
+$obj_tabla_profesores = new Class_tabla_profesores();
 
-# Cargo tabla de materias
-$materias = $obj_tabla_libros->getMaterias();
+# Cargo tabla de especialidades
+$especialidades = $obj_tabla_profesores->getEspecialidad();
 
-# Cargo tabla de etiquetas
-$etiquetas = $obj_tabla_libros->getEtiquetas();
+# Cargo tabla de asignaturas
+$asignaturas = $obj_tabla_profesores->getAsignaturas();
 
 # Relleno el array de objetos
-$obj_tabla_libros->getDatos();
+$obj_tabla_profesores->getDatos();
 
 $indice = $_GET['indice'];
 
 # Usamos la funcion buscar indice
-$libro = $obj_tabla_libros->read($indice);
+$profesor = $obj_tabla_profesores->read($indice);

@@ -4,12 +4,12 @@
 
     Controlador: mostrar.php
     Descripción: mostrar un formulario con los detalles no editables
-    del libro seleccionado
+    del profesor seleccionado
 */
 
 # Librería
-include 'class/class.libro.php';
-include 'class/class.tabla_libros.php';
+include 'class/class.profesor.php';
+include 'class/class.tabla_profesores.php';
 
 # Model
 include 'models/model.mostrar.php';

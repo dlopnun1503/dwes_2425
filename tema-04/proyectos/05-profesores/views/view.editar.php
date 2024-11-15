@@ -3,7 +3,7 @@
 
 <head>
     <?php include 'views/layouts/layout.head.html'; ?>
-    <title>Editar Libro - CRUD Libros </title>
+    <title>Editar Profesor - CRUD Profesores </title>
 </head>
 
 <body>
@@ -13,76 +13,76 @@
         <!-- Encabezado proyecto -->
         <?php include 'views/partials/partial.header.php'; ?>
 
-        <legend>Formulario Editar Libro</legend>
+        <legend>Formulario Editar Profesor</legend>
 
-        <!-- Formulario Editar Libro -->
+        <!-- Formulario Editar profesor -->
 
         <form action="update.php?indice=<?= $indice ?>" method="POST">
 
             <!-- id -->
             <div class="mb-3">
-                <label for="id" class="form-label">Id</label>
-                <input type="text" class="form-control" name="id" value="<?= $libro->id ?>" readonly>
+                <label for="id" class="form-label">Id:</label>
+                <input type="text" class="form-control" name="id" value="<?= $profesor->id ?>" readonly>
             </div>
 
-            <!-- titulo -->
+            <!-- nombre -->
             <div class="mb-3">
-                <label for="titulo" class="form-label">Título</label>
-                <input type="text" class="form-control" name="titulo" value="<?= $libro->titulo ?>" readonly>
+                <label for="nombre" class="form-label">Nombre:</label>
+                <input type="text" class="form-control" name="nombre" value="<?= $profesor->nombre ?>" >
             </div>
 
-            <!-- autor -->
+            <!-- apellidos -->
             <div class="mb-3">
-                <label for="autor" class="form-label">Autor</label>
-                <input type="text" class="form-control" name="autor" value="<?= $libro->autor ?>" readonly>
+                <label for="apellidos" class="form-label">Apellidos:</label>
+                <input type="text" class="form-control" name="apellidos" value="<?= $profesor->apellidos ?>" >
             </div>
 
-            <!-- editorial -->
+            <!-- nrp -->
             <div class="mb-3">
-                <label for="editorial" class="form-label">Editorial</label>
-                <input type="text" class="form-control" name="editorial" value="<?= $libro->editorial ?>" readonly>
+                <label for="nrp" class="form-label">nrp:</label>
+                <input type="number" class="form-control" name="nrp" value="<?= $profesor->nrp ?>" >
             </div>
 
-            <!-- fecha_edicion -->
+            <!-- fecha_nacimiento -->
             <div class="mb-3">
-                <label for="fecha_edicion" class="form-label">Fecha Edicion</label>
-                <input type="text" class="form-control" name="fecha_edicion" value="<?= $libro->fecha_edicion ?>" readonly>
+                <label for="fecha_nacimiento" class="form-label">Fecha nacimiento:</label>
+                <input type="text" class="form-control" name="fecha_nacimiento" value="<?= $profesor->fecha_nacimiento ?>" >
             </div>
 
-            <!-- Select Dinámico Materias -->
+            <!-- poblacion -->
             <div class="mb-3">
-                <label for="materia" class="form-label">Materia</label>
-                <select class="form-select" name="materia" id="materia">
-                    <option selected disabled>Seleccione una Materia</option>
-                    <!-- mostrar lista materias -->
-                    <?php foreach ($materias as $indice => $data): ?>
-                        <option value="<?= $indice ?>" <?= ($libro->materia == $indice) ? 'selected' : null ?>>
+                        <label for="poblacion" class="form-label">Poblacion:</label>
+                        <input type="text" class="form-control" name="poblacion"  value="<?= $profesor->poblacion ?>">
+                    </div>
+
+            <!-- Select Dinámico especialidades -->
+            <div class="mb-3">
+                <label for="especialidad" class="form-label">Especialidad:</label>
+                <select class="form-select" name="especialidad" id="especialidad">
+                    <option selected disabled>Seleccione una especialidad</option>
+                    <!-- mostrar lista especialidades -->
+                    <?php foreach ($especialidades as $indice => $data): ?>
+                        <option value="<?= $indice ?>" <?= ($profesor->especialidad == $indice) ? 'selected' : null ?>>
                             <?= $data ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
             </div>
 
-            <!-- lista checbox dinámica etiquetas -->
+            <!-- lista checbox dinámica asignaturas -->
             <div class="mb-3">
-                <label for="etiquetas" class="form-label">Seleccione las Etiquetas</label>
+                <label for="asignaturas" class="form-label">Seleccione las asignaturas</label>
                 <div class="form-control">
                     <!-- muestro el array categorías -->
-                    <?php foreach ($etiquetas as $indice => $data): ?>
+                    <?php foreach ($asignaturas as $indice => $data): ?>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="etiquetas[]" value="<?= $indice ?>"
-                                <?= (in_array($indice, $libro->etiquetas) ? 'checked' : null) ?>>
+                            <input class="form-check-input" type="checkbox" name="asignaturas[]" value="<?= $indice ?>"
+                                <?= (in_array($indice, $profesor->asignaturas) ? 'checked' : null) ?>>
                             <label class="form-check-label" for="">
                                 <?= $data ?>
                             </label>
                         </div>
                     <?php endforeach; ?>
-                    </div>
-
-                    <!-- Precio -->
-                    <div class="mb-3">
-                        <label for="precio" class="form-label">Precio (€)</label>
-                        <input type="number" class="form-control" name="precio" step="0.01" value="<?= $libro->precio ?>">
                     </div>
 
             </div>
