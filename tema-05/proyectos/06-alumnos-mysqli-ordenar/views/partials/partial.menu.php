@@ -17,10 +17,15 @@
                         Ordenar
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="order.php?criterio=id">Id</a></li>
-                        <li><a class="dropdown-item" href="order.php?criterio=nombre">Nombre</a></li>
-                        <li><a class="dropdown-item" href="order.php?criterio=poblacion">Población</a></li>
-                        <li><a class="dropdown-item" href="order.php?criterio=curso">Curso</a></li>
+                        <li><a class="dropdown-item" href="ordenar.php?criterio=1">Id</a></li>
+                        <li><a class="dropdown-item" href="ordenar.php?criterio=2">Nombre</a></li>
+                        <li><a class="dropdown-item" href="ordenar.php?criterio=3">Apellidos</a></li>
+                        <li><a class="dropdown-item" href="ordenar.php?criterio=4">Email</a></li>
+                        <li><a class="dropdown-item" href="ordenar.php?criterio=5">Teléfono</a></li>
+                        <li><a class="dropdown-item" href="ordenar.php?criterio=6">Nacionalidad</a></li>
+                        <li><a class="dropdown-item" href="ordenar.php?criterio=7">DNI</a></li>
+                        <li><a class="dropdown-item" href="ordenar.php?criterio=8">Edad</a></li>
+                        <li><a class="dropdown-item" href="ordenar.php?criterio=9">Curso</a></li>
                     </ul>
                 </li>
 

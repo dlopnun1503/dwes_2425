@@ -317,4 +317,78 @@ class Class_tabla_alumnos extends Class_conexion
         // devuelvo todos los valores de la  tabla cursos
         return $result->fetch_all(MYSQLI_ASSOC);
     }
+
+    /*
+        método: order()
+        descripcion: devuelve un objeto de la clase mysqli_result con los 
+        detalles de los alumnos  ordenados por un criterio.
+
+        Parámetros:
+
+            - criterio: posición de la columna en la tabla alumnos
+                        por la que quiero ordenar
+    */
+
+    public function order(int $criterio)
+    {
+        try {
+
+            // sentencia sql
+            $sql = "
+            select 
+                alumnos.id,
+                alumnos.nombre, 
+                alumnos.apellidos,
+                alumnos.email,
+                alumnos.telefono,
+                alumnos.nacionalidad,
+                alumnos.dni,
+                timestampdiff(YEAR, alumnos.fechaNac, now()) as edad,
+                cursos.nombreCorto as curso
+            FROM 
+                alumnos 
+            INNER JOIN
+                cursos
+            ON alumnos.id_curso = cursos.id
+            ORDER BY ?
+        ";
+
+            // ejecuto prepare
+            $stmt = $this->db->prepare($sql);
+
+            // vincular parámetros
+            $stmt->bind_param(
+                'i',
+                $criterio
+            );
+
+            // ejecutamos
+            $stmt->execute();
+
+            // Devolvemos objeto de la clase  mysqli_result
+            $result = $stmt->get_result();
+
+            // Devolvemos mysqli_result
+            return $result;
+
+        } catch (mysqli_sql_exception $e) {
+
+            // error de  base dedatos
+            include 'views/partials/errorDB.php';
+
+            // libero stmt
+            $stmt->close();
+
+            // libero result
+            $result->close();
+
+            // cierro conexión
+            $this->db->close();
+
+            // cancelo ejecución programa
+            exit();
+
+        }
+
+    }
 }
