@@ -29,7 +29,6 @@ class Class_corredor
         $sexo = null,
         $email = null,
         $dni = null,
-        $edad = null,
         $id_categoria = null,
         $id_club = null
     ) {
@@ -41,11 +40,19 @@ class Class_corredor
         $this->sexo = $sexo;
         $this->email = $email;
         $this->dni = $dni;
-        $this->edad = $edad;
+        $this->edad = $this->edad();
         $this->id_categoria = $id_categoria;
         $this->id_club = $id_club;
     }
 
+    public function edad()
+    {
+        $fechaActual = new DateTime(); // Fecha actual
+        $fechaNacimiento = new DateTime($this->fechaNacimiento); // Fecha de nacimiento
+        $edad = $fechaNacimiento->diff($fechaActual); // Diferencia entre las fechas
+        return $edad->y; // Devuelve solo los años
+
+    }
   
 }
 

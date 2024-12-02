@@ -32,12 +32,12 @@
             <!-- ciudad -->
             <div class="mb-3">
                 <label for="ciudad" class="form-label">Ciudad</label>
-                <input type="date" class="form-control" name="ciudad">
+                <input type="text" class="form-control" name="ciudad">
             </div>
             <!-- Fecha Nacimiento -->
             <div class="mb-3">
                 <label for="fechaNacimineto" class="form-label">Fecha Nacimiento</label>
-                <input type="date" class="form-control" name="fechaNacimineto">
+                <input type="date" class="form-control" name="fechaNacimiento">
             </div>
             <!-- sexo -->
             <label for="ciudad" class="form-label">Sexo</label>
@@ -65,11 +65,7 @@
                 <label for="dni" class="form-label">Dni</label>
                 <input type="text" class="form-control" name="dni">
             </div>
-            <!-- edad -->
-            <div class="mb-3">
-                <label for="edad" class="form-label">Edad</label>
-                <input type="number" class="form-control" name="edad">
-            </div>
+            
             <!-- Select Dinámico categorias -->
             <div class="mb-3">
                 <label for="categoria" class="form-label">Categoría</label>

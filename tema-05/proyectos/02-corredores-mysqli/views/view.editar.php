@@ -43,11 +43,11 @@
             <label for="ciudad" class="form-label">Sexo</label>
             <br>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="sexo" id="sexo" value="H">
+                <input class="form-check-input" type="radio" name="sexo" id="sexo_h" value="H">
                 <label class="form-check-label" for="sexo">Hombre</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="sexo" id="sexo" value="M">
+                <input class="form-check-input" type="radio" name="sexo" id="sexo_m" value="M">
                 <label class="form-check-label" for="sexo">Mujer</label>
             </div>
             <div class="form-check form-check-inline">

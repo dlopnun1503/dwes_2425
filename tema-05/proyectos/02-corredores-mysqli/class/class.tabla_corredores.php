@@ -229,8 +229,7 @@ class Class_tabla_corredores extends Class_conexion
 
             // vinculación de parámetros
             $stmt->bind_param(
-                'isssssssiii',
-                $id,
+                'sssssssiiii',
                 $nombre,
                 $apellidos,
                 $ciudad,
@@ -240,7 +239,8 @@ class Class_tabla_corredores extends Class_conexion
                 $dni,
                 $edad,
                 $id_categoria,
-                $id_club
+                $id_club,
+                $id
             );
 
             // asignar valores
@@ -424,7 +424,7 @@ class Class_tabla_corredores extends Class_conexion
                 corredores.email,
                 corredores.edad,
                 categorias.nombre as categoria,
-                clubs.nombreas club
+                clubs.nombre as club
             FROM 
                 corredores 
             INNER JOIN
@@ -502,10 +502,11 @@ class Class_tabla_corredores extends Class_conexion
         try {
 
             // sentencia sql
-            $sql = "DELETE FROM corredores WHERE id = ? LIMIT 1";
+            $sql = "DELETE FROM registros WHERE id_corredor = ? LIMIT 1";
 
             // ejecuto prepare
             $stmt = $this->db->prepare($sql);
+
 
             // vincular parámetros
             $stmt->bind_param(
@@ -515,6 +516,24 @@ class Class_tabla_corredores extends Class_conexion
 
             // ejecutamos
             $stmt->execute();
+
+                    
+            $sql2 = "DELETE FROM corredores WHERE id = ? LIMIT 1";
+
+            // ejecuto prepare
+            $stmt = $this->db->prepare($sql2);
+
+
+            // vincular parámetros
+            $stmt->bind_param(
+                'i',
+                $id
+            );
+
+            // ejecutamos
+            $stmt->execute();
+            
+            
 
             // Devolvemos objeto de la clase  mysqli_result
             $result = $stmt->get_result();
