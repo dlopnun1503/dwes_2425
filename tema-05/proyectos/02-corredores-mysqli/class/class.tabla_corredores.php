@@ -251,7 +251,7 @@ class Class_tabla_corredores extends Class_conexion
             $sexo = $corredor->sexo;
             $email = $corredor->email;
             $dni = $corredor->dni;
-            $edad = $corredor->edad;
+            $edad = $corredor->edad();
             $id_categoria = $corredor->id_categoria;
             $id_club = $corredor->id_club;
             
