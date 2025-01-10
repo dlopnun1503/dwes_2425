@@ -69,7 +69,7 @@
             <!-- stock -->
             <div class="mb-3">
                 <label for="stock" class="form-label">Unidades</label>
-                <input type="number" class="form-control" name="stock" aria-describedby="emailHelpId" value=0>
+                <input type="number" class="form-control" name="stock" aria-describedby="emailHelpId" placeholder="0">
             </div>
 
             <!-- fecha_edicion -->
@@ -90,7 +90,7 @@
                 <div class="form-control">
                     <?php foreach ($this->generos as $indice => $data): ?>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="generos[]" value="<?= $indice ?>">
+                            <input class="form-check-input" type="checkbox" name="generos_id[]" value="<?= $indice ?>">
                             <label class="form-check-label" for="generos_id">
                                 <?= $data ?>
                             </label>

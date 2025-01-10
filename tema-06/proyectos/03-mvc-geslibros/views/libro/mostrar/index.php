@@ -37,42 +37,26 @@
                         <label for="nombre" class="form-label">Título</label>
                         <input type="text" class="form-control" value="<?= $this->libro->titulo ?>" disabled>
                     </div>
-
+            
                     <!-- Autor -->
                     <div class="mb-3">
-                        <label for="autor" class="form-label">Autor</label>
-                        <select class="form-select" name="autor_id" disabled>
-                            <!-- mostrar lista autor -->
-                            <?php foreach ($this->autor as $data): ?>
-                                <!-- generar dinámicamente el parametro selected -->
-                                <option value="<?= $data['id'] ?>"
-                                    <?= ($this->libro->autor_id == $data['id']) ? 'selected' : null ?>>
-                                    <?= $data['autor'] ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
+                        <label for="autor_id" class="form-label">Autor</label>
+                        <input type="text" class="form-control" value="<?= $this->autores[$this->libro->autor_id]?>" disabled>
                     </div>
                     <!-- Editorial -->
                     <div class="mb-3">
-                        <label for="editorial" class="form-label">Editorial</label>
-                        <select class="form-select" name="editorial_id" disabled>
-                            <!-- mostrar lista editorial -->
-                            <?php foreach ($this->editorial as $data): ?>
-                                <!-- generar dinámicamente el parametro selected -->
-                                <option value="<?= $data['id'] ?>"
-                                    <?= ($this->libro->editorial_id == $data['id']) ? 'selected' : null ?>>
-                                    <?= $data['editorial'] ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
+                        <label for="editorial_id" class="form-label">Editorial</label>
+                        <input type="text" class="form-control" value="<?= $this->editoriales[$this->libro->editorial_id]?>" disabled>
                     </div>
+
                     <!-- Géneros -->
                     <div class="mb-3">
                         <label for="generos_id" class="form-label">Géneros</label>
                         <div class="form-control">
                             <?php foreach ($this->generos as $indice => $data): ?>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="generos[]" value="<?= $indice ?>">
+                                    <input class="form-check-input" type="checkbox" name="generos[]" value="<?= $indice ?>"
+                                        <?= (in_array($indice, $this->libro->generos_id)) ? 'checked' : null ?> disabled>
                                     <label class="form-check-label" for="generos_id">
                                         <?= $data ?>
                                     </label>
@@ -80,18 +64,30 @@
                             <?php endforeach; ?>
                         </div>
                     </div>
-            </div>
 
-            <!-- stock -->
-            <div class="mb-3">
-                <label for="stock" class="form-label">Stock</label>
-                <input type="number" class="form-control" value="<?= $this->libro->stock ?>" disabled>
-            </div>
-            <!-- precio -->
-            <div class="mb-3">
-                <label for="precio" class="form-label">Precio</label>
-                <input type="number" class="form-control" value="<?= $this->libro->precio ?>" disabled>
-            </div>
+
+                    <!-- fecha_edicion -->
+                    <div class="mb-3">
+                        <label for="fecha_edicion" class="form-label">Fecha Edición</label>
+                        <input type="date" class="form-control" value="<?= $this->libro->fecha_edicion ?>" disabled>
+                    </div>
+
+                    <!-- ISBN -->
+                    <div class="mb-3">
+                        <label for="isbn" class="form-label">ISBN</label>
+                        <input type="text" class="form-control" value="<?= $this->libro->isbn ?>" disabled>
+                    </div>
+
+                    <!-- stock -->
+                    <div class="mb-3">
+                        <label for="stock" class="form-label">Stock</label>
+                        <input type="number" class="form-control" value="<?= $this->libro->stock ?>" disabled>
+                    </div>
+                    <!-- precio -->
+                    <div class="mb-3">
+                        <label for="precio" class="form-label">Precio</label>
+                        <input type="number" class="form-control" value="<?= $this->libro->precio ?>" disabled>
+                    </div>
 
         </div>
         <div class="card-footer">

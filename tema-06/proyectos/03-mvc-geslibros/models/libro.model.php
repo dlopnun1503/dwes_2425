@@ -277,7 +277,8 @@ class libroModel extends Model
                           fecha_edicion,
                           generos_id,
                           stock,
-                          precio
+                          precio,
+                          isbn
                     FROM 
                             libros
                     WHERE
@@ -327,14 +328,13 @@ class libroModel extends Model
             UPDATE libros
             SET
                     titulo = :titulo,
-                    autor_id = :autor_id,
-                    editorial_id = :editorial_id,
+                    precio = :precio,
+                    stock = :stock,
                     fecha_edicion = :fecha_edicion,
                     isbn = :isbn,
-                    dni = :dni,
-                    generos_id = :generos_id,
-                    stock = :stock,
-                    precio = :precio
+                    autor_id = :autor_id,
+                    editorial_id = :editorial_id,
+                    generos_id = :generos_id
             WHERE
                     id = :id
             LIMIT 1
@@ -347,13 +347,13 @@ class libroModel extends Model
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 
             $stmt->bindParam(':titulo', $libro->titulo, PDO::PARAM_STR);
-            $stmt->bindParam(':autor_id', $libro->autor_id, PDO::PARAM_INT);
-            $stmt->bindParam(':editorial_id', $libro->editorial_id, PDO::PARAM_INT);
+            $stmt->bindParam(':precio', $libro->precio, PDO::PARAM_STR);
+            $stmt->bindParam(':stock', $libro->stock, PDO::PARAM_INT);
             $stmt->bindParam(':fecha_edicion', $libro->fecha_edicion, PDO::PARAM_STR);
             $stmt->bindParam(':isbn', $libro->isbn, PDO::PARAM_INT);
+            $stmt->bindParam(':autor_id', $libro->autor_id, PDO::PARAM_INT);
+            $stmt->bindParam(':editorial_id', $libro->editorial_id, PDO::PARAM_INT);
             $stmt->bindParam(':generos_id', $libro->generos_id, PDO::PARAM_INT);
-            $stmt->bindParam(':stock', $libro->stock, PDO::PARAM_INT);
-            $stmt->bindParam(':precio', $libro->precio, PDO::PARAM_STR);
 
             $stmt->execute();
         } catch (PDOException $e) {
@@ -379,7 +379,7 @@ class libroModel extends Model
 
         try {
 
-            $sql = " DELETE  FROM libros
+            $sql = "DELETE FROM libros
                 WHERE id = :id
                 LIMIT 1
             ";

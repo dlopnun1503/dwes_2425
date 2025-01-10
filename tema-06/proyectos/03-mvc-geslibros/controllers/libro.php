@@ -75,7 +75,7 @@ class Libro extends Controller
         $stock = $_POST['stock'];
         $fecha_edicion = $_POST['fecha_edicion'];
         $isbn = $_POST['isbn'];
-        $generos_id = $_POST['generos_id'];
+        $generos_id = implode(',', $_POST['generos_id']);
 
         // Creamos un objeto de la clase libro
         $libro = new classLibro(
@@ -89,6 +89,7 @@ class Libro extends Controller
             $editorial_id,
             $generos_id
         );
+
 
         // Añadimos libro a la tabla
         $this->model->create($libro);
@@ -128,6 +129,8 @@ class Libro extends Controller
         // Necesito crear el método read en el modelo
         $this->view->libro = $this->model->read($id);
 
+        $this->view->libro->generos_id = explode(',', $this->view->libro->generos_id);
+
         # obtener los generos
         $this->view->generos = $this->model->get_generos();
 
@@ -162,13 +165,14 @@ class Libro extends Controller
 
         // Recogemos los detalles del formulario
         $titulo = $_POST['titulo'];
-        $autor_id = $_POST['autor_id'];
-        $editorial_id = $_POST['editorial_id'];
         $precio = $_POST['precio'];
         $stock = $_POST['stock'];
         $fecha_edicion = $_POST['fecha_edicion'];
         $isbn = $_POST['isbn'];
+        $autor_id = $_POST['autor_id'];
+        $editorial_id = $_POST['editorial_id'];
         $generos_id = $_POST['generos_id'];
+
 
         # Con los detalles formulario creo objeto libro
         $libro = new classLibro(
@@ -237,6 +241,8 @@ class Libro extends Controller
         # Obtengo los detalles del libro mediante el método read del modelo
         $this->view->libro = $this->model->read($id);
 
+        $this->view->libro->generos_id = explode(',', $this->view->libro->generos_id);
+        
         # obtener los generos
         $this->view->generos = $this->model->get_generos();
 
