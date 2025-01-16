@@ -19,6 +19,19 @@ class Alumno extends Controller
     public function render()
     {
 
+        // Inicio o continuo la sesión
+        session_start();
+
+        // Compruebo si hay un mensaje de éxito
+        if (isset($_SESSION['mensaje'])) {
+
+            // Creo la propiedad mensaje en la vista
+            $this->view->mensaje = $_SESSION['mensaje'];
+
+            // Elimino la variable de sesión mensaje
+            unset($_SESSION['mensaje']);
+        }
+
         // Creo la propiedad title de la vista
         $this->view->title = "Gestión de Alumnos";
 
@@ -45,6 +58,23 @@ class Alumno extends Controller
         $this->view->alumno = new classAlumno();
 
         // Compuebo si hay errores en la validación
+        if (isset($_SESSION['error'])) {
+
+            // Creo la propiedad error en la vista
+            $this->view->error = $_SESSION['error'];
+
+            // Creo la propiedad alumno en la vista
+            $this->view->alumno = $_SESSION['alumno'];
+
+            // Creo la propiedad mensaje de error
+            $this->view->mensaje_error = 'Error en el formulario';
+
+            // Elimino la variable de sesión error
+            unset($_SESSION['error']);
+
+            // Elimino la variable de sesión alumno
+            unset($_SESSION['alumno']);
+        }
 
         // Creo la propiead título
         $this->view->title = "Añadir - Gestión de Alumnos";
@@ -69,6 +99,11 @@ class Alumno extends Controller
 
         // Inicio o continuo la sesión
         session_start();
+
+        // Validación CSRF
+        if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+            die('Petición no válida');
+        }
 
         // Recogemos los detalles del formulario saneados
         // Prevenir ataques XSS
@@ -137,15 +172,67 @@ class Alumno extends Controller
             $error['dni'] = 'El DNI es obligatorio';
         } else if (!filter_var($dni, FILTER_VALIDATE_REGEXP, $options)) {
             $error['dni'] = 'El DNI no es válido';
-        } else if ($this->model->validateUniqueDNI($dni)) {
+        } else if (!$this->model->validateUniqueDNI($dni)) {
             $error['dni'] = 'El DNI ya existe';
         }
+
+        // Validamos el email
+        // Reglas: obligatorio, formato email y clave secundaria
+        if (empty($email)) {
+            $error['email'] = 'El email es obligatorio';
+        } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $error['email'] = 'El email no es válido';
+        } else if (!$this->model->validateUniqueEmail($email)) {
+            $error['email'] = 'El email ya existe';
+        }
+
+        // Validamos el teléfono
+        // Reglas: obligatorio, formato teléfono
+        if (empty($telefono)) {
+            $error['telefono'] = 'El teléfono es obligatorio';
+        } else if (!preg_match('/^[0-9]{9}$/', $telefono)) {
+            $error['telefono'] = 'El teléfono no es válido';
+        }
+
+        // Validamos la nacionalidad
+        // Reglas: no obligatorio
+
+        // Validamos el id_curso
+        // Reglas: obligatorio, entero, clave ajena
+        if (empty($id_curso)) {
+            $error['id_curso'] = 'El curso es obligatorio';
+        } else if (!filter_var($id_curso, FILTER_VALIDATE_INT)) {
+            $error['id_curso'] = 'El curso no es válido';
+        } else if (!$this->model->validateForeignKey($id_curso)) {
+            $error['id_curso'] = 'El curso no existe';
+        }
+
+        // Si hay errores
+        if (!empty($error)) {
+
+            // Creo la variable de sesion alumno con los datos del formulario
+            $_SESSION['alumno'] = $alumno;
+
+            // Creo la variable de sesion error con los errores
+            $_SESSION['error'] = $error;
+
+            // redirecciona al formulario de nuevo alumno
+            header('location:' . URL . 'alumno/nuevo');
+
+            exit();
+        }
+
 
         // Añadimos alumno a la tabla
         $this->model->create($alumno);
 
+        // Genero mensaje de éxito
+        $_SESSION['mensaje'] = 'Alumno añadido con éxito';
+
         // redireciona al main de alumno
         header('location:' . URL . 'alumno');
+
+        exit();
     }
 
     /*

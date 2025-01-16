@@ -448,4 +448,141 @@ class alumnoModel extends Model
 
         }
     }
+
+
+    /*
+        método: validateUniqueDNI
+
+        descripción: valida que el DNI no esté duplicado
+    */
+
+    public function validateUniqueDNI($dni){
+        
+        try {
+
+            $sql = "
+                SELECT 
+                    dni
+                FROM 
+                    alumnos
+                WHERE
+                    dni = :dni
+            ";
+
+            $conexion = $this->db->connect();
+
+            $stmt = $conexion->prepare($sql);
+
+            $stmt->bindParam(':dni', $dni, PDO::PARAM_STR, 9);
+
+            $stmt->setFetchMode(PDO::FETCH_OBJ);
+
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) {
+                return false;
+            } else {
+                return true;
+            }
+
+        } catch (PDOException $e) {
+
+            // error base de datos
+            require_once 'template/partials/errorDB.partial.php';
+            $stmt = null;
+            $conexion = null;
+            $this->db = null;
+            exit();
+        }
+    }
+
+    /*
+        método: validateUniqueEmail
+
+        descripción: valida que el email no esté duplicado
+    */
+    public function validateUniqueEmail($email){
+        
+        try {
+
+            $sql = "
+                SELECT 
+                    email
+                FROM 
+                    alumnos
+                WHERE
+                    email = :email
+            ";
+
+            $conexion = $this->db->connect();
+
+            $stmt = $conexion->prepare($sql);
+
+            $stmt->bindParam(':email', $email, PDO::PARAM_STR, 50);
+
+            $stmt->setFetchMode(PDO::FETCH_OBJ);
+
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) {
+                return false;
+            } else {
+                return true;
+            }
+
+        } catch (PDOException $e) {
+
+            // error base de datos
+            require_once 'template/partials/errorDB.partial.php';
+            $stmt = null;
+            $conexion = null;
+            $this->db = null;
+            exit();
+        }
+    }
+
+    /*
+        método: validateUniqueDNI
+
+        descripción: valida que el DNI no esté duplicado
+    */
+    public function validateForeignKey(int $id_curso){
+        
+        try {
+
+            $sql = "
+                SELECT 
+                    id
+                FROM 
+                    cursos
+                WHERE
+                    id = :id_curso
+            ";
+
+            $conexion = $this->db->connect();
+
+            $stmt = $conexion->prepare($sql);
+
+            $stmt->bindParam(':id_curso', $id_curso, PDO::PARAM_INT);
+
+            $stmt->setFetchMode(PDO::FETCH_OBJ);
+
+            $stmt->execute();
+
+            if ($stmt->rowCount() == 1) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (PDOException $e) {
+
+            // error base de datos
+            require_once 'template/partials/errorDB.partial.php';
+            $stmt = null;
+            $conexion = null;
+            $this->db = null;
+            exit();
+        }
+    }
 }

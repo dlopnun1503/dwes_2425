@@ -36,7 +36,8 @@
                     <!-- Nombre -->
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Introduzca nombre" value="<?= htmlspecialchars($this->alumno->nombre) ?>" required>
+                        <input type="text" class="form-control<?= (isset($this->error['nombre']))? 'is-invalid': null ?>"  
+                         id="nombre" name="nombre" placeholder="Introduzca nombre" value="<?= htmlspecialchars($this->alumno->nombre) ?>" required>
                         <!-- mostrar posible error -->
                             <span class="form-text text-danger" role="alert">
                                 <?= $this->error['nombre'] ??= null ?>
@@ -45,7 +46,8 @@
                     <!-- Apellidos -->
                     <div class="mb-3">
                         <label for="apellidos" class="form-label">Apellidos</label>
-                        <input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="Introduzca apellidos" value="<?= htmlspecialchars($this->alumno->apellidos) ?>" required>
+                        <input type="text" class="form-control <?= (isset($this->error['apellidos']))? 'is-invalid': null ?>"
+                         id="apellidos" name="apellidos" placeholder="Introduzca apellidos" value="<?= htmlspecialchars($this->alumno->apellidos) ?>" required>
                         <!-- mostrar posible error -->
                             <span class="form-text text-danger" role="alert">
                                 <?= $this->error['apellidos'] ??= null ?>
@@ -54,7 +56,8 @@
                     <!-- Fecha Nacimiento -->
                     <div class="mb-3">
                         <label for="fechaNac" class="form-label">Fecha Nacimiento</label>
-                        <input type="date" class="form-control" id="fechaNac" name="fechaNac" value="<?= htmlspecialchars($this->alumno->fechaNac) ?>" required>
+                        <input type="date" class="form-control <?= (isset($this->error['fechaNac']))? 'is-invalid': null ?>"
+                         id="fechaNac" name="fechaNac" value="<?= htmlspecialchars($this->alumno->fechaNac) ?>" required>
                         <!-- mostrar posible error -->
                             <span class="form-text text-danger" role="alert">
                                 <?= $this->error['fechaNac'] ??= null ?>
@@ -63,7 +66,8 @@
                     <!-- Dni -->
                     <div class="mb-3">
                         <label for="dni" class="form-label">Dni</label>
-                        <input type="text" class="form-control" id="dni" name="dni" placeholder="12345678A" value="<?= htmlspecialchars($this->alumno->dni) ?>" required pattern="^[0-9]{8}[A-Za-z]{1}$" title="8 dígitos y una letra">
+                        <input type="text" class="form-control <?= (isset($this->error['dni']))? 'is-invalid': null ?>"
+                        id="dni" name="dni" placeholder="12345678A" value="<?= htmlspecialchars($this->alumno->dni) ?>" required pattern="^[0-9]{8}[A-Za-z]{1}$" title="8 dígitos y una letra">
                         <!-- mostrar posible error -->
                             <span class="form-text text-danger" role="alert">
                                 <?= $this->error['dni'] ??= null ?>
@@ -73,7 +77,8 @@
                     <!-- Email -->
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="email@ejemplo.es" value="<?= htmlspecialchars($this->alumno->email) ?>" required>
+                        <input type="email" class="form-control <?= (isset($this->error['email']))? 'is-invalid': null ?>"
+                         id="email" name="email" placeholder="email@ejemplo.es" value="<?= htmlspecialchars($this->alumno->email) ?>" required>
                         <!-- mostrar posible error -->
                             <span class="form-text text-danger" role="alert">
                                 <?= $this->error['email'] ??= null ?>
@@ -82,7 +87,8 @@
                     <!-- Telefono -->
                     <div class="mb-3">
                         <label for="telefono" class="form-label">Teléfono</label>
-                        <input type="tel" class="form-control" id="telefono" name="telefono" placeholder="666666666" value="<?= htmlspecialchars($this->alumno->telefono) ?>" required title="9 dígitos">
+                        <input type="tel" class="form-control <?= (isset($this->error['telefono']))? 'is-invalid': null ?>"
+                         id="telefono" name="telefono" placeholder="666666666" value="<?= htmlspecialchars($this->alumno->telefono) ?>" required title="9 dígitos">
                         <!-- mostrar posible error -->
                             <span class="form-text text-danger" role="alert">
                                 <?= $this->error['telefono'] ??= null ?>
@@ -91,7 +97,8 @@
                     <!-- Nacionalidad -->
                     <div class="mb-3">
                         <label for="nacionalidad" class="form-label">Nacionalidad</label>
-                        <input type="text" class="form-control" id="nacionalidad" name="nacionalidad" placeholder="Introduzca nacionalidad" value="<?= htmlspecialchars($this->alumno->nacionalidad) ?>">
+                        <input type="text" class="form-control <?= (isset($this->error['nacionalidad']))? 'is-invalid': null ?>"
+                         id="nacionalidad" name="nacionalidad" placeholder="Introduzca nacionalidad" value="<?= htmlspecialchars($this->alumno->nacionalidad) ?>">
                         <!-- mostrar posible error -->
                             <span class="form-text text-danger" role="alert">
                                 <?= $this->error['nacionalidad'] ??= null ?>
@@ -101,7 +108,8 @@
                     <!-- Select Dinámico Cursos -->
                     <div class="mb-3">
                         <label for="id_curso" class="form-label">Curso</label>
-                        <select class="form-select" id="id_curso" name="id_curso" required>
+                        <select class="form-select <?= (isset($this->error['id_curso']))? 'is-invalid': null ?>"
+                         id="id_curso" name="id_curso" required>
                             <option selected disabled>Seleccione curso</option>
                             <!-- mostrar lista cucrsos -->
                             <?php foreach ($this->cursos as $indice => $data): ?>
