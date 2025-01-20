@@ -674,7 +674,7 @@ public function update(classLibro $libro, $id)
                 FROM 
                     generos
                 WHERE
-                    id = :genero_id
+                    id = :generos_id
                 LIMIT 1
             ";
 
@@ -682,7 +682,7 @@ public function update(classLibro $libro, $id)
 
             $stmt = $conexion->prepare($sql);
 
-            $stmt->bindParam(':genero_id', $genero_id, PDO::PARAM_INT);
+            $stmt->bindParam(':generos_id', $genero_id, PDO::PARAM_INT);
 
             $stmt->setFetchMode(PDO::FETCH_OBJ);
 

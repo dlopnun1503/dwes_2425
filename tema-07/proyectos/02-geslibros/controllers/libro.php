@@ -118,7 +118,7 @@ class Libro extends Controller
         $unidades =  filter_var($_POST['unidades'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
         $fecha_edicion =  filter_var($_POST['fecha_edicion'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
         $isbn =  filter_var($_POST['isbn'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
-        $generos_id =  filter_var($_POST['generos_id'] ??= '', FILTER_SANITIZE_NUMBER_INT);
+        $generos_id = $_POST['generos_id'] ?? [];
 
         // Creamos un objeto de la clase libro
         $libro = new classLibro(
@@ -142,7 +142,7 @@ class Libro extends Controller
         // Reglas: obligatorio
         if (empty($titulo)) {
             $error['titulo'] = 'El título es obligatorio';
-        }
+        } 
 
         // Validación del autor
         // Reglas: obligatorio, clave foránea
@@ -207,16 +207,8 @@ class Libro extends Controller
         // Validación de los géneros
         // Reglas: obligatorio, clave foránea siendo generos_id un array
         if (empty($generos_id)) {
-            $error['generos_id'] = 'El género es obligatorio';
-        } else {
-            foreach ($generos_id as $genero) {
-                if (!filter_var($genero, FILTER_VALIDATE_INT)) {
-                    $error['generos_id'] = 'El formato del género no es correcto';
-                } else if (!$this->model->validateForeignKeyGenero($genero)) {
-                    $error['generos_id'] = 'El género no existe';
-                }
-            }
-        }
+            $error['generos_id'] = 'Tienes que seleccionar al menos un género';
+        } 
 
         // Si hay errores
         if (!empty($error)) {
