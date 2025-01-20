@@ -18,11 +18,10 @@ class Alumno extends Controller
     */
     public function render()
     {
-
-        // Inicio o continuo la sesión
+        // inicio o continuo la sesión
         session_start();
 
-        // Compruebo si hay un mensaje de éxito
+        // Compruebo si hay mensaje de éxito
         if (isset($_SESSION['mensaje'])) {
 
             // Creo la propiedad mensaje en la vista
@@ -50,14 +49,15 @@ class Alumno extends Controller
     */
     public function nuevo()
     {
-
-        // Inicio o continuo la sesión
+        // inicio o continuo la sesión
         session_start();
+
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
         // Crear un objeto vacío de la clase alumno
         $this->view->alumno = new classAlumno();
 
-        // Compuebo si hay errores en la validación
+        // Comrpuebo si hay errores en la validación
         if (isset($_SESSION['error'])) {
 
             // Creo la propiedad error en la vista
@@ -97,7 +97,7 @@ class Alumno extends Controller
     public function create()
     {
 
-        // Inicio o continuo la sesión
+        // inicio o continuo la sesión
         session_start();
 
         // Validación CSRF
@@ -107,16 +107,16 @@ class Alumno extends Controller
 
         // Recogemos los detalles del formulario saneados
         // Prevenir ataques XSS
-        $nombre = filter_var($_POST['nombre'] ?? '', FILTER_SANITIZE_SPECIAL_CHARS);
-        $apellidos = filter_var($_POST['apellidos'] ?? '', FILTER_SANITIZE_SPECIAL_CHARS);
-        $fechaNac = filter_var($_POST['fechaNac'] ?? '', FILTER_SANITIZE_SPECIAL_CHARS);
-        $dni = filter_var($_POST['dni'] ?? '', FILTER_SANITIZE_SPECIAL_CHARS);
-        $email = filter_var($_POST['email'] ?? '', FILTER_SANITIZE_EMAIL);
-        $telefono = filter_var($_POST['telefono'] ?? '', FILTER_SANITIZE_SPECIAL_CHARS);
-        $nacionalidad = filter_var($_POST['nacionalidad'] ?? '', FILTER_SANITIZE_SPECIAL_CHARS);
-        $id_curso = filter_var($_POST['id_curso'] ?? '', FILTER_SANITIZE_NUMBER_INT);
+        $nombre = filter_var($_POST['nombre'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
+        $apellidos = filter_var($_POST['apellidos'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
+        $fechaNac = filter_var($_POST['fechaNac'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
+        $dni = filter_var($_POST['dni'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
+        $email = filter_var($_POST['email'] ??= '', FILTER_SANITIZE_EMAIL);
+        $telefono = filter_var($_POST['telefono'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
+        $nacionalidad = filter_var($_POST['nacionalidad'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
+        $id_curso = filter_var($_POST['id_curso'] ??= '', FILTER_SANITIZE_NUMBER_INT);
 
-        // Creamos un objeto de la clase alumno
+        // Creamos un objeto de la clase alumno con los detalles del formulario
         $alumno = new classAlumno(
             null,
             $nombre,
@@ -132,23 +132,24 @@ class Alumno extends Controller
             $id_curso
         );
 
-        // Validamos los datos
+        // Validación de los datos
+
         // Creo un array para almacenar los errores
         $error = [];
 
-        // Validamos el nombre
+        // Validación del nombre
         // Reglas: obligatorio
         if (empty($nombre)) {
             $error['nombre'] = 'El nombre es obligatorio';
         }
 
-        // Validamos los apellidos
+        // Validación de los apellidos
         // Reglas: obligatorio
         if (empty($apellidos)) {
             $error['apellidos'] = 'Los apellidos son obligatorios';
         }
 
-        // Validamos la fecha de nacimiento
+        // Validación de la fecha de nacimiento
         // Reglas: obligatorio, formato fecha
         if (empty($fechaNac)) {
             $error['fechaNac'] = 'La fecha de nacimiento es obligatoria';
@@ -159,69 +160,76 @@ class Alumno extends Controller
             }
         }
 
-        // Validamos el DNI 
+        // Validación del DNI
         // Reglas: obligatorio, formato DNI y clave secundaria
 
+        // Expresión regular para validar el DNI
+        // 8 números seguidos de una letra
         $options = [
             'options' => [
-                'regexp' => '/^[0-9]{8}[A-Z]$/'
+                'regexp' => '/^(\d{8})([A-Za-z])$/'
             ]
         ];
 
         if (empty($dni)) {
             $error['dni'] = 'El DNI es obligatorio';
-        } else if (!filter_var($dni, FILTER_VALIDATE_REGEXP, $options)) {
-            $error['dni'] = 'El DNI no es válido';
-        } else if (!$this->model->validateUniqueDNI($dni)) {
-            $error['dni'] = 'El DNI ya existe';
-        }
-
-        // Validamos el email
+        } else if(!filter_var($dni, FILTER_VALIDATE_REGEXP, $options))
+            {
+                $error['dni'] = 'Formato DNI no es correcto';
+               
+            } else if (!$this->model->validateUniqueDNI($dni))
+            {
+                $error['dni'] = 'El DNI ya existe';
+            }
+        
+        // Validación del email
         // Reglas: obligatorio, formato email y clave secundaria
         if (empty($email)) {
             $error['email'] = 'El email es obligatorio';
         } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $error['email'] = 'El email no es válido';
-        } else if (!$this->model->validateUniqueEmail($email)) {
+            $error['email'] = 'El formato del email no es correcto';
+        } else if (!$this->model->validateUniqueEmail($email))
+        {
             $error['email'] = 'El email ya existe';
         }
 
-        // Validamos el teléfono
+        // Validación del teléfono
         // Reglas: obligatorio, formato teléfono
         if (empty($telefono)) {
             $error['telefono'] = 'El teléfono es obligatorio';
-        } else if (!preg_match('/^[0-9]{9}$/', $telefono)) {
-            $error['telefono'] = 'El teléfono no es válido';
+        } else if (!preg_match('/^\d{9}$/', $telefono)) {
+            $error['telefono'] = 'El formato del teléfono no es correcto';
         }
 
-        // Validamos la nacionalidad
-        // Reglas: no obligatorio
+        // Validación de la nacionalidad
+        // Reglas: No obligatorio
 
-        // Validamos el id_curso
+        // Validación id_curso
         // Reglas: obligatorio, entero, clave ajena
         if (empty($id_curso)) {
             $error['id_curso'] = 'El curso es obligatorio';
         } else if (!filter_var($id_curso, FILTER_VALIDATE_INT)) {
-            $error['id_curso'] = 'El curso no es válido';
-        } else if (!$this->model->validateForeignKey($id_curso)) {
+            $error['id_curso'] = 'El formato del curso no es correcto';
+        } else if (!$this->model->validateForeignKeyCurso($id_curso)) {
             $error['id_curso'] = 'El curso no existe';
         }
 
         // Si hay errores
         if (!empty($error)) {
 
-            // Creo la variable de sesion alumno con los datos del formulario
+            // Formulario no ha sido validado
+            // Tengo que redireccionar al formulario de nuevo
+
+            // Creo la variable de sessión alumno con los datos del formulario
             $_SESSION['alumno'] = $alumno;
 
-            // Creo la variable de sesion error con los errores
+            // Creo la variable de sessión error con los errores
             $_SESSION['error'] = $error;
 
-            // redirecciona al formulario de nuevo alumno
+            // redireciona al formulario de nuevo
             header('location:' . URL . 'alumno/nuevo');
-
             exit();
         }
-
 
         // Añadimos alumno a la tabla
         $this->model->create($alumno);
@@ -231,7 +239,6 @@ class Alumno extends Controller
 
         // redireciona al main de alumno
         header('location:' . URL . 'alumno');
-
         exit();
     }
 
@@ -401,7 +408,7 @@ class Alumno extends Controller
         # Cargo el título
         $this->view->title = "Filtrar por: {$expresion} - Gestión de Alumnos";
 
-
+        
 
         # Obtengo los alumnos que coinciden con la expresión de búsqueda
         $this->view->alumnos = $this->model->filter($expresion);

@@ -449,15 +449,17 @@ class alumnoModel extends Model
         }
     }
 
-
     /*
-        método: validateUniqueDNI
+        método: validateUniqueDni
 
-        descripción: valida que el DNI no esté duplicado
+        descripción: valida el DNI de un alumno. Que no exista en la base de datos
+
+        @param: 
+            - dni del alumno
+
     */
+    public function validateUniqueDNI($dni) {
 
-    public function validateUniqueDNI($dni){
-        
         try {
 
             $sql = "
@@ -470,20 +472,17 @@ class alumnoModel extends Model
             ";
 
             $conexion = $this->db->connect();
-
             $stmt = $conexion->prepare($sql);
-
             $stmt->bindParam(':dni', $dni, PDO::PARAM_STR, 9);
-
             $stmt->setFetchMode(PDO::FETCH_OBJ);
-
             $stmt->execute();
 
             if ($stmt->rowCount() > 0) {
-                return false;
-            } else {
-                return true;
-            }
+                return FALSE;
+            } 
+
+            return TRUE;
+            
 
         } catch (PDOException $e) {
 
@@ -499,10 +498,14 @@ class alumnoModel extends Model
     /*
         método: validateUniqueEmail
 
-        descripción: valida que el email no esté duplicado
+        descripción: valida el email de un alumno. Que no exista en la base de datos
+
+        @param: 
+            - email del alumno
+
     */
-    public function validateUniqueEmail($email){
-        
+    public function validateUniqueEmail($email) {
+
         try {
 
             $sql = "
@@ -515,20 +518,17 @@ class alumnoModel extends Model
             ";
 
             $conexion = $this->db->connect();
-
             $stmt = $conexion->prepare($sql);
-
             $stmt->bindParam(':email', $email, PDO::PARAM_STR, 50);
-
             $stmt->setFetchMode(PDO::FETCH_OBJ);
-
             $stmt->execute();
 
             if ($stmt->rowCount() > 0) {
-                return false;
-            } else {
-                return true;
-            }
+                return FALSE;
+            } 
+
+            return TRUE;
+            
 
         } catch (PDOException $e) {
 
@@ -542,12 +542,16 @@ class alumnoModel extends Model
     }
 
     /*
-        método: validateUniqueDNI
+        método: validateForeignKeyCurso($id_curso)
 
-        descripción: valida que el DNI no esté duplicado
+        descripción: valida el id_curso seleccionado. Que exista en la tabla cursos
+
+        @param: 
+            - $id_curso
+
     */
-    public function validateForeignKey(int $id_curso){
-        
+    public function validateForeignKeyCurso(int $id_curso) {
+
         try {
 
             $sql = "
@@ -560,20 +564,17 @@ class alumnoModel extends Model
             ";
 
             $conexion = $this->db->connect();
-
             $stmt = $conexion->prepare($sql);
-
             $stmt->bindParam(':id_curso', $id_curso, PDO::PARAM_INT);
-
             $stmt->setFetchMode(PDO::FETCH_OBJ);
-
             $stmt->execute();
 
             if ($stmt->rowCount() == 1) {
-                return true;
-            } else {
-                return false;
-            }
+                return TRUE;
+            } 
+
+            return FALSE;
+            
 
         } catch (PDOException $e) {
 
