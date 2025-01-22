@@ -34,6 +34,16 @@ class Alumno extends Controller
             unset($_SESSION['mensaje']);
         }
 
+        // compruebo si hay mensaje de error
+        if (isset($_SESSION['error'])) {
+
+            // Creo la propiedad error en la vista
+            $this->view->mensaje_error = $_SESSION['error'];
+
+            // Elimino la variable de sesión error
+            unset($_SESSION['error']);
+        }
+
         // Creo la propiedad title de la vista
         $this->view->title = "Gestión de Alumnos";
 
@@ -501,12 +511,38 @@ class Alumno extends Controller
     public function eliminar($param = [])
     {
 
-        # Cargo id del alumno
-        $id = $param[0];
+        // inicio o continuo la sesión
+        session_start();
 
-        # Elimino alumno de la base de datos
-        // Necesito crear el método delete en el modelo
+        // Obtengo el id del alumno
+        $id = htmlspecialchars($param[0]);
+
+        //Obtengo el token CSRF
+        $csrf_token = $param[1];
+
+        // Validación CSRF
+        if (!hash_equals($_SESSION['csrf_token'], $csrf_token)) {
+            require_once 'controllers/error.php';
+            $controller = new Errores("Petición no válida");
+            exit();
+        }
+
+        // Validar el id del alumno
+        if (!$this->model->validateIdAlumno($id)) {
+            // Genero mensaje de error
+            $_SESSION['error'] = 'El id del alumno no es correcto';
+
+            // redireciona al main de alumno
+            header('location:' . URL . 'alumno');
+            exit();
+        }
+
+        // id ha sido validado
+        // elimino al akumno de la base de datos
         $this->model->delete($id);
+
+        // Genero mensaje de éxito
+        $_SESSION['mensaje'] = 'Alumno eliminado con éxito';
 
         # Cargo el controlador principal de alumno
         header('location:' . URL . 'alumno');
@@ -525,8 +561,31 @@ class Alumno extends Controller
     public function mostrar($param = [])
     {
 
-        # Cargo id del alumno
-        $id = $param[0];
+        // inicio o continuo la sesión
+        session_start();
+
+        // Obtengo el id del alumno
+        $id = htmlspecialchars($param[0]);
+
+        //Obtengo el token CSRF
+        $csrf_token = $param[1];
+
+        // Validación CSRF
+        if (!hash_equals($_SESSION['csrf_token'], $csrf_token)) {
+            require_once 'controllers/error.php';
+            $controller = new Errores("Petición no válida");
+            exit();
+        }
+
+        // Validar el id del alumno
+        if (!$this->model->validateIdAlumno($id)) {
+            // Genero mensaje de error
+            $_SESSION['error'] = 'El id del alumno no es correcto';
+
+            // redireciona al main de alumno
+            header('location:' . URL . 'alumno');
+            exit();
+        }
 
         # Cargo el título
         $this->view->title = "Mostrar - Gestión de Alumnos";
@@ -557,8 +616,14 @@ class Alumno extends Controller
     public function filtrar()
     {
 
+        // inicio o continuo la sesión
+        session_start();
+
         # Obtengo la expresión de búsqueda
-        $expresion = $_GET['expresion'];
+        $expresion = htmlspecialchars( $_GET['expresion']);
+
+        // Obtengo el token CSRF
+        $csrf_token = htmlspecialchars($_GET['csrf_token']);
 
         # Cargo el título
         $this->view->title = "Filtrar por: {$expresion} - Gestión de Alumnos";
@@ -584,6 +649,22 @@ class Alumno extends Controller
     */
     public function ordenar($param = [])
     {
+
+        // inicio o continuo la sesión
+        session_start();
+
+        // Obtengo el id del alumno
+        $id = (int) htmlspecialchars($param[0]);
+
+        //Obtengo el token CSRF
+        $csrf_token = $param[1];
+
+        // Validación CSRF
+        if (!hash_equals($_SESSION['csrf_token'], $csrf_token)) {
+            require_once 'controllers/error.php';
+            $controller = new Errores("Petición no válida");
+            exit();
+        }
 
         # Criterios de ordenación
         $criterios = [

@@ -17,21 +17,28 @@
                         Ordenar
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="<?= URL ?>alumno/ordenar/1">Id</a></li>
-                        <li><a class="dropdown-item" href="<?= URL ?>alumno/ordenar/2">Alumno</a></li>
-                        <li><a class="dropdown-item" href="<?= URL ?>alumno/ordenar/3">Email</a></li>
-                        <li><a class="dropdown-item" href="<?= URL ?>alumno/ordenar/4">Teléfono</a></li>
-                        <li><a class="dropdown-item" href="<?= URL ?>alumno/ordenar/5">Nacionalidad</a></li>
-                        <li><a class="dropdown-item" href="<?= URL ?>alumno/ordenar/6">DNI</a></li>
-                        <li><a class="dropdown-item" href="<?= URL ?>alumno/ordenar/7">Curso</a></li>
-                        <li><a class="dropdown-item" href="<?= URL ?>alumno/ordenar/8">Edad</a></li>
+                        <li><a class="dropdown-item" href="<?= URL ?>alumno/ordenar/1/<?= $_SESSION["csrf_token"] ?>">Id</a></li>
+                        <li><a class="dropdown-item" href="<?= URL ?>alumno/ordenar/2/<?= $_SESSION["csrf_token"] ?>">Alumno</a></li>
+                        <li><a class="dropdown-item" href="<?= URL ?>alumno/ordenar/3/<?= $_SESSION["csrf_token"] ?>">Email</a></li>
+                        <li><a class="dropdown-item" href="<?= URL ?>alumno/ordenar/4/<?= $_SESSION["csrf_token"] ?>">Teléfono</a></li>
+                        <li><a class="dropdown-item" href="<?= URL ?>alumno/ordenar/5/<?= $_SESSION["csrf_token"] ?>">Nacionalidad</a></li>
+                        <li><a class="dropdown-item" href="<?= URL ?>alumno/ordenar/6/<?= $_SESSION["csrf_token"] ?>">DNI</a></li>
+                        <li><a class="dropdown-item" href="<?= URL ?>alumno/ordenar/7/<?= $_SESSION["csrf_token"] ?>">Curso</a></li>
+                        <li><a class="dropdown-item" href="<?= URL ?>alumno/ordenar/8/<?= $_SESSION["csrf_token"] ?>">Edad</a></li>
                         
                     </ul>
                 </li>
 
             </ul>
-            <form class="d-flex" role="search" action="alumno/filtrar" method="GET">
+            <form class="d-flex" role="search" action="<?= URL ?>alumno/filtrar" method="GET">
+                <!-- protección CSRF -->
+                <input type="hidden" name="csrf_token"
+                        value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
+                        
+                <!-- expresion -->
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="expresion" required>
+
+                <!-- botones de accion -->
                 <button class="btn btn-outline-primary" type="submit">Buscar</button>
             </form>
         </div>

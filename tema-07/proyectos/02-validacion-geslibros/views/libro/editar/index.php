@@ -49,38 +49,39 @@
                     </div>
                     <!-- Select Dinámico autores -->
                     <div class="mb-3">
-                        <label for="autor" class="form-label">Autor</label>
-                        <select class="form-select <?= (isset($this->error['autor']))? 'is-invalid': null ?>" 
-                        id="autor" name="autor" required>
+                        <label for="autor_id" class="form-label">Autor</label>
+                        <select class="form-select 
+                        <?= (isset($this->error['autor_id']))? 'is-invalid': null ?>" 
+                        id="autor_id" name="autor_id" required>
                             <option selected disabled>Seleccione Autor</option>
                             <!-- mostrar lista autores -->
                             <?php foreach ($this->autores as $indice => $data): ?>
-                                <option value="<?= $indice ?>" <?= ($this->libro->autor == $indice)? 'selected': null ?>>
+                                <option value="<?= $indice ?>" <?= $this->libro->autor_id == $indice ? 'selected': '' ?>>
                                     <?= $data ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
                         <!-- mostrar posible error -->
                         <span class="form-text text-danger" role="alert">
-                            <?= $this->error['autor'] ??= null ?>
+                            <?= $this->error['autor_id'] ??= null ?>
                         </span>
                     </div>
                     <!-- Select Dinámico editorial -->
                     <div class="mb-3">
-                        <label for="editorial" class="form-label">Editorial</label>
-                        <select class="form-select <?= (isset($this->error['editorial']))? 'is-invalid': null ?>" 
-                        id="editorial" name="editorial" required>
+                        <label for="editorial_id" class="form-label">Editorial</label>
+                        <select class="form-select <?= (isset($this->error['editorial_id']))? 'is-invalid': null ?>" 
+                        id="editorial_id" name="editorial_id" required>
                             <option selected disabled>Seleccione Editorial</option>
                             <!-- mostrar lista cucrsos -->
                             <?php foreach ($this->editoriales as $indice => $data): ?>
-                                <option value="<?= $indice ?>" <?= ($this->libro->editorial == $indice)? 'selected': null ?>>
+                                <option value="<?= $indice ?>" <?= $this->libro->editorial_id == $indice ? 'selected': '' ?>>
                                     <?= $data ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
                         <!-- mostrar posible error -->
                         <span class="form-text text-danger" role="alert">
-                            <?= $this->error['editorial'] ??= null ?>
+                            <?= $this->error['editorial_id'] ??= null ?>
                         </span>
                     </div>
                     <!-- precio -->
@@ -98,7 +99,7 @@
                     <div class="mb-3">
                         <label for="unidades" class="form-label">Unidades</label>
                         <input type="number" class="form-control <?= (isset($this->error['unidades']))? 'is-invalid': null ?>" 
-                        id="unidades" name="unidades" placeholder="0" step="1" value="<?= htmlspecialchars($this->libro->unidades) ?>">
+                        id="unidades" name="unidades" placeholder="0" step="1" value="<?= htmlspecialchars($this->libro->stock) ?>" required>
                         <!-- mostrar posible error -->
                         <span class="form-text text-danger" role="alert">
                             <?= $this->error['unidades'] ??= null ?>
@@ -133,13 +134,13 @@
                             <!-- muestro el array generos -->
                             <?php foreach ($this->generos as $indice => $data): ?>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="generos_id" name="generos_id[]" value="<?= $indice ?>">
-                                    <label class="form-check-label" for="">
+                                    <input class="form-check-input" type="checkbox" id="generos_id" name="generos_id[]" value="<?= $indice ?>" 
+                                    <?= in_array($indice, explode(',', $this->libro->generos_id ?? '')) ? 'checked' : '' ?>>
+                                    <label class="form-check-label" for="generos_id">
                                         <?= $data ?>
                                     </label>
                                 </div>
                             <?php endforeach; ?>
-
                         </div>
                         <!-- mostrar posible error -->
                         <span class="form-text text-danger" role="alert">

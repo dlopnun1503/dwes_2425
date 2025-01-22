@@ -424,6 +424,40 @@ public function update(classLibro $libro, $id)
         }
     }
 
+    public function validateIdLibro(int $id){
+        
+        try {
+
+            $sql = "
+                SELECT 
+                    id
+                FROM 
+                    libros
+                WHERE
+                    id = :id
+            ";
+
+            $conexion = $this->db->connect();
+            $stmt = $conexion->prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->setFetchMode(PDO::FETCH_OBJ);
+            $stmt->execute();
+
+            if ($stmt->rowCount() == 1) {
+                return TRUE;
+            } 
+
+            return FALSE;
+    } catch (PDOException $e) {
+        // error base de datos
+        require_once 'template/partials/errorDB.partial.php';
+        $stmt = null;
+        $conexion = null;
+        $this->db = null;
+        exit();
+    }
+}
+
     /*
         método: filter
 

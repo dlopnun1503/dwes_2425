@@ -17,19 +17,26 @@
                         Ordenar
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="<?= URL ?>libro/ordenar/1">Id</a></li>
-                        <li><a class="dropdown-item" href="<?= URL ?>libro/ordenar/2">Título</a></li>
-                        <li><a class="dropdown-item" href="<?= URL ?>libro/ordenar/3">Autor</a></li>
-                        <li><a class="dropdown-item" href="<?= URL ?>libro/ordenar/4">Editorial</a></li>
-                        <li><a class="dropdown-item" href="<?= URL ?>libro/ordenar/6">Stock</a></li>
-                        <li><a class="dropdown-item" href="<?= URL ?>libro/ordenar/7">Precio</a></li>
+                        <li><a class="dropdown-item" href="<?= URL ?>libro/ordenar/1/<?= $_SESSION["csrf_token"] ?>">Id</a></li>
+                        <li><a class="dropdown-item" href="<?= URL ?>libro/ordenar/2/<?= $_SESSION["csrf_token"] ?>">Título</a></li>
+                        <li><a class="dropdown-item" href="<?= URL ?>libro/ordenar/3/<?= $_SESSION["csrf_token"] ?>">Autor</a></li>
+                        <li><a class="dropdown-item" href="<?= URL ?>libro/ordenar/4/<?= $_SESSION["csrf_token"] ?>">Editorial</a></li>
+                        <li><a class="dropdown-item" href="<?= URL ?>libro/ordenar/6/<?= $_SESSION["csrf_token"] ?>">Stock</a></li>
+                        <li><a class="dropdown-item" href="<?= URL ?>libro/ordenar/7/<?= $_SESSION["csrf_token"] ?>">Precio</a></li>
                         
                     </ul>
                 </li>
 
             </ul>
             <form class="d-flex" role="search" action="<?= URL ?>libro/filtrar" method="GET">
+                <!-- protección CSRF -->
+                <input type="hidden" name="csrf_token"
+                        value="<?= htmlspecialchars($_SESSION['csrf_token'] ?? '') ?>">
+                
+                <!-- expresion -->
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="expresion" required>
+
+                <!-- botones de accion -->
                 <button class="btn btn-outline-primary" type="submit">Buscar</button>
             </form>
         </div>

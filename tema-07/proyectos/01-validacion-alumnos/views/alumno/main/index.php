@@ -14,6 +14,9 @@
     <div class="container">
         <br><br><br><br>
 
+        <!-- capa de errores -->
+        <?php require_once 'template/partials/error.partial.php' ?>
+    
         <!-- capa de mensajes -->
         <?php require_once 'template/partials/mensaje.partial.php' ?>
 
@@ -63,13 +66,13 @@
                                     <!-- Columna de acciones -->
                                     <td>
                                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                                            <a href="<?= URL ?>alumno/eliminar/<?= $alumno->id ?>" title="Eliminar"
+                                            <a href="<?= URL ?>alumno/eliminar/<?= $alumno->id ?>/<?= $_SESSION["csrf_token"] ?>" title="Eliminar"
                                                 class="btn btn-danger"
                                                 onclick="return confirm('Confimar elimación del alumno')"><i
                                                     class="bi bi-trash-fill"></i></a>
                                             <a href="<?= URL ?>alumno/editar/<?= $alumno->id ?>/<?= $_SESSION["csrf_token"] ?>" title="Editar"
                                                 class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
-                                            <a href="<?= URL ?>alumno/mostrar/<?= $alumno->id ?>" title="Mostrar"
+                                            <a href="<?= URL ?>alumno/mostrar/<?= $alumno->id ?>/<?= $_SESSION["csrf_token"] ?>" title="Mostrar"
                                                 class="btn btn-warning"><i class="bi bi-eye-fill"></i></a>
                                         </div>
                                     </td>
