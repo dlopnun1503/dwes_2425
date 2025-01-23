@@ -24,24 +24,25 @@ class libroModel extends Model
         try {
 
             // sentencia sql
-            $sql = "SELECT 
-                libros.id,
-                libros.titulo,
-                autores.nombre as autor,
-                editoriales.nombre as editorial,
-                libros.generos_id,
-                libros.stock,
-                libros.precio
-            FROM 
-                libros 
-            INNER JOIN
-                autores
-            ON autores.id = libros.autor_id
-            INNER JOIN
-                editoriales
-            ON editoriales.id = libros.editorial_id
-            ORDER BY libros.id
-            ;";
+            $sql ="SELECT 
+            libros.id,
+            libros.titulo,
+            libros.precio,
+            libros.stock,
+            libros.fecha_edicion,
+            libros.isbn,
+            libros.autor_id,
+            autores.nombre autor,
+            libros.editorial_id,
+            editoriales.nombre editorial,
+            libros.generos_id,
+            group_concat(generos.tema ORDER BY generos.tema SEPARATOR ', ') generos   
+            FROM libros
+            inner JOIN autores ON libros.autor_id = autores.id
+            inner JOIN editoriales ON libros.editorial_id = editoriales.id
+            inner JOIN generos ON FIND_IN_SET(generos.id, libros.generos_id)
+            GROUP BY libros.id
+            ORDER BY libros.id";
 
             // conectamos con la base de datos
             $conexion = $this->db->connect();
@@ -276,29 +277,25 @@ class libroModel extends Model
     {
 
         try {
-            $sql = "
-                    SELECT 
-                        libros.id,
-                        libros.titulo,
-                        autores.id AS autor_id,
-                        autores.nombre AS autor,
-                        editoriales.id AS editorial_id,
-                        editoriales.nombre AS editorial,
-                        libros.generos_id,
-                        libros.stock,
-                        libros.precio,
-                        libros.fecha_edicion,
-                        libros.isbn
-                    FROM 
-                        libros 
-                    INNER JOIN
-                        autores
-                    ON autores.id = libros.autor_id
-                    INNER JOIN
-                        editoriales
-                    ON editoriales.id = libros.editorial_id
-                    WHERE
-                        libros.id = :id
+            $sql = "SELECT 
+                    libros.id,
+                    libros.titulo,
+                    libros.precio,
+                    libros.stock,
+                    libros.fecha_edicion,
+                    libros.isbn,
+                    libros.autor_id,
+                    autores.nombre autor,
+                    libros.editorial_id,
+                    editoriales.nombre editorial,
+                    libros.generos_id,
+                    group_concat(generos.tema ORDER BY generos.tema SEPARATOR ', ') generos
+                    FROM libros
+                    inner JOIN autores ON libros.autor_id = autores.id
+                    inner JOIN editoriales ON libros.editorial_id = editoriales.id
+                    inner JOIN generos ON FIND_IN_SET(generos.id, libros.generos_id)
+                    GROUP BY libros.id
+                    HAVING libros.id = :id
                     LIMIT 1";
 
             # Conectar con la base de datos
@@ -312,12 +309,6 @@ class libroModel extends Model
             $stmt->execute();
 
             $libro = $stmt->fetch();
-
-            if ($libro) {
-                // Convierte generos_id en un array
-                $libro->generos = explode(',', $libro->generos_id);
-            }
-
             return $libro;
         } catch (PDOException $e) {
             // // error base de datos
@@ -470,12 +461,12 @@ public function update(classLibro $libro, $id)
         try {
             $sql = "
 
-            SELECT 
+             SELECT 
                 libros.id,
                 libros.titulo,
                 autores.nombre as autor,
-                editoriales.nombre as editorial,                        
-                libros.generos_id,
+                editoriales.nombre as editorial,
+                GROUP_CONCAT(generos.tema ORDER BY generos.tema SEPARATOR ', ') as generos,
                 libros.stock,
                 libros.precio,
                 libros.fecha_edicion,
@@ -484,25 +475,28 @@ public function update(classLibro $libro, $id)
                 libros 
             INNER JOIN
                 autores
-            ON autores.id = libros.autor_id
+            ON libros.autor_id = autores.id
             INNER JOIN
                 editoriales
-            ON editoriales.id = libros.editorial_id
-            WHERE
+            ON libros.editorial_id = editoriales.id
+            INNER JOIN
+                generos
+            ON FIND_IN_SET(generos.id, libros.generos_id)
+            GROUP BY libros.id
+            HAVING
                 CONCAT_WS(  ', ', 
-                            libros.id,
-                        libros.titulo,
-                        autores.nombre,
-                        editoriales.nombre,                        
-                        libros.generos_id,
-                        libros.stock,
-                        libros.precio,
-                        libros.fecha_edicion,
-                        libros.isbn
-                ) 
+                libros.id,
+                libros.titulo,
+                autores.nombre,
+                editoriales.nombre,
+                generos,
+                libros.stock,
+                libros.precio,
+                libros.fecha_edicion,
+                libros.isbn) 
                 like :expresion
-
-            ORDER BY libros.id
+            ORDER BY 
+                libros.id
 
 
             ";
@@ -541,12 +535,12 @@ public function update(classLibro $libro, $id)
 
             # comando sql
             $sql = "
-            SELECT 
+             SELECT 
                 libros.id,
                 libros.titulo,
                 autores.nombre as autor,
-                editoriales.nombre as editorial,                        
-                libros.generos_id,
+                editoriales.nombre as editorial,
+                generos.tema as generos,
                 libros.stock,
                 libros.precio,
                 libros.fecha_edicion,
@@ -555,11 +549,13 @@ public function update(classLibro $libro, $id)
                 libros 
             INNER JOIN
                 autores
-            ON autores.id = libros.autor_id
+            ON libros.autor_id = autores.id
             INNER JOIN
                 editoriales
-            ON editoriales.id = libros.editorial_id
-                        
+            ON libros.editorial_id = editoriales.id
+            INNER JOIN
+                generos
+            ON libros.generos_id = generos.id
             ORDER BY 
                 :criterio
             ";

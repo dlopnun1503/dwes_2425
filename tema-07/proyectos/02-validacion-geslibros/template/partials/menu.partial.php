@@ -12,7 +12,7 @@
           <a class="nav-link active" aria-current="page" href="<?= URL ?>index">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="<?= URL ?>libro">Libros</a>
+          <a class="nav-link active" href="<?= URL ?>libro">Libros</a>
         </li>
         <li class="nav-item">
           <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Link</a>
