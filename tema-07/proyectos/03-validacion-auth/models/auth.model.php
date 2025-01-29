@@ -230,12 +230,12 @@ class authModel extends Model
     /*
         metodo: getIdPerfilUser($id)
 
-        descripcion: obtiene el perfil de un usuario
+        descripcion: obtiene el id del perfil de un usuario
 
         @param: id
     */
 
-    public function getIdPerfilUser($id)
+    public function getIdPerfilUser(int $id)
     {
 
         try {
@@ -249,6 +249,9 @@ class authModel extends Model
             // ejecuto prepare
             $stmt = $conexion->prepare($sql);
 
+            // tipo de fetch
+            $stmt->setFetchMode(PDO::FETCH_OBJ);
+
             // vinculamos parámetros
             $stmt->bindParam(':user_id', $id, PDO::PARAM_INT);
 
@@ -256,7 +259,7 @@ class authModel extends Model
             $stmt->execute();
 
             // devuelvo objeto usuario
-            return $stmt->fetch();
+            return $stmt->fetch()->role_id;
 
         } catch (PDOException $e) {
 
@@ -269,14 +272,14 @@ class authModel extends Model
     }
 
     /*
-        metodo: getNamePerfil($id)
+        metodo: getNamePerfil($role_id)
 
         descripcion: obtiene el nombre del perfil de un usuario
 
         @param: id
      */
 
-    public function getNamePerfil($id){
+    public function getNamePerfil($role_id){
         
         try {
 
@@ -289,14 +292,17 @@ class authModel extends Model
             // ejecuto prepare
             $stmt = $conexion->prepare($sql);
 
+            // tipo de fetch
+            $stmt->setFetchMode(PDO::FETCH_OBJ);
+
             // vinculamos parámetros
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindParam(':id', $role_id, PDO::PARAM_INT);
 
             // ejecutamos
             $stmt->execute();
 
             // devuelvo objeto usuario
-            return $stmt->fetch();
+            return $stmt->fetch()->name;
 
         } catch (PDOException $e) {
 

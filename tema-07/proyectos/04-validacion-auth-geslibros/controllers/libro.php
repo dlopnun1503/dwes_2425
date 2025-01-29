@@ -18,6 +18,23 @@ class Libro extends Controller
         // inicio o continuo la sesión
         session_start();
 
+        // Comprobar si hay usuario logueado
+        if (!isset($_SESSION['user_id'])) {
+            // Genero mensaje de error
+            $_SESSION['mensaje'] = 'Acceso denegado.';
+            // redireciona al login
+            header('location:' . URL . 'auth/login');
+            exit();
+        }
+        // Comprobar si el usuario tiene permisos
+        else if (!in_array($_SESSION['role_id'], $GLOBALS['libro']['main'])) {
+            // Genero mensaje
+            $_SESSION['mensaje'] = 'Acceso denegado. No tiene permisos suficientes.';
+            // redireciona al login
+            header('location:' . URL . 'auth/login');
+            exit();
+        }
+
          // Creo un token CSRF
          $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
@@ -60,6 +77,23 @@ class Libro extends Controller
 
         // inicio o continuo la sesión
         session_start();
+
+         // Comprobar si hay usuario logueado
+         if (!isset($_SESSION['user_id'])) {
+            // Genero mensaje de error
+            $_SESSION['mensaje'] = 'Acceso denegado.';
+            // redireciona al login
+            header('location:' . URL . 'libro');
+            exit();
+        }
+        // Comprobar si el usuario tiene permisos
+        else if (!in_array($_SESSION['role_id'], $GLOBALS['libro']['nuevo'])) {
+            // Genero mensaje
+            $_SESSION['mensaje'] = 'Acceso denegado. No tiene permisos suficientes.';
+            // redireciona al login
+            header('location:' . URL . 'libro');
+            exit();
+        }
 
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
@@ -111,6 +145,23 @@ class Libro extends Controller
 
         // inicio o continuo la sesión
         session_start();
+
+        // Comprobar si hay usuario logueado
+        if (!isset($_SESSION['user_id'])) {
+            // Genero mensaje de error
+            $_SESSION['mensaje'] = 'Acceso denegado.';
+            // redireciona al login
+            header('location:' . URL . 'libro');
+            exit();
+        }
+        // Comprobar si el usuario tiene permisos
+        else if (!in_array($_SESSION['role_id'], $GLOBALS['libro']['nuevo'])) {
+            // Genero mensaje
+            $_SESSION['mensaje'] = 'Acceso denegado. No tiene permisos suficientes.';
+            // redireciona al login
+            header('location:' . URL . 'libro');
+            exit();
+        }
 
         // Validación CSRF
         if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
@@ -254,6 +305,23 @@ class Libro extends Controller
         // inicio o continuo la sesión
         session_start();
 
+        // Comprobar si hay usuario logueado
+        if (!isset($_SESSION['user_id'])) {
+            // Genero mensaje de error
+            $_SESSION['mensaje'] = 'Acceso denegado.';
+            // redireciona al login
+            header('location:' . URL . 'libro');
+            exit();
+        }
+        // Comprobar si el usuario tiene permisos
+        else if (!in_array($_SESSION['role_id'], $GLOBALS['libro']['editar'])) {
+            // Genero mensaje
+            $_SESSION['mensaje'] = 'Acceso denegado. No tiene permisos suficientes.';
+            // redireciona al login
+            header('location:' . URL . 'libro');
+            exit();
+        }
+
 
         $this->view->id = htmlspecialchars($param[0]);
 
@@ -316,6 +384,23 @@ class Libro extends Controller
 
         // inicio o continuo la sesión
         session_start();
+
+        // Comprobar si hay usuario logueado
+        if (!isset($_SESSION['user_id'])) {
+            // Genero mensaje de error
+            $_SESSION['mensaje'] = 'Acceso denegado.';
+            // redireciona al login
+            header('location:' . URL . 'libro');
+            exit();
+        }
+        // Comprobar si el usuario tiene permisos
+        else if (!in_array($_SESSION['role_id'], $GLOBALS['libro']['editar'])) {
+            // Genero mensaje
+            $_SESSION['mensaje'] = 'Acceso denegado. No tiene permisos suficientes.';
+            // redireciona al login
+            header('location:' . URL . 'libro');
+            exit();
+        }
 
         // Obtengo el id del libro
         $id = htmlspecialchars($param[0]);
@@ -485,6 +570,23 @@ class Libro extends Controller
         // inicio o continuo la sesión
         session_start();
 
+        // Comprobar si hay usuario logueado
+        if (!isset($_SESSION['user_id'])) {
+            // Genero mensaje de error
+            $_SESSION['mensaje'] = 'Acceso denegado.';
+            // redireciona al login
+            header('location:' . URL . 'libro');
+            exit();
+        }
+        // Comprobar si el usuario tiene permisos
+        else if (!in_array($_SESSION['role_id'], $GLOBALS['libro']['eliminar'])) {
+            // Genero mensaje
+            $_SESSION['mensaje'] = 'Acceso denegado. No tiene permisos suficientes.';
+            // redireciona al login
+            header('location:' . URL . 'libro');
+            exit();
+        }
+
         // Obtengo el id del libro
         $id = htmlspecialchars($param[0]);
 
@@ -529,6 +631,23 @@ class Libro extends Controller
 
         // inicio o continuo la sesión
         session_start();
+
+        // Comprobar si hay usuario logueado
+        if (!isset($_SESSION['user_id'])) {
+            // Genero mensaje de error
+            $_SESSION['mensaje'] = 'Acceso denegado.';
+            // redireciona al login
+            header('location:' . URL . 'libro');
+            exit();
+        }
+        // Comprobar si el usuario tiene permisos
+        else if (!in_array($_SESSION['role_id'], $GLOBALS['libro']['mostrar'])) {
+            // Genero mensaje
+            $_SESSION['mensaje'] = 'Acceso denegado. No tiene permisos suficientes.';
+            // redireciona al login
+            header('location:' . URL . 'libro');
+            exit();
+        }
 
         // Obtengo el id del libro
         $id = htmlspecialchars($param[0]);
@@ -577,6 +696,23 @@ class Libro extends Controller
         // inicio o continuo la sesión
         session_start();
 
+        // Comprobar si hay usuario logueado
+        if (!isset($_SESSION['user_id'])) {
+            // Genero mensaje de error
+            $_SESSION['mensaje'] = 'Acceso denegado.';
+            // redireciona al login
+            header('location:' . URL . 'libro');
+            exit();
+        }
+        // Comprobar si el usuario tiene permisos
+        else if (!in_array($_SESSION['role_id'], $GLOBALS['libro']['filtrar'])) {
+            // Genero mensaje
+            $_SESSION['mensaje'] = 'Acceso denegado. No tiene permisos suficientes.';
+            // redireciona al login
+            header('location:' . URL . 'libro');
+            exit();
+        }
+
         # Obtengo la expresión de búsqueda
         $expresion = htmlspecialchars( $_GET['expresion']);
 
@@ -603,6 +739,23 @@ class Libro extends Controller
 
         // inicio o continuo la sesión
         session_start();
+
+        // Comprobar si hay usuario logueado
+        if (!isset($_SESSION['user_id'])) {
+            // Genero mensaje de error
+            $_SESSION['mensaje'] = 'Acceso denegado.';
+            // redireciona al login
+            header('location:' . URL . 'libro');
+            exit();
+        }
+        // Comprobar si el usuario tiene permisos
+        else if (!in_array($_SESSION['role_id'], $GLOBALS['libro']['ordenar'])) {
+            // Genero mensaje
+            $_SESSION['mensaje'] = 'Acceso denegado. No tiene permisos suficientes.';
+            // redireciona al login
+            header('location:' . URL . 'libro');
+            exit();
+        }
 
         // Obtengo el id del libro
         $id = (int) htmlspecialchars($param[0]);

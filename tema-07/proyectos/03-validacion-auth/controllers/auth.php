@@ -47,10 +47,23 @@ class Auth extends Controller
         if (isset($_SESSION['error'])) {
 
             // Creo la propiedad mensaje_error en la vista
-            $this->view->mensaje_error = $_SESSION['error'];
+            $this->view->mensaje_error = 'Error en la autenticación';
+
+            // Creo la propiedad error en la vista
+            $this->view->error = $_SESSION['error'];
+
+            // Retroalimento los campos del  formulario
+            $this->view->email = $_SESSION['email'];
+            $this->view->password = $_SESSION['password'];
 
             // Elimino la variable de sesión error
             unset($_SESSION['error']);
+
+            // Elimino la variable de sesión email
+            unset($_SESSION['email']);
+
+            // Elimino la variable de sesión password
+            unset($_SESSION['password']);
         }
 
         // Creo la propiedad title de la vista
@@ -114,7 +127,7 @@ class Auth extends Controller
 
         // Si no existe el usuario
         if (!$user) {
-            $error['email'] = 'Usuario o contraseña incorrectos';
+            $error['email'] = 'Usuario incorrectos';
         }
 
         // Validación password
@@ -124,7 +137,7 @@ class Auth extends Controller
         } else if (strlen($password) < 7) {
             $error['password'] = 'La contraseña debe tener al menos 7 caracteres';
         } else if (!password_verify($password, $user->password)) {
-            $error['password'] = 'Usuario o contraseña incorrectos';
+            $error['password'] = 'Contraseña incorrectos';
         }
 
 
@@ -152,15 +165,15 @@ class Auth extends Controller
         // Autentificacion completada con éxito
 
         // Creo las variables de sesión autenticadas
-        $_SESSION['id'] = $user->id;
-        $_SESSION['name'] = $user->name;
+        $_SESSION['user_id'] = $user->id;
+        $_SESSION['user_name'] = $user->name;
 
         // Datos del rol del usuario
-        $_SESSION['rol_id'] = $this->model->getIdPerfilUser($user->id);
-        $_SESSION['name_rol'] = $this->model->getNamePerfil($_SESSION['rol_id']);
+        $_SESSION['role_id'] = $this->model->getIdPerfilUser($user->id);
+        $_SESSION['role_name'] = $this->model->getNamePerfil($_SESSION['role_id']);
 
         // genero mensaje de éxito
-        $_SESSION['mensaje'] = 'Usuario '. $user->name. " ha iniciado sesión";
+        $_SESSION['mensaje'] = 'Usuario '. $user->name. " ha iniciado sesión con perfil " . $_SESSION['role_name'];
 
         //redirección al panel de control
         header('location:' . URL . 'alumno');
