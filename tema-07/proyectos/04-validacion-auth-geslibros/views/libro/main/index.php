@@ -65,13 +65,16 @@
                                     <td>
                                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                             <a href="<?= URL ?>libro/eliminar/<?= $libro->id ?>/<?= $_SESSION["csrf_token"] ?>" title="Eliminar"
-                                                class="btn btn-danger"
+                                                class="btn btn-danger
+                                                <?= in_array($_SESSION['role_id'], $GLOBALS['libro']['eliminar'])? null:'disabled'?>"
                                                 onclick="return confirm('Confimar elimación del libro')"><i
                                                     class="bi bi-trash-fill"></i></a>
                                             <a href="<?= URL ?>libro/editar/<?= $libro->id ?>/<?= $_SESSION["csrf_token"] ?>" title="Editar"
-                                                class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
+                                                class="btn btn-primary
+                                                <?= in_array($_SESSION['role_id'], $GLOBALS['libro']['editar'])? null:'disabled'?>"><i class="bi bi-pencil-square"></i></a>
                                             <a href="<?= URL ?>libro/mostrar/<?= $libro->id ?>/<?= $_SESSION["csrf_token"] ?>" title="Mostrar"
-                                                class="btn btn-warning"><i class="bi bi-eye-fill"></i></a>
+                                                class="btn btn-warning
+                                                <?= in_array($_SESSION['role_id'], $GLOBALS['libro']['mostrar'])? null:'disabled'?>"><i class="bi bi-eye-fill"></i></a>
                                         </div>
                                     </td>
                                 </tr>

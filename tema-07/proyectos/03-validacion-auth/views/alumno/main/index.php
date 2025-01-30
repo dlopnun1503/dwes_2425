@@ -67,13 +67,17 @@
                                     <td>
                                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                             <a href="<?= URL ?>alumno/eliminar/<?= $alumno->id ?>/<?= $_SESSION['csrf_token'] ?>" title="Eliminar"
-                                                class="btn btn-danger"
+                                                class="btn btn-danger 
+                                                <?= in_array($_SESSION['role_id'], $GLOBALS['alumno']['eliminar'])? null:'disabled'?>"
                                                 onclick="return confirm('Confimar elimación del alumno')" aria-label="Eliminar alumno"><i
                                                     class="bi bi-trash-fill"></i></a>
                                             <a href="<?= URL ?>alumno/editar/<?= $alumno->id ?>/<?= $_SESSION['csrf_token'] ?>" title="Editar"
-                                                class="btn btn-primary"><i class="bi bi-pencil-square"></i></a>
+                                                class="btn btn-primary
+                                                <?= in_array($_SESSION['role_id'], $GLOBALS['alumno']['editar'])? null:'disabled'?>">
+                                                <i class="bi bi-pencil-square"></i></a>
                                             <a href="<?= URL ?>alumno/mostrar/<?= $alumno->id ?>/<?= $_SESSION['csrf_token'] ?>" title="Mostrar"
-                                                class="btn btn-warning"><i class="bi bi-eye-fill"></i></a>
+                                                class="btn btn-warning
+                                                <?= in_array($_SESSION['role_id'], $GLOBALS['alumno']['mostrar'])? null:'disabled'?>"><i class="bi bi-eye-fill"></i></a>
                                         </div>
                                     </td>
                                 </tr>

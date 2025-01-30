@@ -352,4 +352,31 @@ class Auth extends Controller
         exit();
     }
 
+    /*
+        Metodo: logout()
+
+        cierre de sesion
+
+        url asociada /auth/logout
+    */
+
+    public function logout(){
+
+        // Inicio o continuo sesion
+        session_start();
+
+        // Eliminar variables de sesion
+        $_SESSION = [];
+
+        // Destruyo la sesion
+        session_destroy();
+
+        // Elimino la cookie de sesion
+        setcookie(session_name(), '', time() -3600);
+
+        // Redirijo al formulario de login
+        header('location:' . URL . 'index');
+        exit();
+    }
+
 }

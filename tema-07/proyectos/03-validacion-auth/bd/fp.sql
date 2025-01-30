@@ -7,6 +7,7 @@ CREATE DATABASE IF NOT EXISTS fp
     DEFAULT COLLATE UTF8_GENERAL_CI;
 
 USE fp;
+
 DROP TABLE IF EXISTS cursos;
 CREATE TABLE IF NOT EXISTS cursos(
 	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
@@ -52,9 +53,7 @@ INSERT INTO alumnos VALUES
     (NULL, "Alba", "Florencio Romero", "alba@correo.es", "956140055", "Una calle, 6", "Ubrique", "Cádiz", "Española", "12457836F", "1990-05-15", "6")
 ;
 
-
-
-drop table if exists users;
+DROP TABLE IF EXISTS users;
 CREATE TABLE IF NOT EXISTS users(
 
 	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,

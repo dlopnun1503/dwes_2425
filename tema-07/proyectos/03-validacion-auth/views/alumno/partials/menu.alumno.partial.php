@@ -9,10 +9,14 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="<?= URL ?>alumno/nuevo">Nuevo</a>
+                    <a class="nav-link 
+                    <?= in_array($_SESSION['role_id'], $GLOBALS['alumno']['nuevo'])? 'active':'disabled'?>" 
+                    aria-current="page" href="<?= URL ?>alumno/nuevo">Nuevo</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                    <a class="nav-link dropdown-toggle 
+                    <?= in_array($_SESSION['role_id'], $GLOBALS['alumno']['ordenar'])? 'active':'disabled'?>" 
+                    href="#" role="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
                         Ordenar
                     </a>
@@ -40,7 +44,9 @@
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="expresion" required>
                 
                 <!-- botones de accion -->
-                <button class="btn btn-outline-primary" type="submit">Buscar</button>
+                <button class="btn btn-outline-primary
+                <?= in_array($_SESSION['role_id'], $GLOBALS['alumno']['filtrar'])? null:'disabled'?>" 
+                type="submit">Buscar</button>
             </form>
         </div>
     </div>

@@ -13,7 +13,7 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="<?= URL ?>index">Home</a>
         </li>
-        <<li class="nav-item">
+        <li class="nav-item">
           <a class="nav-link active" href="<?= URL ?>alumno">Alumnos</a>
         </li>
         <!-- <li class="nav-item">
@@ -26,7 +26,7 @@
       <div class="d-flex">
         <div class="collapse navbar-collapse" id="exCollapsingNavbar">
           <ul class="nav navbar-nav flex-row justify-content-between ml-auto">
-            <li class="nav-item"><a href="<?= URL ?>perfil" class="nav-link active"><?= $_SESSION['user_name'] . ' | '?></a></li>
+            <li class="nav-item"><a href="<?= URL ?>perfil" class="nav-link active"><?= $_SESSION['user_name'] . ' |'?></a></li>
             <li class="nav-item"><a href="<?= URL ?>auth/logout" class="nav-link active">Logout</a></li>
           </ul>
         </div>

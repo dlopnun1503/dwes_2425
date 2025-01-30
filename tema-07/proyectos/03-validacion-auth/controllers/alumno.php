@@ -21,19 +21,17 @@ class Alumno extends Controller
         // inicio o continuo la sesión
         session_start();
 
-        // Comprobar si hay usuario logueado
+        // Comprobar si hay un usuario logueado
         if (!isset($_SESSION['user_id'])) {
             // Genero mensaje de error
-            $_SESSION['mensaje'] = 'Acceso denegado.';
-            // redireciona al login
+            $_SESSION['mensaje_error'] = 'Acceso denegado';
             header('location:' . URL . 'auth/login');
             exit();
-        }
-        // Comprobar si el usuario tiene permisos
+        } // Comprobar si el usuario tiene permisos
+
         else if (!in_array($_SESSION['role_id'], $GLOBALS['alumno']['main'])) {
-            // Genero mensaje
-            $_SESSION['mensaje'] = 'Acceso denegado. No tiene permisos suficientes.';
-            // redireciona al login
+
+            $_SESSION['mensaje_error'] = 'Acceso denegado. No tiene permisos suficientes';
             header('location:' . URL . 'auth/login');
             exit();
         }
@@ -51,7 +49,18 @@ class Alumno extends Controller
             unset($_SESSION['mensaje']);
         }
 
-        // Compruebo mensaje error
+        // Compruebo si hay mensaje de error
+        if (isset($_SESSION['mensaje_error'])) {
+
+            // Creo la propiedad mensaje en la vista
+            $this->view->mensaje_error = $_SESSION['mensaje_error'];
+
+            // Elimino la variable de sesión mensaje
+            unset($_SESSION['mensaje_error']);
+        }
+
+
+        // Compruebo validación errónea de formulario
         if (isset($_SESSION['error'])) {
 
             // Creo la propiedad mensaje_error en la vista
@@ -82,23 +91,20 @@ class Alumno extends Controller
         // inicio o continuo la sesión
         session_start();
 
-        // Comprobar si hay usuario logueado
+        // Comprobar si hay un usuario logueado
         if (!isset($_SESSION['user_id'])) {
-            // Genero mensaje de error
-            $_SESSION['mensaje'] = 'Acceso denegado.';
-            // redireciona al login
-            header('location:' . URL . 'alumno');
+            // Genero mensaje error
+            $_SESSION['mensaje_error'] = 'Acceso denegado';
+            header('location:' . URL . 'auth/login');
             exit();
         }
         // Comprobar si el usuario tiene permisos
         else if (!in_array($_SESSION['role_id'], $GLOBALS['alumno']['nuevo'])) {
-            // Genero mensaje
-            $_SESSION['mensaje'] = 'Acceso denegado. No tiene permisos suficientes.';
-            // redireciona al login
+            // Genero mensaje error
+            $_SESSION['mensaje_error'] = 'Acceso denegado. No tiene permisos suficientes';
             header('location:' . URL . 'alumno');
             exit();
         }
-
 
         // Creo un token CSRF
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
@@ -149,23 +155,20 @@ class Alumno extends Controller
         // inicio o continuo la sesión
         session_start();
 
-        // Comprobar si hay usuario logueado
+        // Comprobar si hay un usuario logueado
         if (!isset($_SESSION['user_id'])) {
-            // Genero mensaje de error
-            $_SESSION['mensaje'] = 'Acceso denegado.';
-            // redireciona al login
-            header('location:' . URL . 'alumno');
+            // Genero mensaje error
+            $_SESSION['mensaje_error'] = 'Acceso denegado';
+            header('location:' . URL . 'auth/login');
             exit();
         }
         // Comprobar si el usuario tiene permisos
         else if (!in_array($_SESSION['role_id'], $GLOBALS['alumno']['nuevo'])) {
-            // Genero mensaje
-            $_SESSION['mensaje'] = 'Acceso denegado. No tiene permisos suficientes.';
-            // redireciona al login
+            // Genero mensaje error
+            $_SESSION['mensaje_error'] = 'Acceso denegado. No tiene permisos suficientes';
             header('location:' . URL . 'alumno');
             exit();
         }
-
 
         // Validación CSRF
         if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
@@ -244,23 +247,19 @@ class Alumno extends Controller
 
         if (empty($dni)) {
             $error['dni'] = 'El DNI es obligatorio';
-        } else if(!filter_var($dni, FILTER_VALIDATE_REGEXP, $options))
-            {
-                $error['dni'] = 'Formato DNI no es correcto';
-               
-            } else if (!$this->model->validateUniqueDNI($dni))
-            {
-                $error['dni'] = 'El DNI ya existe';
-            }
-        
+        } else if (!filter_var($dni, FILTER_VALIDATE_REGEXP, $options)) {
+            $error['dni'] = 'Formato DNI no es correcto';
+        } else if (!$this->model->validateUniqueDNI($dni)) {
+            $error['dni'] = 'El DNI ya existe';
+        }
+
         // Validación del email
         // Reglas: obligatorio, formato email y clave secundaria
         if (empty($email)) {
             $error['email'] = 'El email es obligatorio';
         } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $error['email'] = 'El formato del email no es correcto';
-        } else if (!$this->model->validateUniqueEmail($email))
-        {
+        } else if (!$this->model->validateUniqueEmail($email)) {
             $error['email'] = 'El email ya existe';
         }
 
@@ -330,23 +329,20 @@ class Alumno extends Controller
         // inicio o continuo la sesión
         session_start();
 
-        // Comprobar si hay usuario logueado
+        // Comprobar si hay un usuario logueado
         if (!isset($_SESSION['user_id'])) {
-            // Genero mensaje de error
-            $_SESSION['mensaje'] = 'Acceso denegado.';
-            // redireciona al login
-            header('location:' . URL . 'alumno');
+            // Genero mensaje error
+            $_SESSION['mensaje_error'] = 'Acceso denegado';
+            header('location:' . URL . 'auth/login');
             exit();
         }
         // Comprobar si el usuario tiene permisos
         else if (!in_array($_SESSION['role_id'], $GLOBALS['alumno']['editar'])) {
-            // Genero mensaje
-            $_SESSION['mensaje'] = 'Acceso denegado. No tiene permisos suficientes.';
-            // redireciona al login
+            // Genero mensaje error
+            $_SESSION['mensaje_error'] = 'Acceso denegado. No tiene permisos suficientes';
             header('location:' . URL . 'alumno');
             exit();
         }
-
 
         # obtengo el id del alumno que voy a editar
         // alumno/edit/4
@@ -354,7 +350,7 @@ class Alumno extends Controller
 
         # obtengo el token CSRF
         $this->view->csrf_token = $param[1];
-       
+
         // Validación CSRF
         if (!hash_equals($_SESSION['csrf_token'], $this->view->csrf_token)) {
             require_once 'controllers/error.php';
@@ -410,23 +406,20 @@ class Alumno extends Controller
         // inicio o continuo la sesión
         session_start();
 
-        // Comprobar si hay usuario logueado
+        // Comprobar si hay un usuario logueado
         if (!isset($_SESSION['user_id'])) {
-            // Genero mensaje de error
-            $_SESSION['mensaje'] = 'Acceso denegado.';
-            // redireciona al login
-            header('location:' . URL . 'alumno');
+            // Genero mensaje error
+            $_SESSION['mensaje_error'] = 'Acceso denegado';
+            header('location:' . URL . 'auth/login');
             exit();
         }
         // Comprobar si el usuario tiene permisos
         else if (!in_array($_SESSION['role_id'], $GLOBALS['alumno']['editar'])) {
-            // Genero mensaje
-            $_SESSION['mensaje'] = 'Acceso denegado. No tiene permisos suficientes.';
-            // redireciona al login
+            // Genero mensaje error
+            $_SESSION['mensaje_error'] = 'Acceso denegado. No tiene permisos suficientes';
             header('location:' . URL . 'alumno');
             exit();
         }
-
 
         // obtengo el id del alumno que voy a editar
         $id = htmlspecialchars($param[0]);
@@ -530,7 +523,7 @@ class Alumno extends Controller
             } else if (!$this->model->validateUniqueDNI($dni)) {
                 $error['dni'] = 'El DNI ya existe';
             }
-        }  
+        }
 
         // Validación del email
         // Reglas: obligatorio, formato email y clave secundaria
@@ -561,7 +554,7 @@ class Alumno extends Controller
 
         // Validación id_curso
         // Reglas: obligatorio, entero, clave ajena
-        if ($id_curso =! $alumno->id_curso) {
+        if ($id_curso = ! $alumno->id_curso) {
             $cambios = true;
             if (empty($id_curso)) {
                 $error['id_curso'] = 'El curso es obligatorio';
@@ -625,23 +618,20 @@ class Alumno extends Controller
         // inicio o continuo la sesión
         session_start();
 
-        // Comprobar si hay usuario logueado
+        // Comprobar si hay un usuario logueado
         if (!isset($_SESSION['user_id'])) {
-            // Genero mensaje de error
-            $_SESSION['mensaje'] = 'Acceso denegado.';
-            // redireciona al login
-            header('location:' . URL . 'alumno');
+            // Genero mensaje error
+            $_SESSION['mensaje_error'] = 'Acceso denegado';
+            header('location:' . URL . 'auth/login');
             exit();
         }
         // Comprobar si el usuario tiene permisos
         else if (!in_array($_SESSION['role_id'], $GLOBALS['alumno']['eliminar'])) {
-            // Genero mensaje
-            $_SESSION['mensaje'] = 'Acceso denegado. No tiene permisos suficientes.';
-            // redireciona al login
+            // Genero mensaje error
+            $_SESSION['mensaje_error'] = 'Acceso denegado. No tiene permisos suficientes';
             header('location:' . URL . 'alumno');
             exit();
         }
-
 
         // obtengo el id del alumno que voy a eliminar
         $id = htmlspecialchars($param[0]);
@@ -693,23 +683,20 @@ class Alumno extends Controller
         // inicio o continuo la sesión
         session_start();
 
-        // Comprobar si hay usuario logueado
+        // Comprobar si hay un usuario logueado
         if (!isset($_SESSION['user_id'])) {
-            // Genero mensaje de error
-            $_SESSION['mensaje'] = 'Acceso denegado.';
-            // redireciona al login
-            header('location:' . URL . 'alumno');
+            // Genero mensaje error
+            $_SESSION['mensaje_error'] = 'Acceso denegado';
+            header('location:' . URL . 'auth/login');
             exit();
         }
         // Comprobar si el usuario tiene permisos
         else if (!in_array($_SESSION['role_id'], $GLOBALS['alumno']['mostrar'])) {
-            // Genero mensaje
-            $_SESSION['mensaje'] = 'Acceso denegado. No tiene permisos suficientes.';
-            // redireciona al login
+            // Genero mensaje error
+            $_SESSION['mensaje_error'] = 'Acceso denegado. No tiene permisos suficientes';
             header('location:' . URL . 'alumno');
             exit();
         }
-
 
         // obtengo el id del alumno que voy a eliminar
         $id = htmlspecialchars($param[0]);
@@ -766,23 +753,20 @@ class Alumno extends Controller
         // inicio o continuo la sesión
         session_start();
 
-        // Comprobar si hay usuario logueado
+        // Comprobar si hay un usuario logueado
         if (!isset($_SESSION['user_id'])) {
-            // Genero mensaje de error
-            $_SESSION['mensaje'] = 'Acceso denegado.';
-            // redireciona al login
-            header('location:' . URL . 'alumno');
+            // Genero mensaje error
+            $_SESSION['mensaje_error'] = 'Acceso denegado';
+            header('location:' . URL . 'auth/login');
             exit();
         }
         // Comprobar si el usuario tiene permisos
         else if (!in_array($_SESSION['role_id'], $GLOBALS['alumno']['filtrar'])) {
-            // Genero mensaje
-            $_SESSION['mensaje'] = 'Acceso denegado. No tiene permisos suficientes.';
-            // redireciona al login
+            // Genero mensaje error
+            $_SESSION['mensaje_error'] = 'Acceso denegado. No tiene permisos suficientes';
             header('location:' . URL . 'alumno');
             exit();
         }
-
 
         # Obtengo la expresión de búsqueda
         $expresion = htmlspecialchars($_GET['expresion']);
@@ -822,23 +806,20 @@ class Alumno extends Controller
         // inicio o continuo la sesión
         session_start();
 
-        // Comprobar si hay usuario logueado
+        // Comprobar si hay un usuario logueado
         if (!isset($_SESSION['user_id'])) {
-            // Genero mensaje de error
-            $_SESSION['mensaje'] = 'Acceso denegado.';
-            // redireciona al login
-            header('location:' . URL . 'alumno');
+            // Genero mensaje error
+            $_SESSION['mensaje_error'] = 'Acceso denegado';
+            header('location:' . URL . 'auth/login');
             exit();
         }
         // Comprobar si el usuario tiene permisos
         else if (!in_array($_SESSION['role_id'], $GLOBALS['alumno']['ordenar'])) {
-            // Genero mensaje
-            $_SESSION['mensaje'] = 'Acceso denegado. No tiene permisos suficientes.';
-            // redireciona al login
+            // Genero mensaje error
+            $_SESSION['mensaje_error'] = 'Acceso denegado. No tiene permisos suficientes';
             header('location:' . URL . 'alumno');
             exit();
         }
-
 
         // Obtener criterio
         $id = (int) htmlspecialchars($param[0]);

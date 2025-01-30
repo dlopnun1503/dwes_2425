@@ -43,16 +43,26 @@ class Auth extends Controller
             unset($_SESSION['mensaje']);
         }
 
-        // Compruebo mensaje error
+        // Compruebo si hay mensaje de error
+        if (isset($_SESSION['mensaje_error'])) {
+
+            // Creo la propiedad mensaje en la vista
+            $this->view->mensaje_error = $_SESSION['mensaje_error'];
+
+            // Elimino la variable de sesión mensaje
+            unset($_SESSION['mensaje_error']);
+        }
+
+        // Compruebo si hay error de validación
         if (isset($_SESSION['error'])) {
 
             // Creo la propiedad mensaje_error en la vista
-            $this->view->mensaje_error = 'Error en la autenticación';
+            $this->view->mensaje_error = 'Error en el formulario de Autenticación';
 
             // Creo la propiedad error en la vista
             $this->view->error = $_SESSION['error'];
 
-            // Retroalimento los campos del  formulario
+            // Retroalimento los campos del formulario
             $this->view->email = $_SESSION['email'];
             $this->view->password = $_SESSION['password'];
 
@@ -61,8 +71,6 @@ class Auth extends Controller
 
             // Elimino la variable de sesión email
             unset($_SESSION['email']);
-
-            // Elimino la variable de sesión password
             unset($_SESSION['password']);
         }
 
@@ -82,16 +90,14 @@ class Auth extends Controller
             - En caso de validación. Inicia sesión y redirecciona a la página de inicio
 
         url asociada: /auth/validate_login()
-
+        
         POST: detalles del usuario
 
             - email
             - password
     */
-
     public function validate_login()
     {
-
         // inicio o continuo la sesión
         session_start();
 
@@ -127,7 +133,7 @@ class Auth extends Controller
 
         // Si no existe el usuario
         if (!$user) {
-            $error['email'] = 'Usuario incorrectos';
+            $error['email'] = 'El email no existe';
         }
 
         // Validación password
@@ -137,10 +143,8 @@ class Auth extends Controller
         } else if (strlen($password) < 7) {
             $error['password'] = 'La contraseña debe tener al menos 7 caracteres';
         } else if (!password_verify($password, $user->password)) {
-            $error['password'] = 'Contraseña incorrectos';
+            $error['password'] = 'La contraseña no es correcta';
         }
-
-
 
         // Si hay errores
         if (!empty($error)) {
@@ -148,23 +152,24 @@ class Auth extends Controller
             // Formulario no ha sido validado
             // Tengo que redireccionar al formulario de nuevo
 
+            // Creo la variable de sessión error con los errores
+            $_SESSION['error'] = $error;
+
             // Creo la variable de sessión email con los datos del formulario
             $_SESSION['email'] = $email;
 
-            // Creo la variable de sessión password con los datos del formulario
+            // Creo la variable de sessión password
             $_SESSION['password'] = $password;
-
-            // Creo la variable de sessión error con los errores
-            $_SESSION['error'] = $error;
 
             // redireciona al formulario de nuevo
             header('location:' . URL . 'auth/login');
             exit();
         }
 
-        // Autentificacion completada con éxito
+        // Autenticación completada con éxito
 
         // Creo las variables de sesión autenticadas
+        // Datos del usuario
         $_SESSION['user_id'] = $user->id;
         $_SESSION['user_name'] = $user->name;
 
@@ -172,15 +177,14 @@ class Auth extends Controller
         $_SESSION['role_id'] = $this->model->getIdPerfilUser($user->id);
         $_SESSION['role_name'] = $this->model->getNamePerfil($_SESSION['role_id']);
 
-        // genero mensaje de éxito
-        $_SESSION['mensaje'] = 'Usuario '. $user->name. " ha iniciado sesión con perfil " . $_SESSION['role_name'];
+        // Generar mensaje de inicio de sesión
+        $_SESSION['mensaje'] = "Usuario ". $user->name. " ha iniciado sesión con perfil ". $_SESSION['role_name'];
 
-        //redirección al panel de control
-        header('location:' . URL . 'alumno');
+        // redirección al panel de control
+        header("location:". URL. "alumno");
+
 
     }
-
-
     /*
         Método register()
 
@@ -280,35 +284,35 @@ class Auth extends Controller
         $error = [];
 
         // Validación name
-        // Reglas: obligatorio, longitud mínima 5 caracteres, longitud máxima 20 caracteres y clave secundaria
+        // Reglas: obligatorio, longitud mínima 5 caracteres, 
+        // longitud máxima 20 caracteres, clave secundaria
         if (empty($name)) {
             $error['name'] = 'El nombre es obligatorio';
         } else if (strlen($name) < 5) {
             $error['name'] = 'El nombre debe tener al menos 5 caracteres';
         } else if (strlen($name) > 20) {
-            $error['name'] = 'El nombre no puede tener más de 20 caracteres';
-        }else if (!$this->model->validateUniqueName($name)) {
+            $error['name'] = 'El nombre debe tener como máximo 20 caracteres';
+        } else if (!$this->model->validateUniqueName($name)) {
             $error['name'] = 'Nombre existente';
         }
 
         // Validación email
-        // Reglas: obligatorio, formato email y clave secundaria
+        // Reglas: obligatorio, formato email, clave secundaria
         if (empty($email)) {
             $error['email'] = 'El email es obligatorio';
         } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $error['email'] = 'El formato del email no es correcto';
-        } else if (!$this->model->validateUniqueEmail($email))
-        {
+        } else if (!$this->model->validateUniqueEmail($email)) {
             $error['email'] = 'El email ya existe';
         }
-
+       
         // Validación password
         // Reglas: obligatorio, longitud mínima 7 caracteres, campos coincidentes
         if (empty($password)) {
             $error['password'] = 'La contraseña es obligatoria';
         } else if (strlen($password) < 7) {
             $error['password'] = 'La contraseña debe tener al menos 7 caracteres';
-        } else if (strcmp($password, $password_confirm) !== 0) {
+        } else if (strcmp($password, $password_confirm) !== 0 ) {
             $error['password'] = 'Las contraseñas no coinciden';
         }
 
@@ -336,19 +340,47 @@ class Auth extends Controller
         }
 
         // Formulario validado
-        // Añado el usuario a la base de datos
+        // Añadir usuario a la base de datos
         // Obtengo el id asignado al nuevo usuario
         $id = $this->model->create($name, $email, $password);
 
         // Asigno el perfil de registrado al nuevo usuario
-        // 3 es el id del perfil registrado
+        // 3 es el id del perfil de registrado
         $this->model->assignRole($id, 3);
 
         // Genero mensaje de éxito
-        $_SESSION['mensaje'] = 'Usuario registrado con éxito';
+        $_SESSION['mensaje'] = 'Usuario registrado correctamente';
 
-        // redireciona al formulario de login
+        // Redireciona al formulario de login
         header('location:' . URL . 'auth/login');
+        exit();
+
+    }
+
+    /*
+        Metodo: logout()
+
+        cierre de sesion
+
+        url asociada /auth/logout
+    */
+
+    public function logout(){
+
+        // Inicio o continuo sesion
+        session_start();
+
+        // Eliminar variables de sesion
+        $_SESSION = [];
+
+        // Destruyo la sesion
+        session_destroy();
+
+        // Elimino la cookie de sesion
+        setcookie(session_name(), '', time() -3600);
+
+        // Redirijo al formulario de login
+        header('location:' . URL . 'index');
         exit();
     }
 
