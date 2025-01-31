@@ -6,7 +6,7 @@
                     <a class="nav-link " href="<?= URL ?>perfil">Mostrar</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link " href="<?= URL ?>perfil/edit">Editar</a>
+                    <a class="nav-link " href="<?= URL ?>perfil/editar">Editar</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link " href="<?= URL ?>perfil/pass">Cambiar Password</a>
