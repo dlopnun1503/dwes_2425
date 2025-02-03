@@ -185,4 +185,101 @@ class perfilModel extends Model
             $this->db = null;
         }
      }
+     /*
+        método: update_pass($password, $id)
+
+        descripción: actualiza la contraseña del usuario
+
+        @param: 
+
+            - password: contraseña del usuario
+            - id: id del usuario
+
+    */
+    public function updatePass($password, $id)
+    {
+
+        try {
+
+            // encriptar password
+            $password = password_hash($password, PASSWORD_DEFAULT);
+
+            // sentencia sql
+            $sql = "UPDATE Users SET password = :password WHERE id = :id";
+
+            // conectamos con la base de datos
+            $conexion = $this->db->connect();
+
+            // ejecuto prepare
+            $stmt = $conexion->prepare($sql);
+
+            // vinculamos parámetros
+            $stmt->bindParam(':password', $password, PDO::PARAM_STR, 255);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+            // ejecutamos
+            $stmt->execute();
+
+            // Devuelvo objeto usuario
+            return $stmt->rowCount();
+
+        } catch (PDOException $e) {
+
+            // error base de datos
+            require 'template/partials/errorDB.partial.php';
+            $stmt = null;
+            $conexion = null;
+            $this->db = null;
+        }
+    }
+
+    /*
+        método: delete($id)
+
+        descripción: elimina definitivamente un usuario. Tambien elimina los registros 
+        asociados en la tabla de roles_users
+
+        @param: 
+
+            - id: id del usuario
+
+    */
+    public function delete($id)
+    {
+
+        try {
+
+            // sentencia sql
+            $sql = "DELETE FROM Users WHERE id = :id";
+
+            // conectamos con la base de datos
+            $conexion = $this->db->connect();
+
+            // ejecuto prepare
+            $stmt = $conexion->prepare($sql);
+
+            // vinculamos parámetros
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+            // ejecutamos
+            $stmt->execute();
+
+            // Devuelvo objeto usuario
+            return $stmt->rowCount();
+
+        } catch (PDOException $e) {
+
+            // error base de datos
+            require 'template/partials/errorDB.partial.php';
+            $stmt = null;
+            $conexion = null;
+            $this->db = null;
+        }
+    }
+
+    
+
+
+
 }
+

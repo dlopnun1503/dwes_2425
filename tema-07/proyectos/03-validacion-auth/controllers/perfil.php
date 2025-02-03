@@ -243,17 +243,16 @@ class Perfil extends Controller
      */
     public function pass()
     {
-        // inicio o continuo sesion 
+        // inicio o continuo la sesión
         session_start();
 
-        // genero token csrf
+        // generar token crsf
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
-        // comprobar si hay usuario logueado
+        // Comprobar si hay un usuario logueado
         if (!isset($_SESSION['user_id'])) {
-            // genero mensaje de error
+            // Genero mensaje de error
             $_SESSION['mensaje_error'] = 'Acceso denegado';
-
             header('location:' . URL . 'auth/login');
             exit();
         }
@@ -278,92 +277,158 @@ class Perfil extends Controller
             unset($_SESSION['mensaje_error']);
         }
 
-        // capa no validacion del formulario
+        // Capa no validación del formulario
         if (isset($_SESSION['error'])) {
+
+            // Creo la propiedad error en la vista
             $this->view->error = $_SESSION['error'];
 
+            // Elimino la variable de sesión error
             unset($_SESSION['error']);
 
-            $this->view->perfil = $_SESSION['perfil'];
-
-            unset($_SESSION['perfil']);
-
-            $this->view->mensaje_error = 'Hay errores en el formulario';
+            // Creo la propiedad mensaje error
+            $this->view->mensaje_error = 'Errores de validación';
         }
 
+        // Creo la propiedad title de la vista
         $this->view->title = "Cambiar contraseña " . $_SESSION['user_name'];
 
         $this->view->render('perfil/pass/index');
     }
 
-    /**
-     * Metodo para actualizar la contraseña del usuario
-     * Actualiza la contraseña
-     * url: /perfil/update_pass
-     */
+    /*
+        Método para actualizar la contraseña del usuario. 
+        Actualiza la contraseña del usuario. 
+
+        Incluye:
+         - validación token crsf.
+         - validación de los datos del formulario.
+         - prevención ataques csrf.
+
+        url: /perfil/update_pass
+
+    */
     public function update_pass()
     {
-        // inicio o continuo sesion 
+        // inicio o continuo la sesión
         session_start();
 
-        // Validación token CSRF
+        // Validación toekn CSRF
         if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+            // require_once 'controllers/error.php';
+            // $controller = new Errores('Petición no válida');
+            // exit();
             header('location:' . URL . 'errores');
             exit();
         }
 
-        // comprobar si hay usuario logueado
+        // Comprobar si hay un usuario logueado
         if (!isset($_SESSION['user_id'])) {
-            // genero mensaje de error
+            // Genero mensaje de error
             $_SESSION['mensaje_error'] = 'Acceso denegado';
             header('location:' . URL . 'auth/login');
             exit();
         }
 
-        // saneamos los detalles del formulario
+        // Saneamos los detalles del formulario
         $password = filter_var($_POST['password'] ??= null, FILTER_SANITIZE_SPECIAL_CHARS);
         $new_password = filter_var($_POST['new_password'] ??= null, FILTER_SANITIZE_SPECIAL_CHARS);
         $confirm_password = filter_var($_POST['confirm_password'] ??= null, FILTER_SANITIZE_SPECIAL_CHARS);
 
-        // obtengo los detalles del usuario
+        // Obtengo los detalles del usuario
         $user = $this->model->getUserId($_SESSION['user_id']);
 
-        // validacion de los datos del usuario 
+        // validación de los datos del formulario
         $error = [];
 
-        // validacion password
-        if (empty($password)){
-            $error['password'] = 'La contraseña es obligatoria';
-        } elseif(!password_verify($password, $user->password)) {
-            $error['password'] = 'La contraseña actual es incorrecta';
+        // validación password
+        if (empty($password)) {
+            $error['password'] = 'El password actual es obligatorio';
+        } else if (!password_verify($password, $user->password)) {
+            $error['password'] = 'El password actual no es correcto';
         }
 
-        // validacion new_password
+        // validación new_password
         if (empty($new_password)) {
-            $error['new_password'] = 'La nueva contraseña es obligatoria';
+            $error['new_password'] = 'El nuevo password es obligatorio';
         } else if (strlen($new_password) < 7) {
-            $error['new_password'] = 'La nueva contraseña debe tener al menos 8 caracteres';
-        } else if ($new_password !== $confirm_password) {
-            $error['confirm_password'] = 'Las contraseñas no coinciden';
+            $error['new_password'] = 'El nuevo password debe tener al menos 7 caracteres';
+        } else if (strcmp($new_password, $confirm_password) !== 0) {
+            $error['new_password'] = 'Los passwords no son coincidentes';
         }
 
         // Si hay errores
         if (!empty($error)) {
-            // Creo la variable de sessión error con los errores
+            // Creo la variable de sesión error
             $_SESSION['error'] = $error;
 
-            // redireciona al formulario de nuevo
+            // Redirecciono al formulario de edición
             header('location:' . URL . 'perfil/pass');
             exit();
         }
 
-        // actualizo la contraseña del usuario
-        $this->model->updatePassword($new_password, $_SESSION['user_id']);
+        // Actualizo password del usuario
+        $this->model->updatePass($new_password, $_SESSION['user_id']);
 
-        // genero mensaje de exito
+        // Genero mensaje de éxito
         $_SESSION['mensaje'] = 'Contraseña actualizada correctamente';
 
+        // Redirecciono a la vista principal de perfil
         header('location:' . URL . 'perfil');
         exit();
+    }
+
+    /*
+        delete($id)
+
+        Método para eliminar el usuario. 
+        Elimina el usuario de la base de datos. 
+
+        url: /perfil/delete
+
+        @param $id int : id del usuario
+
+    */
+    public function delete($param = [])
+    {
+        // inicio o continuo la sesión
+        session_start();
+
+        // Recojo el token crsf enviado en la URL
+        $csrf_token = htmlspecialchars($param[0]);
+
+        // Validación toekn CSRF
+        if (!hash_equals($_SESSION['csrf_token'], $csrf_token)) {
+            require_once 'controllers/error.php';
+            $controller = new Errores('Petición no válida');
+            exit();
+        
+        }
+
+        // Comprobar si hay un usuario logueado
+        if (!isset($_SESSION['user_id'])) {
+            // Genero mensaje de error
+            $_SESSION['mensaje_error'] = 'Acceso denegado';
+            header('location:' . URL . 'auth/login');
+            exit();
+        }
+
+        // Elimino el usuario
+        $this->model->delete($_SESSION['user_id']);
+
+        // Cierro la sesión
+        session_destroy();
+
+        // Elimino la cookie de sesión
+        setcookie(session_name(), '', time() - 3600);
+
+        // vuelvo a abrir sesión
+        session_start();
+
+        // Genero mensaje de éxito
+        $_SESSION['mensaje'] = 'Usuario eliminado correctamente';
+
+        // Redirecciono a la vista principal de perfil
+        header('location:' . URL . 'auth/login');
     }
 }

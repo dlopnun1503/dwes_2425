@@ -3,7 +3,7 @@
 
 <head>
 	<?php require_once 'template/layouts/head.layout.php'; ?>
-	<title>GesLibros - MVC </title>
+	<title>FP - MVC </title>
 </head>
 
 <body>

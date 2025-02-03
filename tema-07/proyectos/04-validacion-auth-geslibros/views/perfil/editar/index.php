@@ -21,23 +21,38 @@
                     <div class="card-header">Mi Perfil</div>
                     <div class="card-header"><?php require_once("views/perfil/partials/menu.partial.php") ?></div>
                     <div class="card-body">
-                        <form>
+                        <form action="<?= URL ?>perfil/update" method="post">
 
-                        <!-- campo nombre  -->
-                        <div class="mb-3 row">
-                                <label class="col-md-4 col-form-label text-md-right">Name</label>
+                        <!-- token csrf  -->
+                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']?>">
+
+                         <!-- campo name -->
+                         <div class="mb-3 row">
+                                <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" name="name" 
-                                        value="<?= htmlspecialchars($this->perfil->name); ?>" disabled>
+                                    <input id="name" type="name"
+                                        class="form-control <?= (isset($this->errores['name'])) ? 'is-invalid' : null ?>"
+                                        name="name" value="<?= htmlspecialchars($this->perfil->name); ?>" required
+                                        autocomplete="name" autofocus>
+                                    <!-- control de errores -->
+                                    <span class="form-text text-danger" role="alert">
+                                        <?= $this->error['name']  ??= '' ?>
+                                    </span>
                                 </div>
-                            </div>
+                            </div>    
 
                             <!-- campo email -->
                             <div class="mb-3 row">
-                                <label class="col-md-4 col-form-label text-md-right">Email</label>
+                                <label for="email" class="col-md-4 col-form-label text-md-right">Email</label>
                                 <div class="col-md-6">
-                                    <input type="email" class="form-control" name="email" 
-                                        value="<?= htmlspecialchars($this->perfil->email); ?>" disabled>
+                                    <input id="email" type="email"
+                                        class="form-control <?= (isset($this->errores['email'])) ? 'is-invalid' : null ?>"
+                                        name="email" value="<?= htmlspecialchars($this->perfil->email); ?>" required
+                                        autocomplete="email" autofocus>
+                                    <!-- control de errores -->
+                                    <span class="form-text text-danger" role="alert">
+                                        <?= $this->error['email']  ??= '' ?>
+                                    </span>
                                 </div>
                             </div>
 
@@ -56,8 +71,9 @@
                             <!-- botones de acción -->
                             <div class="mb-3 row mb-0">
                                 <div class="col-md-8 offset-md-4">
-                                    <a class="btn btn-secondary" href="<?= URL ?>alumno" role="button">Salir</a>
-
+                                    <a class="btn btn-secondary" href="<?=URL?>perfil" role="button">Cancelar</a>
+                                    <button type="reset" class="btn btn-secondary" >Reset</button>
+                                    <button type="submit" class="btn btn-primary">Actualizar</button>
                                 </div>
                             </div>
                         </form>
