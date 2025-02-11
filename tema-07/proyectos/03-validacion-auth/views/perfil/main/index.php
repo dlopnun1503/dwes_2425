@@ -19,15 +19,17 @@
                 <?php require_once("template/partials/error.partial.php") ?>
                 <div class="card">
                     <div class="card-header">Mi Perfil</div>
-                    <div class="card-header"><?php require_once("views/perfil/partials/menu.partial.php") ?></div>
+                    <div class="card-header">
+                    <?php require_once("views/perfil/partials/menu.partial.php") ?>
+                    </div>
                     <div class="card-body">
                         <form>
 
-                        <!-- campo nombre  -->
-                        <div class="mb-3 row">
+                            <!-- campo nombre -->
+                            <div class="mb-3 row">
                                 <label class="col-md-4 col-form-label text-md-right">Name</label>
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" name="name" 
+                                    <input type="text" class="form-control" name="name"
                                         value="<?= htmlspecialchars($this->perfil->name); ?>" disabled>
                                 </div>
                             </div>
@@ -36,28 +38,26 @@
                             <div class="mb-3 row">
                                 <label class="col-md-4 col-form-label text-md-right">Email</label>
                                 <div class="col-md-6">
-                                    <input type="email" class="form-control" name="email" 
+                                    <input type="email" class="form-control" name="email"
                                         value="<?= htmlspecialchars($this->perfil->email); ?>" disabled>
+
                                 </div>
                             </div>
 
-
-                            <!-- campo rol  -->
+                            <!-- campo rol -->
                             <div class="mb-3 row">
                                 <label class="col-md-4 col-form-label text-md-right">Rol</label>
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" name="role_name" 
+                                    <input type="text" class="form-control" name="role_name"
                                         value="<?= htmlspecialchars($_SESSION['role_name']); ?>" disabled>
                                 </div>
                             </div>
-
                             
-
-                            <!-- botones de acción -->
+                            <!-- botones acción -->
                             <div class="mb-3 row mb-0">
                                 <div class="col-md-8 offset-md-4">
-                                    <a class="btn btn-secondary" href="<?= URL ?>alumno" role="button">Salir</a>
-
+                                    <a class="btn btn-secondary" href="<?= URL ?>alumno"
+                                        role="button">Salir</a>
                                 </div>
                             </div>
                         </form>

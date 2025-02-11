@@ -3,7 +3,7 @@
 
 <head>
 	<?php require_once 'template/layouts/head.layout.php'; ?>
-	<title>FP - MVC </title>
+	<title>Hola mundo - MVC </title>
 </head>
 
 <body>

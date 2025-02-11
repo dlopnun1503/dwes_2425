@@ -19,15 +19,17 @@
                 <?php require_once("template/partials/error.partial.php") ?>
                 <div class="card">
                     <div class="card-header">Mi Perfil</div>
-                    <div class="card-header"><?php require_once("views/perfil/partials/menu.partial.php") ?></div>
+                    <div class="card-header">
+                        <?php require_once("views/perfil/partials/menu.partial.php") ?>
+                    </div>
                     <div class="card-body">
-                        <form action="<?= URL ?>perfil/update" method="post">
+                        <form action="<?= URL ?>perfil/update ?>" method="post">
 
-                        <!-- token csrf  -->
-                         <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']?>">
+                            <!-- token crsf -->
+                            <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
 
-                         <!-- campo name -->
-                         <div class="mb-3 row">
+                            <!-- campo name -->
+                            <div class="mb-3 row">
                                 <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
                                 <div class="col-md-6">
                                     <input id="name" type="name"
@@ -36,10 +38,10 @@
                                         autocomplete="name" autofocus>
                                     <!-- control de errores -->
                                     <span class="form-text text-danger" role="alert">
-                                        <?= $this->error['name']  ??= '' ?>
+                                        <?= $this->error['name'] ??= '' ?>
                                     </span>
                                 </div>
-                            </div>    
+                            </div>
 
                             <!-- campo email -->
                             <div class="mb-3 row">
@@ -51,22 +53,20 @@
                                         autocomplete="email" autofocus>
                                     <!-- control de errores -->
                                     <span class="form-text text-danger" role="alert">
-                                        <?= $this->error['email']  ??= '' ?>
+                                        <?= $this->error['email'] ??= '' ?>
                                     </span>
                                 </div>
                             </div>
 
 
-                            <!-- campo rol  -->
+                            <!-- campo rol -->
                             <div class="mb-3 row">
                                 <label class="col-md-4 col-form-label text-md-right">Rol</label>
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control" name="role_name" 
+                                    <input type="text" class="form-control" name="role_name"
                                         value="<?= htmlspecialchars($_SESSION['role_name']); ?>" disabled>
                                 </div>
                             </div>
-
-                            
 
                             <!-- botones de acción -->
                             <div class="mb-3 row mb-0">

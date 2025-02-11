@@ -1,0 +1,4 @@
+Hola Mundo
+Este es un archivo de texto
+Soy el guía php
+Nueva información añadida al archivoNueva información añadida al archivo

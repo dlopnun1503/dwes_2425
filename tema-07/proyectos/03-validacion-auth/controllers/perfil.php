@@ -1,14 +1,12 @@
 <?php
-
-
 class Perfil extends Controller
 {
 
     function __construct()
     {
+
         parent::__construct();
     }
-
 
     /*
         Método principal
@@ -22,7 +20,7 @@ class Perfil extends Controller
         // inicio o continuo la sesión
         session_start();
 
-        // genero token csrf
+        // generar token crsf
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
         // Comprobar si hay un usuario logueado
@@ -54,7 +52,7 @@ class Perfil extends Controller
         }
 
 
-        // Obtenemos los detalles completos del usuario
+        # Obtenemos los detalles completos del usuario
         $this->view->perfil = $this->model->getUserId($_SESSION['user_id']);
 
         // Creo la propiedad title de la vista
@@ -63,27 +61,24 @@ class Perfil extends Controller
         $this->view->render('perfil/main/index');
     }
 
+    /*
+        Método para actualizar los datos del usuario. 
+        Muestra en la vista el formulario con los datos del usuario en modo edición. 
 
-    /**
-     * metodo para actualizar los datos del usuario. 
-     * Muestra en la vista el formulario con los datos del usuario en modo edicion
-     * 
-     * url: /perfil/editar
-     * 
-     * @param $id : id del usuario
-     */
+        url: /perfil/editar
 
+        @param $id int : id del usuario
+
+    */
     public function editar()
     {
-
-        // inicio o continuo sesion 
+        // inicio o continuo la sesión
         session_start();
 
-        // comprobar si hay usuario logueado
+        // Comprobar si hay un usuario logueado
         if (!isset($_SESSION['user_id'])) {
-            // genero mensaje de error
+            // Genero mensaje de error
             $_SESSION['mensaje_error'] = 'Acceso denegado';
-
             header('location:' . URL . 'auth/login');
             exit();
         }
@@ -108,50 +103,57 @@ class Perfil extends Controller
             unset($_SESSION['mensaje_error']);
         }
 
-
-        // obtenemos el id del usuario 
+        // Obtenemos el id del usuario
         $id = $_SESSION['user_id'];
 
-        // obtenemos detalles completos del usuario
+        // Obtenemos los detalles completos del usuario
         $this->view->perfil = $this->model->getUserId($id);
 
-        // capa no validacion del formulario
+        // Capa no validación del formulario
         if (isset($_SESSION['error'])) {
+
+            // Creo la propiedad error en la vista
             $this->view->error = $_SESSION['error'];
 
+            // Elimino la variable de sesión error
             unset($_SESSION['error']);
 
+            // Asigno a perfil los detalles del formulario
             $this->view->perfil = $_SESSION['perfil'];
 
+            // Elimino la variable de sesión perfil
             unset($_SESSION['perfil']);
 
+            // Creo la propiedad mensaje error
             $this->view->mensaje_error = 'Hay errores en el formulario';
         }
 
+        // Creo la propiedad title de la vista
         $this->view->title = "Editar perfil " . $_SESSION['user_name'];
 
         $this->view->render('perfil/editar/index');
     }
 
-    /**
-     * Metodo para actualizar los datos del usuario
-     * Actualiza los datos del usuario name y email
-     * 
-     * Incluye:
-     * - validacion token csrf
-     * - validacion de los datos del formulario
-     * - prevencion de ataques csrf
-     * 
-     * url /perfil/update
-     */
+    /*
+        Método para actualizar los datos del usuario. 
+        Actualiza los datos del usuario name y email. 
 
-     public function update(){
+        Incluye:
+         - validación token crsf.
+         - validación de los datos del formulario.
+         - prevención ataques csrf.
 
-        // inicio o continuo sesion 
+        url: /perfil/update
+
+    */
+    public function update()
+    {
+        // inicio o continuo la sesión
         session_start();
+        
 
         // Validación toekn CSRF
-        if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+        if (!hash_equals($_SESSION['csrf_token'], $_GET['csrf_token'])) {
             // require_once 'controllers/error.php';
             // $controller = new Errores('Petición no válida');
             // exit();
@@ -159,27 +161,27 @@ class Perfil extends Controller
             exit();
         }
 
-        // comprobar si hay usuario logueado
+        // Comprobar si hay un usuario logueado
         if (!isset($_SESSION['user_id'])) {
-            // genero mensaje de error
+            // Genero mensaje de error
             $_SESSION['mensaje_error'] = 'Acceso denegado';
-
             header('location:' . URL . 'auth/login');
             exit();
         }
 
-        // saneamos los detalles del formulario
+        // Saneamos los detalles del formulario
         $name = filter_var($_POST['name'] ??= null, FILTER_SANITIZE_SPECIAL_CHARS);
         $email = filter_var($_POST['email'] ??= null, FILTER_SANITIZE_EMAIL);
 
-        // obtengo los detalles del usuario
+        // Obtengo los detalles del usuario
         $user = $this->model->getUserId($_SESSION['user_id']);
 
-        // validacion de los datos del usuario 
+        // validación de los datos del formulario
         $error = [];
 
-        // validacion name
-        if($name != $user->name){
+        // validación name
+        // antes de validar compruebo se ha modificado
+        if ($name != $user->name) {
             if (empty($name)) {
                 $error['name'] = 'El nombre es obligatorio';
             } else if (strlen($name) < 5) {
@@ -191,56 +193,54 @@ class Perfil extends Controller
             }
         }
 
-        // validacion email
-        if($email != $user->email){
+        // validación email
+        // antes de validar compruebo se ha modificado
+        if ($email != $user->email) {
             if (empty($email)) {
                 $error['email'] = 'El email es obligatorio';
             } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $error['email'] = 'El formato del email no es correcto';
+                $error['email'] = 'El email no es válido';
             } else if (!$this->model->validateUniqueEmail($email)) {
-                $error['email'] = 'El email ya existe';
+                $error['email'] = 'Email existente';
             }
-           
         }
 
         // Si hay errores
         if (!empty($error)) {
-
-            // Creo la variable de sessión error con los errores
+            // Creo la variable de sesión error
             $_SESSION['error'] = $error;
 
-            // Creo la variable de sessión name con los datos del formulario
+            // Creo la variable de sesión perfil
             $_SESSION['perfil'] = (object) [
-                'name'=> $name,
+                'name' => $name,
                 'email' => $email
             ];
 
-            // redireciona al formulario de nuevo
+            // Redirecciono al formulario de edición
             header('location:' . URL . 'perfil/editar');
             exit();
         }
 
-        // actualizo los datos del usuario
-
+        // Actualizo los datos del usuario
         $this->model->update($name, $email, $_SESSION['user_id']);
 
+        // Actualizo el posible nuevo nombre del usuario
         $_SESSION['user_name'] = $name;
 
-        // genero mensaje de exito
+        // Genero mensaje de éxito
         $_SESSION['mensaje'] = 'Perfil actualizado correctamente';
 
+        // Redirecciono a la vista principal de perfil
         header('location:' . URL . 'perfil');
-        exit();
+    }
 
-     }
+    /*
+        Método para cambiar la contraseña del usuario. 
+        Muestra en la vista el formulario para cambiar la contraseña. 
 
+        url: /perfil/pass
 
-    /**
-     * Metodo para cambiar la contraseña del usuario
-     * Muestra la vista del formulario para cambiar la contraseña
-     * 
-     * url: /perfil/pass
-     */
+    */
     public function pass()
     {
         // inicio o continuo la sesión

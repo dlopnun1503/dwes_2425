@@ -7,11 +7,102 @@
 
     Métodos:
 
-        - validateName
+        
 */
 
 class perfilModel extends Model
 {
+    /*
+
+        método: getUserId(int $id)
+
+        descripción: obtiene un usuario por id
+
+        @param: id del usuario
+
+    */
+    public function getUserId(int $id)
+    {
+
+        try {
+
+            // sentencia sql
+            $sql = "SELECT name, email, password FROM Users WHERE id = :id LIMIT 1"; 
+
+            // conectamos con la base de datos
+            $conexion = $this->db->connect();
+
+            // ejecuto prepare
+            $stmt = $conexion->prepare($sql);
+
+            // Tipo de fetch
+            $stmt->setFetchMode(PDO::FETCH_OBJ);
+
+            // vinculamos parámetros
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+            // ejecutamos
+            $stmt->execute();
+
+            // Devuelvo objeto usuario
+            return $stmt->fetch();
+
+        } catch (PDOException $e) {
+
+            // error base de datos
+            require 'template/partials/errorDB.partial.php';
+            $stmt = null;
+            $conexion = null;
+            $this->db = null;
+        }
+    }
+
+    /*
+
+        método: update($name, $email, $id)
+
+        descripción: actualiza los datos del usuario
+
+        @param: 
+
+            - name: nombre del usuario
+            - email: email del usuario
+            
+    */
+    public function update($name, $email, $id)
+    {
+
+        try {
+
+            // sentencia sql
+            $sql = "UPDATE Users SET name = :name, email = :email WHERE id = :id";
+
+            // conectamos con la base de datos
+            $conexion = $this->db->connect();
+
+            // ejecuto prepare
+            $stmt = $conexion->prepare($sql);
+
+            // vinculamos parámetros
+            $stmt->bindParam(':name', $name, PDO::PARAM_STR, 50);
+            $stmt->bindParam(':email', $email, PDO::PARAM_STR, 50);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+            // ejecutamos
+            $stmt->execute();
+
+            // Devuelvo objeto usuario
+            return $stmt->rowCount();
+
+        } catch (PDOException $e) {
+
+            // error base de datos
+            require 'template/partials/errorDB.partial.php';
+            $stmt = null;
+            $conexion = null;
+            $this->db = null;
+        }
+    }
 
     /*
         método: validateUniqueName()
@@ -104,88 +195,6 @@ class perfilModel extends Model
     }
 
     /*
-        método: getUserId()
-
-        obtiene un usuario por id
-
-        @param: id del usuario
-    */
-    public function getUserId(int $id)
-    {
-
-        try {
-
-            // sentencia sql
-            $sql = "SELECT name, email FROM Users WHERE id = :id"; 
-
-
-            // conectamos con la base de datos
-            $conexion = $this->db->connect();
-
-            // ejecuto prepare
-            $stmt = $conexion->prepare($sql);
-
-            $stmt->setFetchMode(PDO::FETCH_OBJ);
-
-            // vinculamos parámetros
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-
-            // ejecutamos
-            $stmt->execute();
-
-            return $stmt->fetch();
-
-        } catch (PDOException $e) {
-
-            // error base de datos
-            require 'template/partials/errorDB.partial.php';
-            $stmt = null;
-            $conexion = null;
-            $this->db = null;
-        }
-    }
-
-    /**
-     * metodo: update($name, $email, $id)
-     * 
-     * actualiza los datos del usuario
-     * 
-     * @param:
-     * - name
-     * - email
-     */
-
-     public function update($name, $email, $id){
-        
-        try{
-
-            $sql = "UPDATE users SET name = :name, email = :email WHERE id = :id";
-
-            // conectamos con la base de datos
-            $conexion = $this->db->connect();
-
-            // ejecuto prepare
-            $stmt = $conexion->prepare($sql);
-
-            // vinculamos parámetros
-            $stmt->bindParam(':name', $name, PDO::PARAM_STR, 50);
-            $stmt->bindParam(':email', $email, PDO::PARAM_STR, 50);
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-
-            // ejecutamos
-            $stmt->execute();
-
-            return $stmt->fetch();
-
-        }catch(PDOException $e){
-            // error base de datos
-            require 'template/partials/errorDB.partial.php';
-            $stmt = null;
-            $conexion = null;
-            $this->db = null;
-        }
-     }
-     /*
         método: update_pass($password, $id)
 
         descripción: actualiza la contraseña del usuario
@@ -282,4 +291,3 @@ class perfilModel extends Model
 
 
 }
-
