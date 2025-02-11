@@ -32,3 +32,4 @@
     $GLOBALS['album']['mostrar'] = [1,2,3];
     $GLOBALS['album']['filtrar'] = [1,2,3];
     $GLOBALS['album']['ordenar'] = [1,2,3];
+    $GLOBALS['album']['add'] = [1,2,3];

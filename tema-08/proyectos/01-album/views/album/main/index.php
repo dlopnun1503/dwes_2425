@@ -23,7 +23,7 @@
         <!-- Estilo card de bootstrap -->
         <div class="card">
             <div class="card-header">
-            <h5 class="card-title"><?= $this->title ?></h5>
+                <h5 class="card-title"><?= $this->title ?></h5>
             </div>
             <div class="card-body">
                 <!-- detalles de albumes  -->
@@ -74,27 +74,31 @@
                                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                             <a href="<?= URL ?>album/eliminar/<?= $album->id ?>/<?= $_SESSION["csrf_token"] ?>" title="Eliminar"
                                                 class="btn btn-danger
-                                                <?= in_array($_SESSION['role_id'], $GLOBALS['album']['eliminar'])? null:'disabled'?>"
+                                                <?= in_array($_SESSION['role_id'], $GLOBALS['album']['eliminar']) ? null : 'disabled' ?>"
                                                 onclick="return confirm('Confimar elimación del album')"><i
                                                     class="bi bi-trash-fill"></i></a>
                                             <a href="<?= URL ?>album/editar/<?= $album->id ?>/<?= $_SESSION["csrf_token"] ?>" title="Editar"
                                                 class="btn btn-primary
-                                                <?= in_array($_SESSION['role_id'], $GLOBALS['album']['editar'])? null:'disabled'?>"><i class="bi bi-pencil-square"></i></a>
+                                                <?= in_array($_SESSION['role_id'], $GLOBALS['album']['editar']) ? null : 'disabled' ?>"><i class="bi bi-pencil-square"></i></a>
                                             <a href="<?= URL ?>album/mostrar/<?= $album->id ?>/<?= $_SESSION["csrf_token"] ?>" title="Mostrar"
                                                 class="btn btn-warning
-                                                <?= in_array($_SESSION['role_id'], $GLOBALS['album']['mostrar'])? null:'disabled'?>"><i class="bi bi-eye-fill"></i></a>
+                                                <?= in_array($_SESSION['role_id'], $GLOBALS['album']['mostrar']) ? null : 'disabled' ?>"><i class="bi bi-eye-fill"></i></a>
+                                            <!-- botón  subir imagen -->
+                                            <a href="#" title="Subir" data-bs-toggle="modal" data-bs-target="#subir<?= $album->id ?>" class="btn btn-success <?= (!in_array($_SESSION['role_id'], $GLOBALS['album']['add'])) ? 'disabled' : null ?> ">
+                                            <i class="bi bi-image"></i>
+                                            </a>
                                         </div>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
-                        
+
                     </table>
-                    
+
                 </div>
             </div>
             <div class="card-footer">
-            Nº albumes <?= $this->albumes->rowCount() ?>
+                Nº albumes <?= $this->albumes->rowCount() ?>
             </div>
         </div>
         <br><br><br>

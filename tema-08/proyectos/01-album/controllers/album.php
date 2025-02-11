@@ -35,8 +35,8 @@ class Album extends Controller
             exit();
         }
 
-         // Creo un token CSRF
-         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        // Creo un token CSRF
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
         // Compruebo si hay mensaje de éxito
         if (isset($_SESSION['mensaje'])) {
@@ -79,8 +79,8 @@ class Album extends Controller
         // inicio o continuo la sesión
         session_start();
 
-         // Comprobar si hay usuario logueado
-         if (!isset($_SESSION['user_id'])) {
+        // Comprobar si hay usuario logueado
+        if (!isset($_SESSION['user_id'])) {
             // Genero mensaje de error
             $_SESSION['mensaje_error'] = 'Acceso denegado.';
             // redireciona al login
@@ -258,6 +258,18 @@ class Album extends Controller
 
             // Salgo de la función
             exit();
+        }else {
+            # Añadir registro a la tabla
+            $this->model->create($album);
+
+            //Crear carpeta en images
+            $carpeta = $album->carpeta;
+            $rutaCarpeta = "images/$carpeta";
+            if (!file_exists($rutaCarpeta)) {
+                mkdir($rutaCarpeta, 0777, true);
+            }
+            $_SESSION['mensaje'] = "Álbum creado correctamente";
+            header('location:' . URL . 'album');
         }
 
 
@@ -311,7 +323,7 @@ class Album extends Controller
             exit();
         }
 
-        if(isset($_SESSION['error'])){
+        if (isset($_SESSION['error'])) {
 
             // Creo la propiedad error en la vista
             $this->view->error = $_SESSION['error'];
@@ -441,7 +453,7 @@ class Album extends Controller
         } else {
             $fecha = DateTime::createFromFormat('Y-m-d', $fecha);
             if (!$fecha) {
-            $error['fecha'] = 'El formato del fecha no es correcto';
+                $error['fecha'] = 'El formato del fecha no es correcto';
             }
         }
 
@@ -649,16 +661,16 @@ class Album extends Controller
         }
 
         # Obtengo la expresión de búsqueda
-        $expresion = htmlspecialchars( $_GET['expresion']);
+        $expresion = htmlspecialchars($_GET['expresion']);
 
         // Obtengo el token CSRF
         $csrf_token = htmlspecialchars($_GET['csrf_token']);
 
         // Cargo el título
         $this->view->title = "Filtrar por: {$expresion} - Gestión de albumes";
-    
+
         // Creo la propiedad albumes para usar en la vista
-        $this->view->albumes= $this->model->filter($expresion);
+        $this->view->albumes = $this->model->filter($expresion);
 
         // Cargo la vista
         $this->view->render('album/main/index');
@@ -694,7 +706,7 @@ class Album extends Controller
 
         // Obtengo el id del album
         $id = (int) htmlspecialchars($param[0]);
-        
+
 
         //Obtengo el token CSRF
         $csrf_token = $param[1];
@@ -733,5 +745,100 @@ class Album extends Controller
 
         // Cargo la vista
         $this->view->render('album/main/index');
+    }
+
+    public function add($param = [])
+    {
+
+        # iniciar o continuar  sesión
+        session_start();
+
+        # compruebo usuario autentificado
+        if (!isset($_SESSION['id'])) {
+            $_SESSION['notify'] = "Usuario debe autentificarse";
+
+            header("location:" . URL . "login");
+        } else if ((!in_array($_SESSION['role_id'], $GLOBALS['album']['add']))) {
+            $_SESSION['mensaje'] = "Operación sin privilegios";
+            header('location:' . URL . 'album');
+        } else {
+
+            # Comprobar si vuelvo de  un registro no validado
+            if (isset($_SESSION['error'])) {
+
+                # Mensaje de error
+                $this->view->error = $_SESSION['error'];
+
+                # Recupero array errores  específicos
+                $this->view->errores = $_SESSION['errores'];
+
+                # Elimino las variables de sesión
+                unset($_SESSION['error']);
+                unset($_SESSION['errores']);
+            }
+
+            //Obtnego objeto de la clase album
+            $album = $this->model->getAlbum($param[0]);
+
+            $this->model->subirArchivo($_FILES['archivos'], $album->carpeta);
+
+            $numFotos = count(glob("images/" . $album->carpeta . "/*"));
+
+            $this->model->contadorFotos($album->id, $numFotos);
+
+            header("location:" . URL . "album");
+        }
+    }
+
+    public function delete($param = [])
+    {
+
+        # inicar sesión
+        session_start();
+
+        if (!isset($_SESSION['id'])) {
+            $_SESSION['mensaje'] = "Usuario debe autentificarse";
+
+            header("location:" . URL . "login");
+        } else if ((!in_array($_SESSION['id_rol'], $GLOBALS['album']['delete']))) {
+            $_SESSION['mensaje'] = "Operación sin privilegios";
+            header('location:' . URL . 'album');
+        } else {
+
+            # obtenemos id del  album
+            $id = $param[0];
+
+            //Para borrar la carpeta del album
+            //Obtenemos el nombre de la carpeta del álbum
+            $album = $this->model->getAlbum($id);
+            $carpeta = $album->carpeta;
+            $rutaCarpeta = "images/$carpeta";
+
+            # eliminar carpeta si existe
+            if (is_dir($rutaCarpeta)) {
+                $this->deleteDirectory($rutaCarpeta);
+            }
+
+            # eliminar album
+            $this->model->delete($id);
+
+            # generar mensaje
+            $_SESSION['mensaje'] = 'album eliminado correctamente';
+
+            # redirecciono al main de albumes
+            header('location:' . URL . 'album');
+        }
+    }
+
+    //Función para eliminar la carpeta recursivamente
+    private function deleteDirectory($dir)
+    {
+        if (!file_exists($dir)) return true;
+        if (!is_dir($dir)) return unlink($dir);
+        foreach (scandir($dir) as $item) {
+            if ($item == '.' || $item == '..') continue;
+            if (!$this->deleteDirectory($dir . DIRECTORY_SEPARATOR . $item)) return false;
+        }
+        return rmdir($dir);
     }
 }
