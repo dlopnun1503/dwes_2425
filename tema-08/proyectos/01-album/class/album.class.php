@@ -15,7 +15,7 @@
         public $autor;
         public $fecha;
         public $lugar;
-        public $categoria;
+        public $categoria_id;
         public $etiquetas;
         public $num_fotos;
         public $num_visitas;
@@ -29,7 +29,7 @@
             $autor = null,
             $fecha = null,
             $lugar = null,
-            $categoria = null,
+            $categoria_id = null,
             $etiquetas = null,
             $num_fotos = null,
             $num_visitas = null,
@@ -41,7 +41,7 @@
                 $this->autor = $autor;
                 $this->fecha = $fecha;
                 $this->lugar = $lugar;
-                $this->categoria = $categoria;
+                $this->categoria_id = $categoria_id;
                 $this->etiquetas = $etiquetas;
                 $this->num_fotos = $num_fotos;
                 $this->num_visitas = $num_visitas;

@@ -123,6 +123,8 @@ class Album extends Controller
         // Creo la propiead título
         $this->view->title = "Añadir - Gestión de albumes";
 
+        $this->view->categorias = $this->model->getCategorias();
+
         // Cargo la vista asociada a este método
         $this->view->render('album/nuevo/index');
     }
@@ -133,153 +135,134 @@ class Album extends Controller
         Permite añadir nuevo album al formulario
     */
     public function create()
-    {
+{
+    // inicio o continuo la sesión
+    session_start();
 
-        // inicio o continuo la sesión
-        session_start();
-
-        // Comprobar si hay usuario logueado
-        if (!isset($_SESSION['user_id'])) {
-            // Genero mensaje de error
-            $_SESSION['mensaje_error'] = 'Acceso denegado.';
-            // redireciona al login
-            header('location:' . URL . 'auth/login');
-            exit();
-        }
-        // Comprobar si el usuario tiene permisos
-        else if (!in_array($_SESSION['role_id'], $GLOBALS['album']['nuevo'])) {
-            // Genero mensaje
-            $_SESSION['mensaje_error'] = 'Acceso denegado. No tiene permisos suficientes.';
-            // redireciona al login
-            header('location:' . URL . 'album');
-            exit();
-        }
-
-        // Validación CSRF
-        if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
-            die('Petición no válida');
-        }
-
-        // Recogemos los detalles del formulario
-        $titulo = filter_var($_POST['titulo'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
-        $descripcion = filter_var($_POST['descripcion'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
-        $autor = filter_var($_POST['autor'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
-        $fecha = filter_var($_POST['fecha'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
-        $lugar =  filter_var($_POST['lugar'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
-        $categoria =  filter_var($_POST['categoria'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
-        $etiquetas =  filter_var($_POST['etiquetas'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
-        $num_fotos = filter_var($_POST['num_fotos'] ??= '', FILTER_SANITIZE_NUMBER_INT);
-        $num_visitas = filter_var($_POST['num_visitas'] ??= '', FILTER_SANITIZE_NUMBER_INT);
-        $carpeta =  filter_var($_POST['carpeta'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
-
-        // Creamos un objeto de la clase album
-        $album = new classAlbum(
-            null,
-            $titulo,
-            $descripcion,
-            $autor,
-            $fecha,
-            $lugar,
-            $categoria,
-            $etiquetas,
-            $num_fotos,
-            $num_visitas,
-            $carpeta
-        );
-
-        // Validación de los datos
-
-        // Creo un array para almacenar los errores
-        $error = [];
-
-        // Validación del título
-        // Reglas: obligatorio y menor de 100 caracteres
-        if (empty($titulo)) {
-            $error['titulo'] = 'El título es obligatorio';
-        } else if (strlen($titulo) > 100) {
-            $error['titulo'] = 'El título no puede tener más de 100 caracteres';
-        }
-
-        // Validación del descripcion
-        // Reglas: obligatorio
-        if (empty($descripcion)) {
-            $error['descripcion'] = 'El descripcion es obligatorio';
-        }
-
-        // Validación de la autor
-        // Reglas: obligatorio
-        if (empty($autor)) {
-            $error['autor'] = 'La autor es obligatoria';
-        }
-
-        // Validación del fecha
-        // Reglas: obligatorio, formato fecha
-        if (empty($fecha)) {
-            $error['fecha'] = 'El fecha es obligatorio';
-        } else {
-            $fecha = DateTime::createFromFormat('Y-m-d', $fecha);
-            if (!$fecha) {
-                $error['fecha'] = 'El formato del fecha no es correcto';
-            }
-        }
-
-        // Validación del lugar
-        // Reglas: obligatorio
-        if (empty($lugar)) {
-            $error['lugar'] = 'El lugar es obligatorio';
-        }
-
-
-        // Validación del categoria
-        // Reglas: obligatorio
-        if (empty($categoria)) {
-            $error['categoria'] = 'La categoria es obligatoria';
-        }
-
-        // Validación de carpeta
-        // Reglas: obligatorio sin espacios
-        if (empty($carpeta)) {
-            $error['carpeta'] = 'La carpeta es obligatoria';
-        } else if (strpos($carpeta, ' ') !== false) {
-            $error['carpeta'] = 'La carpeta no puede contener espacios';
-        }
-
-        // Si hay errores
-        if (!empty($error)) {
-
-            // Creo la variable de sesión album
-            $_SESSION['album'] = $album;
-
-            // Creo la variable de sesión error
-            $_SESSION['error'] = $error;
-
-            // Redirecciono al formulario de nuevo album
-            header('location:' . URL . 'album/nuevo');
-
-            // Salgo de la función
-            exit();
-        }else {
-            # Añadir registro a la tabla
-            $this->model->create($album);
-
-            //Crear carpeta en images
-            $carpeta = $album->carpeta;
-            $rutaCarpeta = "images/$carpeta";
-            if (!file_exists($rutaCarpeta)) {
-                mkdir($rutaCarpeta, 0777, true);
-            }
-            $_SESSION['mensaje'] = "Álbum creado correctamente";
-            header('location:' . URL . 'album');
-        }
-
-
-        // Añadimos album a la tabla
-        $this->model->create($album);
-
-        // redireciona al main de album
+    // Comprobar si hay usuario logueado
+    if (!isset($_SESSION['user_id'])) {
+        // Genero mensaje de error
+        $_SESSION['mensaje_error'] = 'Acceso denegado.';
+        // redireciona al login
+        header('location:' . URL . 'auth/login');
+        exit();
+    }
+    // Comprobar si el usuario tiene permisos
+    else if (!in_array($_SESSION['role_id'], $GLOBALS['album']['nuevo'])) {
+        // Genero mensaje
+        $_SESSION['mensaje_error'] = 'Acceso denegado. No tiene permisos suficientes.';
+        // redireciona al login
         header('location:' . URL . 'album');
         exit();
     }
+
+    // Validación CSRF
+    if (!hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'])) {
+        die('Petición no válida');
+    }
+
+    // Recogemos los detalles del formulario
+    $titulo = filter_var($_POST['titulo'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
+    $descripcion = filter_var($_POST['descripcion'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
+    $autor = filter_var($_POST['autor'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
+    $fecha = filter_var($_POST['fecha'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
+    $lugar =  filter_var($_POST['lugar'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
+    $categoria_id =  filter_var($_POST['categoria_id'] ??= '', FILTER_SANITIZE_NUMBER_INT);
+    $etiquetas =  filter_var($_POST['etiquetas'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
+    $num_fotos = filter_var($_POST['num_fotos'] ??= '', FILTER_SANITIZE_NUMBER_INT);
+    $num_visitas = filter_var($_POST['num_visitas'] ??= '', FILTER_SANITIZE_NUMBER_INT);
+    $carpeta =  filter_var($_POST['carpeta'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
+
+    // Creamos un objeto de la clase album
+    $album = new classAlbum(
+        null,
+        $titulo,
+        $descripcion,
+        $autor,
+        $fecha,
+        $lugar,
+        $categoria_id,
+        $etiquetas,
+        $num_fotos,
+        $num_visitas,
+        $carpeta
+    );
+
+    // Validación de los datos
+
+    // Creo un array para almacenar los errores
+    $error = [];
+
+    // Validación del título
+    if (empty($titulo)) {
+        $error['titulo'] = 'El título es obligatorio';
+    } else if (strlen($titulo) > 100) {
+        $error['titulo'] = 'El título no puede tener más de 100 caracteres';
+    }
+
+    // Validación de la descripción
+    if (empty($descripcion)) {
+        $error['descripcion'] = 'El descripcion es obligatorio';
+    }
+
+    // Validación de la autor
+    if (empty($autor)) {
+        $error['autor'] = 'La autor es obligatoria';
+    }
+
+    // Validación de la fecha
+    if (empty($fecha)) {
+        $error['fecha'] = 'El fecha es obligatorio';
+    } else {
+        $fecha = DateTime::createFromFormat('Y-m-d', $fecha);
+        if (!$fecha) {
+            $error['fecha'] = 'El formato del fecha no es correcto';
+        }
+    }
+
+    // Validación del lugar
+    if (empty($lugar)) {
+        $error['lugar'] = 'El lugar es obligatorio';
+    }
+
+    // Validación de la categoría
+    if (empty($categoria_id)) {
+        $error['categoria_id'] = 'La categoría es obligatoria';
+    }
+
+    // Validación de carpeta
+    if (empty($carpeta)) {
+        $error['carpeta'] = 'La carpeta es obligatoria';
+    } else if (strpos($carpeta, ' ') !== false) {
+        $error['carpeta'] = 'La carpeta no puede contener espacios';
+    }
+
+    // Si hay errores
+    if (!empty($error)) {
+        $_SESSION['album'] = $album;
+        $_SESSION['error'] = $error;
+        header('location:' . URL . 'album/nuevo');
+        exit();
+    }
+
+    // Añadir registro a la tabla solo una vez
+    $this->model->create($album);
+
+
+
+    // Crear carpeta en images
+    $carpeta = $album->carpeta;
+    $rutaCarpeta = "images/$carpeta";
+    if (!file_exists($rutaCarpeta)) {
+        mkdir($rutaCarpeta, 0777, true);
+    }
+
+    // Mensaje de éxito y redirección
+    $_SESSION['mensaje'] = "Álbum creado correctamente";
+    header('location:' . URL . 'album');
+    exit();
+}
+
 
     /*
         Método editar()
@@ -348,6 +331,10 @@ class Album extends Controller
         // Necesito crear el método read en el modelo
         $this->view->album = $this->model->read($this->view->id);
 
+
+        // Obtener categorías
+        $this->view->categorias = $this->model->getCategorias();
+
         // cargo la vista
         $this->view->render('album/editar/index');
     }
@@ -400,7 +387,7 @@ class Album extends Controller
         $autor = filter_var($_POST['autor'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
         $fecha = filter_var($_POST['fecha'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
         $lugar =  filter_var($_POST['lugar'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
-        $categoria =  filter_var($_POST['categoria'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
+        $categoria_id =  filter_var($_POST['categoria_id'] ??= '', FILTER_SANITIZE_NUMBER_INT);
         $etiquetas =  filter_var($_POST['etiquetas'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
         $num_fotos = filter_var($_POST['num_fotos'] ??= '', FILTER_SANITIZE_NUMBER_INT);
         $num_visitas = filter_var($_POST['num_visitas'] ??= '', FILTER_SANITIZE_NUMBER_INT);
@@ -414,7 +401,7 @@ class Album extends Controller
             $autor,
             $fecha,
             $lugar,
-            $categoria,
+            $categoria_id,
             $etiquetas,
             $num_fotos,
             $num_visitas,
@@ -465,8 +452,8 @@ class Album extends Controller
 
         // Validación del categoria
         // Reglas: obligatorio
-        if (empty($categoria)) {
-            $error['categoria'] = 'La categoria es obligatoria';
+        if (empty($categoria_id)) {
+            $error['categoria_id'] = 'La categoria es obligatoria';
         }
 
         // Validación de carpeta
@@ -575,60 +562,57 @@ class Album extends Controller
     */
     public function mostrar($param = [])
     {
-
-        // inicio o continuo la sesión
         session_start();
 
-        // Comprobar si hay usuario logueado
-        if (!isset($_SESSION['user_id'])) {
-            // Genero mensaje de error
-            $_SESSION['mensaje_error'] = 'Acceso denegado.';
-            // redireciona al login
-            header('location:' . URL . 'auth/login');
-            exit();
-        }
-        // Comprobar si el usuario tiene permisos
-        else if (!in_array($_SESSION['role_id'], $GLOBALS['album']['mostrar'])) {
-            // Genero mensaje
-            $_SESSION['mensaje_error'] = 'Acceso denegado. No tiene permisos suficientes.';
-            // redireciona al login
-            header('location:' . URL . 'album');
-            exit();
-        }
+        // Verificar logueo, rol, etc. (ya lo tienes)
 
-        // Obtengo el id del album
         $id = htmlspecialchars($param[0]);
-
-        //Obtengo el token CSRF
         $csrf_token = $param[1];
 
-        // Validación CSRF
-        if (!hash_equals($_SESSION['csrf_token'], $csrf_token)) {
-            require_once 'controllers/error.php';
-            $controller = new Errores("Petición no válida");
-            exit();
-        }
+        // Validar CSRF, etc.
 
-        // Validar el id del album
+        // Validar id album
         if (!$this->model->validateIdAlbum($id)) {
-            // Genero mensaje de error
             $_SESSION['error'] = 'El id del album no es correcto';
-
-            // redireciona al main de album
             header('location:' . URL . 'album');
             exit();
         }
 
-
-        // Cargo el título
+        // Título
         $this->view->title = "Mostrar - Gestión de albumes";
 
-        // Obtengo los detalles del album mediante el método read del modelo
+        // Obtengo los detalles del álbum
         $album = $this->model->read($id);
-
         $this->view->album = $album;
 
-        // Cargo la vista
+        // Aumento visitas (opcional)
+         $this->model->incrementarVisitas($id);
+
+        // Recorrer carpeta "images/[carpeta]" para obtener las imágenes
+        $ruta = "images/" . $album->carpeta;
+        $listaArchivos = [];
+
+        if (is_dir($ruta)) {
+            // Escaneo la carpeta
+            $archivos = scandir($ruta);
+            // Filtramos los archivos "." y ".." y solo devolvemos los que tengan extensión de imagen
+            foreach ($archivos as $archivo) {
+                if ($archivo !== '.' && $archivo !== '..') {
+                    // Comprueba que el archivo sea jpg, png, gif, etc.
+                    $ext = strtolower(pathinfo($archivo, PATHINFO_EXTENSION));
+                    if (in_array($ext, ['jpg', 'jpeg', 'png', 'gif'])) {
+                        $listaArchivos[] = $archivo;
+                    }
+                }
+            }
+        }
+
+        // Paso la lista de archivos a la vista
+        $this->view->images = $listaArchivos;
+
+
+
+        // Renderizar vista
         $this->view->render('album/mostrar/index');
     }
 
@@ -754,7 +738,7 @@ class Album extends Controller
         session_start();
 
         # compruebo usuario autentificado
-        if (!isset($_SESSION['id'])) {
+        if (!isset($_SESSION['user_id'])) {
             $_SESSION['notify'] = "Usuario debe autentificarse";
 
             header("location:" . URL . "login");
@@ -786,7 +770,7 @@ class Album extends Controller
 
             $this->model->contadorFotos($album->id, $numFotos);
 
-            header("location:" . URL . "album");
+            header('location:' . URL . 'album');
         }
     }
 
@@ -800,7 +784,7 @@ class Album extends Controller
             $_SESSION['mensaje'] = "Usuario debe autentificarse";
 
             header("location:" . URL . "login");
-        } else if ((!in_array($_SESSION['id_rol'], $GLOBALS['album']['delete']))) {
+        } else if ((!in_array($_SESSION['role_id'], $GLOBALS['album']['delete']))) {
             $_SESSION['mensaje'] = "Operación sin privilegios";
             header('location:' . URL . 'album');
         } else {

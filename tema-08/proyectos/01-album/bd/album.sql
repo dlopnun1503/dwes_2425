@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS albumes(
     autor varchar(50),
     fecha DATE,
     lugar varchar(50),
-    categoria varchar(50),
+	FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE CASCADE ON UPDATE CASCADE,
     etiquetas varchar(250),
     num_fotos smallint unsigned,
     num_visitas smallint unsigned,
@@ -23,6 +23,22 @@ CREATE TABLE IF NOT EXISTS albumes(
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+DROP TABLE IF EXISTS categorias;
+CREATE TABLE IF NOT EXISTS catgorias(
+
+	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	nombre varchar(100) NOT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+insert into categorias values
+(1, 'Naturaleza'),
+(2, 'Arte'),
+(3, 'Cultura'),
+(4, 'Deportes'),
+(5, 'Tecnología');
 
 DROP TABLE IF EXISTS users;
 CREATE TABLE IF NOT EXISTS users(

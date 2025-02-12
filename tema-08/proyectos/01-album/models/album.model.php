@@ -31,12 +31,13 @@ class albumModel extends Model
             albumes.autor,
             albumes.fecha,
             albumes.lugar,
-            albumes.categoria,
+            categorias.nombre AS categoria,
             albumes.etiquetas,
             albumes.num_fotos,
             albumes.num_visitas,
             albumes.carpeta
-            FROM albumes
+            FROM albumes 
+            INNER JOIN categorias ON albumes.categoria_id = categorias.id
             ORDER BY albumes.id";
 
             // conectamos con la base de datos
@@ -63,6 +64,20 @@ class albumModel extends Model
         }
     }
 
+    public function getCategorias(){
+        try {
+            $sql = "SELECT id, nombre FROM categorias";
+            $conexion = $this->db->connect();
+            $stmt = $conexion->prepare($sql);
+            $stmt->setFetchMode(PDO::FETCH_KEY_PAIR);
+            $stmt->execute();
+            return $stmt->fetchAll();
+        } catch (PDOException $e) {
+            require_once("template/partials/errorDB.php");
+            exit();
+        }
+    }
+
     # Método getAlbum
     # Obtiene los detalles de un álbum a partir del id
     public function getAlbum($id)
@@ -76,7 +91,7 @@ class albumModel extends Model
                     autor,
                     fecha,
                     lugar,
-                    categoria,
+                    categoria_id,
                     etiquetas,
                     num_fotos,
                     num_visitas,
@@ -115,7 +130,7 @@ class albumModel extends Model
                     autor,
                     fecha,
                     lugar,
-                    categoria,
+                    categoria_id,
                     etiquetas,
                     num_fotos,
                     num_visitas,
@@ -127,7 +142,7 @@ class albumModel extends Model
                     :autor,
                     :fecha,
                     :lugar,
-                    :categoria,
+                    :categoria_id,
                     :etiquetas,
                     :num_fotos,
                     :num_visitas,
@@ -144,7 +159,7 @@ class albumModel extends Model
             $stmt->bindParam(':autor', $album->autor, PDO::PARAM_STR, 50);
             $stmt->bindParam(':fecha', $album->fecha, PDO::PARAM_STR);
             $stmt->bindParam(':lugar', $album->lugar, PDO::PARAM_STR, 50);
-            $stmt->bindParam(':categoria', $album->categoria, PDO::PARAM_STR, 50);
+            $stmt->bindParam(':categoria_id', $album->categoria_id, PDO::PARAM_STR, 50);
             $stmt->bindParam(':etiquetas', $album->etiquetas, PDO::PARAM_STR, 250);
             $stmt->bindParam(':num_fotos', $album->num_fotos, PDO::PARAM_INT);
             $stmt->bindParam(':num_visitas', $album->num_visitas, PDO::PARAM_INT);
@@ -181,7 +196,8 @@ class albumModel extends Model
                     albumes.autor,
                     albumes.fecha,
                     albumes.lugar,
-                    albumes.categoria,
+                    albumes.categoria_id,
+                    categorias.nombre AS categoria,
                     albumes.etiquetas,
                     albumes.num_fotos,
                     albumes.num_visitas,
@@ -189,6 +205,7 @@ class albumModel extends Model
                     albumes.created_at,
                     albumes.update_at
                     FROM albumes
+                    INNER JOIN categorias ON albumes.categoria_id = categorias.id
                     WHERE albumes.id = :id
                     LIMIT 1";
 
@@ -237,7 +254,7 @@ class albumModel extends Model
                 autor = :autor,
                 fecha = :fecha,
                 lugar = :lugar,
-                categoria = :categoria,
+                categoria_id = :categoria_id,
                 etiquetas = :etiquetas,
                 num_fotos = :num_fotos,
                 num_visitas = :num_visitas,
@@ -257,7 +274,7 @@ class albumModel extends Model
             $stmt->bindParam(':autor', $album->autor, PDO::PARAM_STR, 50);
             $stmt->bindParam(':fecha', $album->fecha, PDO::PARAM_STR);
             $stmt->bindParam(':lugar', $album->lugar, PDO::PARAM_STR, 50);
-            $stmt->bindParam(':categoria', $album->categoria, PDO::PARAM_STR, 50);
+            $stmt->bindParam(':categoria_id', $album->categoria_id, PDO::PARAM_STR, 50);
             $stmt->bindParam(':etiquetas', $album->etiquetas, PDO::PARAM_STR, 250);
             $stmt->bindParam(':num_fotos', $album->num_fotos, PDO::PARAM_INT);
             $stmt->bindParam(':num_visitas', $album->num_visitas, PDO::PARAM_INT);
@@ -328,7 +345,7 @@ class albumModel extends Model
                 albumes.autor,
                 albumes.fecha,
                 albumes.lugar,
-                albumes.categoria,
+                categorias.nombre AS categoria,
                 albumes.etiquetas,
                 albumes.num_fotos,
                 albumes.num_visitas,
@@ -337,6 +354,8 @@ class albumModel extends Model
                 albumes.update_at
             FROM 
                 albumes
+            INNER JOIN 
+                categorias ON albumes.categoria_id = categorias.id
             WHERE
                 CONCAT_WS(', ', 
                 albumes.id,
@@ -345,7 +364,7 @@ class albumModel extends Model
                 albumes.autor,
                 albumes.fecha,
                 albumes.lugar,
-                albumes.categoria,
+                categorias.nombre ,
                 albumes.etiquetas,
                 albumes.num_fotos,
                 albumes.num_visitas,
@@ -398,13 +417,15 @@ class albumModel extends Model
                 albumes.autor,
                 albumes.fecha,
                 albumes.lugar,
-                albumes.categoria,
+                categorias.nombre AS categoria,
                 albumes.etiquetas,
                 albumes.num_fotos,
                 albumes.num_visitas,
                 albumes.carpeta
             FROM 
                 albumes
+            INNER JOIN 
+                categorias ON albumes.categoria_id = categorias.id
             ORDER BY 
                 :criterio
             ";
@@ -522,14 +543,14 @@ class albumModel extends Model
         }
     }
 
-    public function contadorFotos($idAlbum, $numFotos)
+    public function contadorFotos($id, $num_fotos)
     {
         try {
-            $sql = "UPDATE albumes SET num_fotos = :numFotos WHERE id = :idAlbum";
+            $sql = "UPDATE albumes SET num_fotos = :num_fotos WHERE id = :id";
             $conexion = $this->db->connect();
             $pdost = $conexion->prepare($sql);
-            $pdost->bindParam(':numFotos', $numFotos, PDO::PARAM_INT);
-            $pdost->bindParam(':idAlbum', $idAlbum, PDO::PARAM_INT);
+            $pdost->bindParam(':num_fotos', $num_fotos, PDO::PARAM_INT);
+            $pdost->bindParam(':id', $id, PDO::PARAM_INT);
             $pdost->execute();
         } catch (PDOException $e) {
             include_once('template/partials/errorDB.php');
@@ -537,51 +558,50 @@ class albumModel extends Model
         }
     }
 
-    public function subirArchivo($ficheros, $carpeta)
-    {
+    public function subirArchivo($ficheros, $carpeta){
+    $num = count($ficheros['tmp_name']);
+    
+    // Error de archivos
+    $FileUploadErrors = array(
+        0 => 'No hay error, fichero subido con éxito.',
+        1 => 'El fichero subido excede la directiva upload_max_filesize de php.ini.',
+        2 => 'El fichero subido excede la directiva MAX_FILE_SIZE especificada en el formulario HTML.',
+        3 => 'El fichero fue sólo parcialmente subido.',
+        4 => 'No se subió ningún fichero.',
+        6 => 'Falta la carpeta temporal.',
+        7 => 'No se pudo escribir el fichero en el disco.',
+        8 => 'Una extensión de PHP detuvo la subida de ficheros.',
+    );
 
-        $num = count($ficheros['tmp_name']);
+    $error = null;
 
-        # genero array de error de fichero
-        $FileUploadErrors = array(
-            0 => 'No hay error, fichero subido con éxito.',
-            1 => 'El fichero subido excede la directiva upload_max_filesize de php.ini.',
-            2 => 'El fichero subido excede la directiva MAX_FILE_SIZE especificada en el formulario HTML.',
-            3 => 'El fichero fue sólo parcialmente subido.',
-            4 => 'No se subió ningún fichero.',
-            6 => 'Falta la carpeta temporal.',
-            7 => 'No se pudo escribir el fichero en el disco.',
-            8 => 'Una extensión de PHP detuvo la subida de ficheros.',
-        );
-
-        $error = null;
-
-        for ($i = 0; $i <= $num - 1 && is_null($error); $i++) {
-            if ($ficheros['error'][$i] != UPLOAD_ERR_OK) {
-                $error = $FileUploadErrors[$ficheros['error'][$i]];
-            } else {
-                $tamMaximo = 4194304;
-                if ($ficheros['size'][$i] > $tamMaximo) {
-
-                    $error = "Archivo excede tamaño maximo 4MB";
-                }
-                $info = new SplFileInfo($ficheros['name'][$i]);
-                $tipos_permitidos = ['JPG', 'JPEG', 'GIF', 'PNG'];
-                if (!in_array(strtoupper($info->getExtension()), $tipos_permitidos)) {
-                    $error = "Archivo no permitido. Seleccione una imagen.";
-                }
-            }
-        }
-
-        if (is_null($error)) {
-            for ($i = 0; $i <= $num - 1; $i++) {
-                if (is_uploaded_file($ficheros['tmp_name'][$i])) {
-                    move_uploaded_file($ficheros['tmp_name'][$i], "images/" . $carpeta . "/" . $ficheros['name'][$i]);
-                }
-            }
-            $_SESSION['mensaje'] = "Los archivos se han subido correctamente";
+    for ($i = 0; $i <= $num - 1 && is_null($error); $i++) {
+        if ($ficheros['error'][$i] != UPLOAD_ERR_OK) {
+            $error = $FileUploadErrors[$ficheros['error'][$i]];
         } else {
-            $_SESSION['error'] = $error;
+            $tamMaximo = 4194304;
+            if ($ficheros['size'][$i] > $tamMaximo) {
+                $error = "Archivo excede tamaño máximo de 4MB";
+            }
+            $info = new SplFileInfo($ficheros['name'][$i]);
+            $tipos_permitidos = ['JPG', 'JPEG', 'GIF', 'PNG'];
+            if (!in_array(strtoupper($info->getExtension()), $tipos_permitidos)) {
+                $error = "Archivo no permitido. Seleccione una imagen.";
+            }
         }
     }
+
+    // Si no hay errores, sube los archivos
+    if (is_null($error)) {
+        for ($i = 0; $i <= $num - 1; $i++) {
+            if (is_uploaded_file($ficheros['tmp_name'][$i])) {
+                move_uploaded_file($ficheros['tmp_name'][$i], "images/" . $carpeta . "/" . $ficheros['name'][$i]);
+            }
+        }
+        $_SESSION['mensaje'] = "Los archivos se han subido correctamente.";
+    } else {
+        $_SESSION['error'] = $error;
+    }
+}
+
 }

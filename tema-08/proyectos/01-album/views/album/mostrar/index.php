@@ -92,6 +92,44 @@
                         <input type="text" class="form-control" value="<?= $this->album->carpeta ?>" disabled>
                     </div>
                     
+                    <!-- Sección para visualizar imágenes del álbum -->
+        <br>
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Imágenes del Álbum</h5>
+            </div>
+            <div class="card-body">
+                <!-- Aquí mostramos las imágenes de la carpeta -->
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
+                    <?php 
+                    // Recorrer el array de imágenes que el controlador pase en $this->imagenes
+                    // Cada imagen se muestra en una columna Bootstrap
+                    if (!empty($this->images)) {
+                        foreach ($this->images as $img) { 
+                            ?>
+                            <div class="col">
+                                <div class="card h-100">
+                                    <img src="<?= URL . 'images/' . htmlspecialchars($this->album->carpeta) . '/' . rawurlencode($img) ?>" 
+                                         class="card-img-top" 
+                                         alt="Imagen del álbum <?= htmlspecialchars($this->album->titulo) ?>">
+                                    <div class="card-body">
+                                        <p class="card-text text-center">
+                                            <?= htmlspecialchars($img) ?>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php
+                        }
+                    } else {
+                        echo "<p>No se encontraron imágenes en la carpeta <strong>"
+                             . htmlspecialchars($this->album->carpeta)
+                             . "</strong></p>";
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
 
             </div>
             <div class="card-footer">
