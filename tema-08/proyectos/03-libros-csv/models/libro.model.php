@@ -24,7 +24,7 @@ class libroModel extends Model
         try {
 
             // sentencia sql
-            $sql ="SELECT 
+            $sql = "SELECT 
             libros.id,
             libros.titulo,
             libros.precio,
@@ -74,13 +74,13 @@ class libroModel extends Model
        Extre los detalles de los generos para generar lista desplegable 
        dinámica
    */
-  public function get_generos()
-  {
+    public function get_generos()
+    {
 
-      try {
+        try {
 
-          // sentencia sql
-          $sql = "SELECT 
+            // sentencia sql
+            $sql = "SELECT 
                       id,
                       tema as genero
                   FROM 
@@ -89,43 +89,43 @@ class libroModel extends Model
                       2
           ";
 
-          // conectamos con la base de datos
-          $conexion = $this->db->connect();
+            // conectamos con la base de datos
+            $conexion = $this->db->connect();
 
-          // ejecuto prepare
-          $stmt = $conexion->prepare($sql);
+            // ejecuto prepare
+            $stmt = $conexion->prepare($sql);
 
-          // establezco tipo fetch
-          $stmt->setFetchMode(PDO::FETCH_KEY_PAIR);
+            // establezco tipo fetch
+            $stmt->setFetchMode(PDO::FETCH_KEY_PAIR);
 
-          // ejecutamos
-          $stmt->execute();
+            // ejecutamos
+            $stmt->execute();
 
-          // devuelvo objeto stmtatement
-          return $stmt->fetchAll();
-      } catch (PDOException $e) {
+            // devuelvo objeto stmtatement
+            return $stmt->fetchAll();
+        } catch (PDOException $e) {
 
-          // error base de datos
-          require 'template/partials/errorDB.partial.php';
-          $stmt = null;
-          $conexion = null;
-          $this->db = null;
-      }
-  }
+            // error base de datos
+            require 'template/partials/errorDB.partial.php';
+            $stmt = null;
+            $conexion = null;
+            $this->db = null;
+        }
+    }
 
-  /*
+    /*
      método: get_autores()
 
      Extre los detalles de los autores para generar lista desplegable 
      dinámica
  */
-  public function get_autores()
-  {
+    public function get_autores()
+    {
 
-      try {
+        try {
 
-          // sentencia sql
-          $sql = "SELECT 
+            // sentencia sql
+            $sql = "SELECT 
                     id,
                     nombre as autor
                 FROM 
@@ -134,43 +134,43 @@ class libroModel extends Model
                     2
         ";
 
-          // conectamos con la base de datos
-          $conexion = $this->db->connect();
+            // conectamos con la base de datos
+            $conexion = $this->db->connect();
 
-          // ejecuto prepare
-          $stmt = $conexion->prepare($sql);
+            // ejecuto prepare
+            $stmt = $conexion->prepare($sql);
 
-          // establezco tipo fetch
-          $stmt->setFetchMode(PDO::FETCH_KEY_PAIR);
+            // establezco tipo fetch
+            $stmt->setFetchMode(PDO::FETCH_KEY_PAIR);
 
-          // ejecutamos
-          $stmt->execute();
+            // ejecutamos
+            $stmt->execute();
 
-          // devuelvo objeto stmtatement
-          return $stmt->fetchAll();
-      } catch (PDOException $e) {
+            // devuelvo objeto stmtatement
+            return $stmt->fetchAll();
+        } catch (PDOException $e) {
 
-          // error base de datos
-          require 'template/partials/errorDB.partial.php';
-          $stmt = null;
-          $conexion = null;
-          $this->db = null;
-      }
-  }
+            // error base de datos
+            require 'template/partials/errorDB.partial.php';
+            $stmt = null;
+            $conexion = null;
+            $this->db = null;
+        }
+    }
 
-  /*
+    /*
        método: get_editoriales()
 
        Extre los detalles de los generos para generar lista desplegable 
        dinámica
    */
-  public function get_editoriales()
-  {
+    public function get_editoriales()
+    {
 
-      try {
+        try {
 
-          // sentencia sql
-          $sql = "SELECT 
+            // sentencia sql
+            $sql = "SELECT 
                     id,
                     nombre as editorial
                 FROM 
@@ -179,29 +179,29 @@ class libroModel extends Model
                     2
         ";
 
-          // conectamos con la base de datos
-          $conexion = $this->db->connect();
+            // conectamos con la base de datos
+            $conexion = $this->db->connect();
 
-          // ejecuto prepare
-          $stmt = $conexion->prepare($sql);
+            // ejecuto prepare
+            $stmt = $conexion->prepare($sql);
 
-          // establezco tipo fetch
-          $stmt->setFetchMode(PDO::FETCH_KEY_PAIR);
+            // establezco tipo fetch
+            $stmt->setFetchMode(PDO::FETCH_KEY_PAIR);
 
-          // ejecutamos
-          $stmt->execute();
+            // ejecutamos
+            $stmt->execute();
 
-          // devuelvo objeto stmtatement
-          return $stmt->fetchAll();
-      } catch (PDOException $e) {
+            // devuelvo objeto stmtatement
+            return $stmt->fetchAll();
+        } catch (PDOException $e) {
 
-          // error base de datos
-          require 'template/partials/errorDB.partial.php';
-          $stmt = null;
-          $conexion = null;
-          $this->db = null;
-      }
-  }
+            // error base de datos
+            require 'template/partials/errorDB.partial.php';
+            $stmt = null;
+            $conexion = null;
+            $this->db = null;
+        }
+    }
 
     /*
         método: create
@@ -316,7 +316,6 @@ class libroModel extends Model
             $conexion = null;
             $this->db = null;
             exit();
-
         }
     }
 
@@ -330,12 +329,12 @@ class libroModel extends Model
 objeto de classLibro
 id del libro*/
 
-public function update(classLibro $libro, $id)
-{
+    public function update(classLibro $libro, $id)
+    {
 
-    try {
+        try {
 
-        $sql = "
+            $sql = "
 
         UPDATE libros
         SET
@@ -352,31 +351,31 @@ public function update(classLibro $libro, $id)
         LIMIT 1
         ";
 
-        $conexion = $this->db->connect();
+            $conexion = $this->db->connect();
 
-        $stmt = $conexion->prepare($sql);
+            $stmt = $conexion->prepare($sql);
 
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 
-        $stmt->bindParam(':titulo', $libro->titulo, PDO::PARAM_STR, 80);
-        $stmt->bindParam(':precio', $libro->precio, PDO::PARAM_STR);
-        $stmt->bindParam(':stock', $libro->unidades, PDO::PARAM_INT);
-        $stmt->bindParam(':fecha_edicion', $libro->fechaEdicion, PDO::PARAM_STR);
-        $stmt->bindParam(':isbn', $libro->isbn, PDO::PARAM_STR, 13);
-        $stmt->bindParam(':autor_id', $libro->autor, PDO::PARAM_INT);
-        $stmt->bindParam(':editorial_id', $libro->editorial, PDO::PARAM_INT);
-        $stmt->bindParam(':generos_id', implode(",", $libro->generos), PDO::PARAM_STR);
+            $stmt->bindParam(':titulo', $libro->titulo, PDO::PARAM_STR, 80);
+            $stmt->bindParam(':precio', $libro->precio, PDO::PARAM_STR);
+            $stmt->bindParam(':stock', $libro->unidades, PDO::PARAM_INT);
+            $stmt->bindParam(':fecha_edicion', $libro->fechaEdicion, PDO::PARAM_STR);
+            $stmt->bindParam(':isbn', $libro->isbn, PDO::PARAM_STR, 13);
+            $stmt->bindParam(':autor_id', $libro->autor, PDO::PARAM_INT);
+            $stmt->bindParam(':editorial_id', $libro->editorial, PDO::PARAM_INT);
+            $stmt->bindParam(':generos_id', implode(",", $libro->generos), PDO::PARAM_STR);
 
-        $stmt->execute();
-    } catch (PDOException $e) {
-        // error base de datos
-        require_once 'template/partials/errorDB.partial.php';
-        $stmt = null;
-        $conexion = null;
-        $this->db = null;
-        exit();
+            $stmt->execute();
+        } catch (PDOException $e) {
+            // error base de datos
+            require_once 'template/partials/errorDB.partial.php';
+            $stmt = null;
+            $conexion = null;
+            $this->db = null;
+            exit();
+        }
     }
-}
 
     /*
         método: delete
@@ -414,8 +413,9 @@ public function update(classLibro $libro, $id)
         }
     }
 
-    public function validateIdLibro(int $id){
-        
+    public function validateIdLibro(int $id)
+    {
+
         try {
 
             $sql = "
@@ -435,18 +435,18 @@ public function update(classLibro $libro, $id)
 
             if ($stmt->rowCount() == 1) {
                 return TRUE;
-            } 
+            }
 
             return FALSE;
-    } catch (PDOException $e) {
-        // error base de datos
-        require_once 'template/partials/errorDB.partial.php';
-        $stmt = null;
-        $conexion = null;
-        $this->db = null;
-        exit();
+        } catch (PDOException $e) {
+            // error base de datos
+            require_once 'template/partials/errorDB.partial.php';
+            $stmt = null;
+            $conexion = null;
+            $this->db = null;
+            exit();
+        }
     }
-}
 
     /*
         método: filter
@@ -579,7 +579,6 @@ public function update(classLibro $libro, $id)
 
             # devuelvo objeto stmtatement
             return $stmt;
-
         } catch (PDOException $e) {
 
             // error base de datos
@@ -588,7 +587,6 @@ public function update(classLibro $libro, $id)
             $conexion = null;
             $this->db = null;
             exit();
-
         }
     }
 
@@ -600,8 +598,9 @@ public function update(classLibro $libro, $id)
         @param: id del autor
     */
 
-    public function validateForeignKeyAutor(int $autor_id){
-        
+    public function validateForeignKeyAutor(int $autor_id)
+    {
+
         try {
             $sql = "
                 SELECT 
@@ -625,10 +624,9 @@ public function update(classLibro $libro, $id)
 
             if ($stmt->rowCount() == 1) {
                 return TRUE;
-            } 
+            }
 
             return FALSE;
-
         } catch (PDOException $e) {
             // error base de datos
             require_once 'template/partials/errorDB.partial.php';
@@ -647,8 +645,9 @@ public function update(classLibro $libro, $id)
         @param: id de la editorial
     */
 
-    public function validateForeignKeyEditorial(int $editorial_id){
-        
+    public function validateForeignKeyEditorial(int $editorial_id)
+    {
+
         try {
             $sql = "
                 SELECT 
@@ -672,10 +671,9 @@ public function update(classLibro $libro, $id)
 
             if ($stmt->rowCount() == 1) {
                 return TRUE;
-            } 
+            }
 
             return FALSE;
-
         } catch (PDOException $e) {
             // error base de datos
             require_once 'template/partials/errorDB.partial.php';
@@ -694,8 +692,9 @@ public function update(classLibro $libro, $id)
         @param: id del genero
     */
 
-    public function validateForeignKeyGenero(int $genero_id){
-        
+    public function validateForeignKeyGenero(int $genero_id)
+    {
+
         try {
             $sql = "
                 SELECT 
@@ -719,10 +718,9 @@ public function update(classLibro $libro, $id)
 
             if ($stmt->rowCount() == 1) {
                 return TRUE;
-            } 
+            }
 
             return FALSE;
-
         } catch (PDOException $e) {
             // error base de datos
             require_once 'template/partials/errorDB.partial.php';
@@ -741,8 +739,9 @@ public function update(classLibro $libro, $id)
         @param: isbn
     */
 
-    public function validateUniqueISBN($isbn){
-        
+    public function validateUniqueISBN($isbn)
+    {
+
         try {
             $sql = "
                 SELECT 
@@ -766,10 +765,9 @@ public function update(classLibro $libro, $id)
 
             if ($stmt->rowCount() > 0) {
                 return FALSE;
-            } 
+            }
 
             return TRUE;
-
         } catch (PDOException $e) {
             // error base de datos
             require_once 'template/partials/errorDB.partial.php';
@@ -845,7 +843,8 @@ public function update(classLibro $libro, $id)
             - $libros array con los datos del fichero csv
 
     */
-    public function import($libros) {
+    public function import($libros)
+    {
 
         try {
 
@@ -858,7 +857,6 @@ public function update(classLibro $libro, $id)
                     autor_id,
                     editorial_id,
                     generos_id
-
                 )
                 VALUES (
                     :titulo,
@@ -870,7 +868,6 @@ public function update(classLibro $libro, $id)
                     :editorial_id,
                     :generos_id
                 )
-                )
             ";
             # Conectar con la base de datos
             $conexion = $this->db->connect();
@@ -879,22 +876,25 @@ public function update(classLibro $libro, $id)
 
             foreach ($libros as $libro) {
 
-                $stmt->bindParam(':titulo', $libro[0], PDO::PARAM_STR, 50);
-                $stmt->bindParam(':precio', $libro[1], PDO::PARAM_STR);
+                $generos_id = implode(',', $this->get_generos_id($libro[7]));
+                $autor_id = $this->get_autor_id($libro[5]);
+                $editorial_id = $this->get_editorial_id($libro[6]);
+
+                $stmt->bindParam(':titulo', $libro[0], PDO::PARAM_STR, 30);
+                $stmt->bindParam(':precio', $libro[1], PDO::PARAM_STR, 50);
                 $stmt->bindParam(':stock', $libro[2], PDO::PARAM_INT);
                 $stmt->bindParam(':fecha_edicion', $libro[3], PDO::PARAM_STR);
                 $stmt->bindParam(':isbn', $libro[4], PDO::PARAM_STR, 13);
-                $stmt->bindParam(':autor_id', $libro[5], PDO::PARAM_INT);
-                $stmt->bindParam(':editorial_id', $libro[6], PDO::PARAM_INT);
-                $stmt->bindParam(':generos_id', implode(",", $libro[7]), PDO::PARAM_STR);
+                $stmt->bindParam(':autor_id', $autor_id, PDO::PARAM_INT);
+                $stmt->bindParam(':editorial_id', $editorial_id, PDO::PARAM_INT);
+                $stmt->bindParam(':generos_id', $generos_id, PDO::PARAM_STR);
 
-                // añado alumno
+                // añado libro
                 $stmt->execute();
             }
 
             // devuelvo el número de libros importados
             return count($libros);
-
         } catch (PDOException $e) {
             // error base de datos
             require_once 'template/partials/errorDB.partial.php';
@@ -904,5 +904,227 @@ public function update(classLibro $libro, $id)
         }
     }
 
+    /*
+        método: get_generos_id
+
+        descripción: recibe un string con los nombres de los generos separados por comas y devuelve los id de esos generos
+
+        @param: 
+            - string $generos_nombres
+    */
+    public function get_generos_id(string $generos_nombres)
+    {
+        try {
+            $generos_array = explode(',', $generos_nombres);
+            $placeholders = implode(',', array_fill(0, count($generos_array), '?'));
+
+            $sql = "SELECT id FROM generos WHERE tema IN ($placeholders)";
+            
+            $conexion = $this->db->connect();
+            $stmt = $conexion->prepare($sql);
+            
+            foreach ($generos_array as $index => $genero) {
+                $stmt->bindValue($index + 1, trim($genero), PDO::PARAM_STR);
+            }
+
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_COLUMN);
+        } catch (PDOException $e) {
+            require 'template/partials/errorDB.partial.php';
+            $stmt = null;
+            $conexion = null;
+            $this->db = null;
+            exit();
+        }
+    }
+
+    /*
+        método: validateGenerosExist
+
+        descripción: valida que los generos que están en el csv existan en la base de datos
+
+        @param: 
+            - string $generos_nombres
+    */
+    public function validateGenerosExist(string $generos_nombres)
+    {
+        try {
+            $generos_array = explode(',', $generos_nombres);
+            $placeholders = implode(',', array_fill(0, count($generos_array), '?'));
+
+            $sql = "SELECT COUNT(*) FROM generos WHERE tema IN ($placeholders)";
+            
+            $conexion = $this->db->connect();
+            $stmt = $conexion->prepare($sql);
+            
+            foreach ($generos_array as $index => $genero) {
+                $stmt->bindValue($index + 1, trim($genero), PDO::PARAM_STR);
+            }
+
+            $stmt->execute();
+            $count = $stmt->fetchColumn();
+
+            return $count == count($generos_array);
+        } catch (PDOException $e) {
+            require 'template/partials/errorDB.partial.php';
+            $stmt = null;
+            $conexion = null;
+            $this->db = null;
+            exit();
+        }
+    }
+
+    /*
+        método: get_autor_id
+
+        descripción: recibe el nombre del autor y devuelve su id
+
+        @param: 
+            - string $nombre_autor
+    */
+    public function get_autor_id(string $nombre_autor)
+    {
+        try {
+            $sql = "SELECT id FROM autores WHERE nombre = :nombre_autor";
+            
+            $conexion = $this->db->connect();
+            $stmt = $conexion->prepare($sql);
+            $stmt->bindParam(':nombre_autor', $nombre_autor, PDO::PARAM_STR);
+            
+            $stmt->execute();
+            return $stmt->fetchColumn();
+        } catch (PDOException $e) {
+            require 'template/partials/errorDB.partial.php';
+            $stmt = null;
+            $conexion = null;
+            $this->db = null;
+            exit();
+        }
+    }
+
+    /*
+        método: get_editorial_id
+
+        descripción: recibe el nombre de la editorial y devuelve su id
+
+        @param: 
+            - string $nombre_editorial
+    */
+    public function get_editorial_id(string $nombre_editorial)
+    {
+        try {
+            $sql = "SELECT id FROM editoriales WHERE nombre = :nombre_editorial";
+            
+            $conexion = $this->db->connect();
+            $stmt = $conexion->prepare($sql);
+            $stmt->bindParam(':nombre_editorial', $nombre_editorial, PDO::PARAM_STR);
+            
+            $stmt->execute();
+            return $stmt->fetchColumn();
+        } catch (PDOException $e) {
+            require 'template/partials/errorDB.partial.php';
+            $stmt = null;
+            $conexion = null;
+            $this->db = null;
+            exit();
+        }
+    }
+
+
+    // Método para obtener el ID del autor por su nombre
+    public function getAutorIdByName($nombre_autor)
+    {
+        try {
+            $sql = "
+            SELECT id
+            FROM autores
+            WHERE nombre = :nombre_autor
+            LIMIT 1
+        ";
+
+            $conexion = $this->db->connect();
+
+            $stmt = $conexion->prepare($sql);
+            $stmt->bindParam(':nombre_autor', $nombre_autor, PDO::PARAM_STR);
+            $stmt->setFetchMode(PDO::FETCH_OBJ);
+            $stmt->execute();
+
+            // Si el autor existe, retorna el ID
+            if ($stmt->rowCount() > 0) {
+                $result = $stmt->fetch();
+                return $result->id; // Devuelve el ID del autor
+            }
+
+            return false; // Si no existe el autor
+        } catch (PDOException $e) {
+            // Error de base de datos
+            require_once 'template/partials/errorDB.partial.php';
+            return false;
+        }
+    }
+
+    // Método para obtener el ID de la editorial por su nombre
+    public function getEditorialIdByName($nombre_editorial)
+    {
+        try {
+            $sql = "
+            SELECT id
+            FROM editoriales
+            WHERE nombre = :nombre_editorial
+            LIMIT 1
+        ";
+
+            $conexion = $this->db->connect();
+
+            $stmt = $conexion->prepare($sql);
+            $stmt->bindParam(':nombre_editorial', $nombre_editorial, PDO::PARAM_STR);
+            $stmt->setFetchMode(PDO::FETCH_OBJ);
+            $stmt->execute();
+
+            // Si la editorial existe, retorna el ID
+            if ($stmt->rowCount() > 0) {
+                $result = $stmt->fetch();
+                return $result->id; // Devuelve el ID de la editorial
+            }
+
+            return false; // Si no existe la editorial
+        } catch (PDOException $e) {
+            // Error de base de datos
+            require_once 'template/partials/errorDB.partial.php';
+            return false;
+        }
+    }
+
+    // Método para obtener el ID del género por su nombre
+public function getGeneroIdByName($nombre_genero)
+{
+    try {
+        $sql = "
+            SELECT id
+            FROM generos
+            WHERE tema = :nombre_genero
+            LIMIT 1
+        ";
+
+        $conexion = $this->db->connect();
+
+        $stmt = $conexion->prepare($sql);
+        $stmt->bindParam(':nombre_genero', $nombre_genero, PDO::PARAM_STR);
+        $stmt->setFetchMode(PDO::FETCH_OBJ);
+        $stmt->execute();
+
+        // Si el género existe, devuelve el ID
+        if ($stmt->rowCount() > 0) {
+            $result = $stmt->fetch();
+            return $result->id; // Devuelve el ID del género
+        }
+
+        return false; // Si no existe el género
+    } catch (PDOException $e) {
+        // Error de base de datos
+        require_once 'template/partials/errorDB.partial.php';
+        return false;
+    }
+}
 
 }

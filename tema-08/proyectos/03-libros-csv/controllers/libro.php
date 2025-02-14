@@ -150,8 +150,8 @@ class Libro extends Controller
         // inicio o continuo la sesión
         session_start();
 
-         // Comprobar si hay usuario logueado
-         if (!isset($_SESSION['user_id'])) {
+        // Comprobar si hay usuario logueado
+        if (!isset($_SESSION['user_id'])) {
             // Genero mensaje de error
             $_SESSION['mensaje_error'] = 'Acceso denegado.';
             // redireciona al login
@@ -272,13 +272,13 @@ class Libro extends Controller
         // Reglas: obligatorio
         if (empty($titulo)) {
             $error['titulo'] = 'El título es obligatorio';
-        } 
+        }
 
         // Validación del autor
         // Reglas: obligatorio, clave foránea
         if (empty($autor)) {
             $error['autor'] = 'El autor es obligatorio';
-        }else if (!filter_var($autor, FILTER_VALIDATE_INT)) {
+        } else if (!filter_var($autor, FILTER_VALIDATE_INT)) {
             $error['autor'] = 'El formato del autor no es correcto';
         } else if (!$this->model->validateForeignKeyAutor($autor)) {
             $error['autor'] = 'El autor no existe';
@@ -338,7 +338,7 @@ class Libro extends Controller
         // Reglas: obligatorio, clave foránea siendo generos_id un array
         if (empty($generos_id)) {
             $error['generos_id'] = 'Tienes que seleccionar al menos un género';
-        } 
+        }
 
         // Si hay errores
         if (!empty($error)) {
@@ -413,7 +413,7 @@ class Libro extends Controller
             exit();
         }
 
-        if(isset($_SESSION['error'])){
+        if (isset($_SESSION['error'])) {
 
             // Creo la propiedad error en la vista
             $this->view->error = $_SESSION['error'];
@@ -792,16 +792,16 @@ class Libro extends Controller
         }
 
         # Obtengo la expresión de búsqueda
-        $expresion = htmlspecialchars( $_GET['expresion']);
+        $expresion = htmlspecialchars($_GET['expresion']);
 
         // Obtengo el token CSRF
         $csrf_token = htmlspecialchars($_GET['csrf_token']);
 
         // Cargo el título
         $this->view->title = "Filtrar por: {$expresion} - Gestión de libros";
-    
+
         // Creo la propiedad libros para usar en la vista
-        $this->view->libros= $this->model->filter($expresion);
+        $this->view->libros = $this->model->filter($expresion);
 
         // Cargo la vista
         $this->view->render('libro/main/index');
@@ -837,7 +837,7 @@ class Libro extends Controller
 
         // Obtengo el id del libro
         $id = (int) htmlspecialchars($param[0]);
-        
+
 
         //Obtengo el token CSRF
         $csrf_token = $param[1];
@@ -1025,47 +1025,115 @@ class Libro extends Controller
         while (($linea = fgetcsv($fichero, 0, ';')) !== FALSE) {
             $libros[] = $linea;
 
-            // Validar ISBN
-            if (!$this->model->validateUniqueISBN($linea[4])) {
-                $_SESSION['mensaje_error'] = 'El ISBN ' . $linea[4] . ' ya existe';
+            // Validar titulo
+            if (empty($linea[0])) {
+                $_SESSION['mensaje_error'] = 'Línea ' . $contador_linea . ': El título no puede ser nulo';
                 header('location:' . URL . 'libro/importar/csv/' . $_POST['csrf_token']);
                 exit();
             }
 
-            // Validar id_autor
-            if (!$this->model->validateForeignKeyAutor($linea[6])) {
-                $_SESSION['mensaje_error'] = 'El autor ' . $linea[6] . ' no existe';
+            // Validar isbn
+            $options = [
+                'options' => [
+                    'regexp' => '/^\d{13}$/'
+                ]
+            ];
+
+            if (empty($linea[4])) {
+                $_SESSION['mensaje_error'] = 'Línea ' . $contador_linea . ': El isbn no puede ser nulo';
+                header('location:' . URL . 'libro/importar/csv/' . $_POST['csrf_token']);
+                exit();
+            } elseif (!filter_var($linea[4], FILTER_VALIDATE_REGEXP, $options)) {
+                $_SESSION['mensaje_error'] = 'Línea ' . $contador_linea . ': El ISBN debe tener exactamente 13 dígitos';
+                header('location:' . URL . 'libro/importar/csv/' . $_POST['csrf_token']);
+                exit();
+            } elseif (!$this->model->validateUniqueISBN($linea[4])) {
+                $_SESSION['mensaje_error'] = 'Línea ' . $contador_linea . ': El ISBN ya existe';
                 header('location:' . URL . 'libro/importar/csv/' . $_POST['csrf_token']);
                 exit();
             }
 
-            // Validar id_editorial
-            if (!$this->model->validateForeignKeyEditorial($linea[7])) {
-                $_SESSION['mensaje_error'] = 'La editorial ' . $linea[7] . ' no existe';
+            // Validar autor_id
+            // Obtener nombre del autor desde la línea
+            $nombre_autor = $linea[5]; // Nombre del autor (no ID)
+
+            // Obtener ID del autor desde la base de datos
+            $autor_id = $this->model->getAutorIdByName($nombre_autor);
+
+            // Verificar si el autor existe y obtener su ID
+            if (!$autor_id) {
+                $_SESSION['mensaje_error'] = 'Línea ' . $contador_linea . ': El autor "' . $nombre_autor . '" no existe';
                 header('location:' . URL . 'libro/importar/csv/' . $_POST['csrf_token']);
                 exit();
             }
 
-            // Validar id_genero
-            if (!$this->model->validateForeignKeyGenero($linea[8])) {
-                $_SESSION['mensaje_error'] = 'El género ' . $linea[8] . ' no existe';
+            // Validar el ID del autor
+            if (!$this->model->validateForeignKeyAutor($autor_id)) {
+                $_SESSION['mensaje_error'] = 'Línea ' . $contador_linea . ': El id del autor no existe';
                 header('location:' . URL . 'libro/importar/csv/' . $_POST['csrf_token']);
                 exit();
             }
-            
+
+
+            // Obtener nombre de la editorial desde la línea
+            $nombre_editorial = $linea[6]; // Nombre de la editorial (no ID)
+
+            // Obtener ID de la editorial desde la base de datos
+            $editorial_id = $this->model->getEditorialIdByName($nombre_editorial);
+
+            // Verificar si la editorial existe y obtener su ID
+            if (!$editorial_id) {
+                $_SESSION['mensaje_error'] = 'Línea ' . $contador_linea . ': La editorial "' . $nombre_editorial . '" no existe';
+                header('location:' . URL . 'libro/importar/csv/' . $_POST['csrf_token']);
+                exit();
+            }
+
+            // Validar el ID de la editorial
+            if (!$this->model->validateForeignKeyEditorial($editorial_id)) {
+                $_SESSION['mensaje_error'] = 'Línea ' . $contador_linea . ': El id de la editorial no existe';
+                header('location:' . URL . 'libro/importar/csv/' . $_POST['csrf_token']);
+                exit();
+            }
+
+
+            // Obtener la lista de géneros desde la línea (suponiendo que están separados por comas)
+            $generos = explode(',', $linea[7]); // Convierte la cadena en un array de géneros
+
+            // Recorrer cada género
+            foreach ($generos as $genero) {
+                $genero = trim($genero); // Elimina espacios al principio y al final del género
+
+                // Obtener ID del género desde la base de datos
+                $genero_id = $this->model->getGeneroIdByName($genero);
+
+                // Verificar si el género existe y obtener su ID
+                if (!$genero_id) {
+                    $_SESSION['mensaje_error'] = 'Línea ' . $contador_linea . ': El género "' . $genero . '" no existe';
+                    header('location:' . URL . 'libro/importar/csv/' . $_POST['csrf_token']);
+                    exit();
+                }
+
+                // Validar el ID del género
+                if (!$this->model->validateForeignKeyGenero($genero_id)) {
+                    $_SESSION['mensaje_error'] = 'Línea ' . $contador_linea . ': El id del género "' . $genero . '" no existe';
+                    header('location:' . URL . 'libro/importar/csv/' . $_POST['csrf_token']);
+                    exit();
+                }
+            }
+
+
+            // Cerrar el archivo
+            fclose($fichero);
+
+            // Importar los libros
+            $count = $this->model->import($libros);
+
+            // Genero mensaje de éxito
+            $_SESSION['mensaje'] = $count . ' Libros importados con éxito';
+
+            // redireciona al main de libro
+            header('location:' . URL . 'libro');
+            exit();
         }
-
-        // Cerrar el archivo
-        fclose($fichero);
-
-        // Importar los libros
-        $count = $this->model->import($libros);
-
-        // Genero mensaje de éxito
-        $_SESSION['mensaje'] = $count . ' Libros importados con éxito';
-
-        // redireciona al main de libro
-        header('location:' . URL . 'libro');
-        exit();
     }
 }
