@@ -6,6 +6,22 @@ CREATE DATABASE IF NOT EXISTS album;
 
 USE album;
 
+DROP TABLE IF EXISTS categorias;
+CREATE TABLE IF NOT EXISTS catgorias(
+
+	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+	nombre varchar(100) NOT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+insert into categorias values
+(1, 'Naturaleza'),
+(2, 'Arte'),
+(3, 'Cultura'),
+(4, 'Deportes'),
+(5, 'Tecnología');
+
 DROP TABLE IF EXISTS albumes;
 CREATE TABLE IF NOT EXISTS albumes(
 
@@ -24,21 +40,7 @@ CREATE TABLE IF NOT EXISTS albumes(
     update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-DROP TABLE IF EXISTS categorias;
-CREATE TABLE IF NOT EXISTS catgorias(
 
-	id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
-	nombre varchar(100) NOT NULL,
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-insert into categorias values
-(1, 'Naturaleza'),
-(2, 'Arte'),
-(3, 'Cultura'),
-(4, 'Deportes'),
-(5, 'Tecnología');
 
 DROP TABLE IF EXISTS users;
 CREATE TABLE IF NOT EXISTS users(
