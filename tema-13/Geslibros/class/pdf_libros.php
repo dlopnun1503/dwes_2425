@@ -1,6 +1,6 @@
 <?php
 
-require 'fpdf186/fpdf.php';
+
 class Pdf_libros extends FPDF
 {
     public function Header()

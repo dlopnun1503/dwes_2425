@@ -127,8 +127,8 @@ CREATE TABLE autores (
     nombre VARCHAR(40),
     nacionalidad VARCHAR(20),
     email VARCHAR(45) UNIQUE,
-    fecha_nac DATETIME,
-    fecha_def DATETIME,
+    fecha_nac DATE,
+    fecha_def DATE,
     premios TEXT,
     create_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

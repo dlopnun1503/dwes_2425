@@ -1178,7 +1178,7 @@ class Libro extends Controller
         // Escribimos los datos de los libros
         foreach ($libros as $libro) {
             $pdf->Cell(5, 8, iconv('UTF-8', 'ISO-8859-1', $libro->id), 1, 0, 'C', $fondo);
-            $pdf->Cell(60, 8, iconv('UTF-8', 'ISO-8859-1', $libro->titulo), 1, 0, 'L', $fondo);
+            $pdf->Cell(60, 8, iconv('UTF-8', 'ISO-8859-1//IGNORE', $libro->titulo), 1, 0, 'L', $fondo);
             $pdf->Cell(40, 8, iconv('UTF-8', 'ISO-8859-1', $libro->autor), 1, 0, 'L', $fondo);
             $pdf->Cell(50, 8, iconv('UTF-8', 'ISO-8859-1', $libro->editorial), 1, 0, 'L', $fondo);
             $pdf->Cell(15, 8, iconv('UTF-8', 'ISO-8859-1', $libro->stock), 1, 0, 'R', $fondo);

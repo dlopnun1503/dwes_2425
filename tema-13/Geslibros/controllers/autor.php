@@ -2,6 +2,7 @@
 
 require_once 'class/autor.class.php';
 
+
 class Autor extends Controller
 {
 
@@ -1021,11 +1022,10 @@ class Autor extends Controller
         // Escribimos los datos de los autores
         foreach ($autores as $autor) {
             $pdf->Cell(5, 8, iconv('UTF-8', 'ISO-8859-1', $autor->id), 1, 0, 'C', $fondo);
-            $pdf->Cell(60, 8, iconv('UTF-8', 'ISO-8859-1', $autor->nombre), 1, 0, 'L', $fondo);
-            $pdf->Cell(40, 8, iconv('UTF-8', 'ISO-8859-1', $autor->nacionalidad), 1, 0, 'L', $fondo);
-            $pdf->Cell(50, 8, iconv('UTF-8', 'ISO-8859-1', $autor->email), 1, 0, 'L', $fondo);
-            $pdf->Cell(15, 8, iconv('UTF-8', 'ISO-8859-1', $autor->fecha_nac), 1, 0, 'R', $fondo);
-            $pdf->Cell(15, 8, iconv('UTF-8', 'ISO-8859-1', $autor->fecha_def), 1, 1, 'R', $fondo);
+            $pdf->Cell(40, 8, iconv('UTF-8', 'ISO-8859-1', $autor->nombre), 1, 0, 'L', $fondo);
+            $pdf->Cell(30, 8, iconv('UTF-8', 'ISO-8859-1', $autor->nacionalidad), 1, 0, 'L', $fondo);
+            $pdf->Cell(60, 8, iconv('UTF-8', 'ISO-8859-1', $autor->email), 1, 0, 'L', $fondo);
+            $pdf->Cell(50, 8, iconv('UTF-8', 'ISO-8859-1', $autor->premios), 1, 1, 'R', $fondo);
             $fondo = !$fondo;
         }
 
