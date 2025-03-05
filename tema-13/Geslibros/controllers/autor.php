@@ -456,7 +456,7 @@ class Autor extends Controller
         $premios = filter_var($_POST['premios'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
 
         // Creamos un objeto de la clase autor
-        $autor = new classAutor(
+        $autor_form = new classAutor(
             null,
             $nombre,
             $nacionalidad,

@@ -183,6 +183,7 @@ id del autor*/
                      nacionalidad = :nacionalidad,
                      email = :email,
                      fecha_nac = :fecha_nac,
+                     fecha_def = :fecha_def,
                      premios = :premios
                     WHERE
                     id = :id

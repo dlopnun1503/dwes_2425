@@ -51,3 +51,12 @@
     $GLOBALS['autor']['exportar'] = [1];
     $GLOBALS['autor']['importar'] = [1];
     $GLOBALS['autor']['pdf'] = [1, 2];
+
+
+    $GLOBALS['user']['main'] = [1];
+    $GLOBALS['user']['nuevo'] = [1];
+    $GLOBALS['user']['editar'] = [1];
+    $GLOBALS['user']['eliminar'] = [1];
+    $GLOBALS['user']['mostrar'] = [1];
+    $GLOBALS['user']['filtrar'] = [1];
+    $GLOBALS['user']['ordenar'] = [1];
