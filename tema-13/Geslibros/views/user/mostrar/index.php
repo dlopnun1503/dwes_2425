@@ -46,8 +46,8 @@
 
                     <!-- Password -->
                     <div class="mb-3">
-                        <label for="password" class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" value="<?= $this->user->password ?>" disabled>
+                        <label for="perfil" class="form-label">Perfil</label>
+                        <input type="perfil" class="form-control" value="<?= $this->user->perfil ?>" disabled>
                     </div>
 
 

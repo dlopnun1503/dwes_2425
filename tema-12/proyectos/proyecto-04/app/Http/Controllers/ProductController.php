@@ -11,54 +11,50 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
         $products = [
-        
             [
                 'id' => 1,
-                'descripcion'=>'Portátil HP MD12345',
-                'modelo'=>'HP 15-1234-20',
-                'categoria'=> 0,
-                'unidades'=> 12,
-                'precio'=> 550.50
+                'descripcion' => 'Portátil HP MD12345',
+                'modelo' => 'HP 15-1234-20',
+                'categoria' => 'Ordenadores',
+                'unidades' => 12,
+                'precio' => 550.50
             ],
             [
                 'id' => 2,
-                'descripcion'=>'Tablet - Samsung Galaxy Tab A (2019)',
-                'modelo'=>'Exynos',
-                'categoria'=> 5,
-                'unidades'=> 200,
-                'precio'=> 300
+                'descripcion' => 'Tablet - Samsung Galaxy Tab A (2019)',
+                'modelo' => 'Exynos',
+                'categoria' => 'Tablets',
+                'unidades' => 200,
+                'precio' => 300
             ],
             [
                 'id' => 3,
-                'descripcion'=>'Impresora multifunción - HP',
-                'modelo'=>'DeskJet 3762',
-                'categoria'=> 4,
-                'unidades'=> 2000,
-                'precio'=> 69
+                'descripcion' => 'Impresora multifunción - HP',
+                'modelo' => 'DeskJet 3762',
+                'categoria' => 'Impresoras',
+                'unidades' => 2000,
+                'precio' => 69
             ],
             [
                 'id' => 4,
-                'descripcion'=>'TV LED 40" - Thomson 40FE5606 - Full HD',
-                'modelo'=>'Thomson 40FE5606',
-                'categoria'=> 3,
-                'unidades'=> 300,
-                'precio'=> 259
+                'descripcion' => 'TV LED 40" - Thomson 40FE5606 - Full HD',
+                'modelo' => 'Thomson 40FE5606',
+                'categoria' => 'Televisores',
+                'unidades' => 300,
+                'precio' => 259
             ],
             [
                 'id' => 5,
-                'descripcion'=>'PC Sobremesa - Acer Aspire XC-830',
-                'modelo'=>'Acer Aspire XC-830',
-                'categoria'=> 1,
-                'unidades'=> 20,
-                'precio'=> 329
+                'descripcion' => 'PC Sobremesa - Acer Aspire XC-830',
+                'modelo' => 'Acer Aspire XC-830',
+                'categoria' => 'Ordenadores',
+                'unidades' => 20,
+                'precio' => 329
             ]
-    
         ];
 
         return view('products.home', compact('products'));
-
     }
 
     /**

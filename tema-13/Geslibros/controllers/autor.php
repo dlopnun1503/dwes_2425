@@ -935,50 +935,25 @@ class Autor extends Controller
         while (($linea = fgetcsv($fichero, 0, ';')) !== FALSE) {
             $autores[] = $linea;
 
-            // Validar ID
-            if (empty($id) || !filter_var($id, FILTER_VALIDATE_INT)) {
-                $_SESSION['mensaje_error'] = 'El ID del autor no es válido';
-                header('location:' . URL . 'autor/importar/csv/' . $_POST['csrf_token']);
-                exit();
-            }
-
-            // Validar nombre
-            if (empty($nombre)) {
-                $_SESSION['mensaje_error'] = 'El nombre no puede ser nulo';
-                header('location:' . URL . 'autor/importar/csv/' . $_POST['csrf_token']);
-                exit();
-            }
-
             // Validar email
-            $email = filter_var($_POST['email'] ?? '', FILTER_SANITIZE_EMAIL);
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            if (!$this->model->validateUniqueEmail($linea[2])) {
                 $_SESSION['mensaje_error'] = 'El email no es válido';
                 header('location:' . URL . 'autor/importar/csv/' . $_POST['csrf_token']);
                 exit();
             }
-
-            // Validar existencia del autor por ID
-            if (!$this->model->validateUniqueAuthorById($id)) {
-                $_SESSION['mensaje_error'] = 'El autor con ID ' . $id . ' ya existe';
-                header('location:' . URL . 'autor/importar/csv/' . $_POST['csrf_token']);
-                exit();
-            }
-
-
-
-            // Cerrar el archivo
-            fclose($fichero);
-
-            // Importar los autores
-            $count = $this->model->import($autores);
-
-            // Genero mensaje de éxito
-            $_SESSION['mensaje'] = $count . ' Autores importados con éxito';
-
-            // redireciona al main de autor
-            header('location:' . URL . 'autor');
-            exit();
         }
+        // Cerrar el archivo
+        fclose($fichero);
+
+        // Importar los autores
+        $count = $this->model->import($autores);
+
+        // Genero mensaje de éxito
+        $_SESSION['mensaje'] = $count . ' Autores importados con éxito';
+
+        // redireciona al main de autor
+        header('location:' . URL . 'autor');
+        exit();
     }
 
     public function pdf($param = [])

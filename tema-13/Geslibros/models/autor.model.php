@@ -547,4 +547,40 @@ id del autor*/
             $this->db = null;
         }
     }
+
+    public function validateUniqueEmail(){
+        try {
+            $sql = " SELECT 
+                    email
+                FROM 
+                    autores
+                WHERE
+                    email = :email
+                LIMIT 1
+            ";
+
+            $conexion = $this->db->connect();
+
+            $stmt = $conexion->prepare($sql);
+
+            $stmt->bindParam(':email', $this->email, PDO::PARAM_STR);
+
+            $stmt->setFetchMode(PDO::FETCH_OBJ);
+
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) {
+                return TRUE;
+            }
+
+            return FALSE;
+        } catch (PDOException $e) {
+            // error base de datos
+            require_once 'template/partials/errorDB.partial.php';
+            $stmt = null;
+            $conexion = null;
+            $this->db = null;
+            exit();
+        }
+    }
 }

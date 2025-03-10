@@ -24,6 +24,7 @@
                         <li><a class="dropdown-item" href="<?= URL ?>user/ordenar/1/<?= $_SESSION["csrf_token"] ?>">Id</a></li>
                         <li><a class="dropdown-item" href="<?= URL ?>user/ordenar/2/<?= $_SESSION["csrf_token"] ?>">Nombre</a></li>
                         <li><a class="dropdown-item" href="<?= URL ?>user/ordenar/3/<?= $_SESSION["csrf_token"] ?>">Email</a></li>
+                        <li><a class="dropdown-item" href="<?= URL ?>user/ordenar/4/<?= $_SESSION["csrf_token"] ?>">Perfil</a></li>
                     </ul>
                 </li>
 

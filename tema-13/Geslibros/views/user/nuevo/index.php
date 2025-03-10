@@ -66,8 +66,24 @@
                         </span>
                     </div>
 
+                    <!-- password confirmación -->
+                    <div class="mb-3">
+                        <label for="password_confirm" class="form-label">Confirmar contraseña</label>
+                        <input id="password_confirm" type="password" class="form-control" name="password_confirm" placeholder="Confirme contraseña" required
+                            autocomplete="password_confirm">
+                    </div>
 
-
+                    <!-- Rol -->
+                    <div class="mb-3">
+                        <label for="role_id" class="form-label">Rol</label>
+                        <select class="form-control <?= (isset($this->error['role_id'])) ? 'is-invalid' : null ?>" id="role_id" name="role_id" required>
+                            <option value="">Seleccionar Rol</option>
+                            <?php foreach ($this->roles as $role): ?>
+                                <option value="<?= $role->id ?>" <?= ($this->user->role_id == $role->id) ? 'selected' : '' ?>><?= $role->name ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <span class="form-text text-danger" role="alert"><?= $this->error['role_id'] ?? null ?></span>
+                    </div>
 
 
             </div>

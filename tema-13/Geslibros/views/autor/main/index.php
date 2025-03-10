@@ -43,6 +43,7 @@
                                 <th>Email</th>
                                 <th>Fecha nacimiento</th>
                                 <th>Fecha Fallecimiento</th>
+                                <th>Edad</th>
                                 <th>Premios</th>
                                 <!-- columna de acciones -->
                                 <th>Acciones</th>
@@ -59,8 +60,21 @@
                                     <td><?= $autor->email ?></td>
                                     <td><?= $autor->fecha_nac ?></td>
                                     <td><?= $autor->fecha_def ?></td>
+                                    <td>
+                                        <?php
+                                        $fecha_nac = new DateTime($autor->fecha_nac);
+                                        if ($autor->fecha_def) {
+                                            $fecha_def = new DateTime($autor->fecha_def);
+                                            $edad = $fecha_def->diff($fecha_nac)->y;
+                                            echo $edad . ' (fallecido)';
+                                        } else {
+                                            $fecha_actual = new DateTime();
+                                            $edad = $fecha_actual->diff($fecha_nac)->y;
+                                            echo $edad;
+                                        }
+                                        ?>
+                                    </td>
                                     <td><?= $autor->premios ?></td>
-
                                     <!-- Columna de acciones -->
                                     <td>
                                         <div class="btn-group btn-group-toggle" data-toggle="buttons">

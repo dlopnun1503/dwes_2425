@@ -174,6 +174,7 @@ class User extends Controller
 
         // Crear un objeto vacío de la clase user
         $this->view->user = new classUser();
+        $this->view->user->role_id = ''; 
 
         // Comrpuebo si hay errores en la validación
         if (isset($_SESSION['error'])) {
@@ -196,6 +197,8 @@ class User extends Controller
 
         // Creo la propiead título
         $this->view->title = "Añadir - Gestión de Usurios";
+
+        $this->view->roles = $this->model->get_roles();
 
         // Cargo la vista asociada a este método
         $this->view->render('user/nuevo/index');
@@ -238,6 +241,8 @@ class User extends Controller
         $name = filter_var($_POST['name'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
         $email = filter_var($_POST['email'] ??= '', FILTER_SANITIZE_EMAIL);
         $password = filter_var($_POST['password'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
+        $password_confirm = filter_var($_POST['password_confirm'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
+        $role_id = filter_var($_POST['role_id'] ??= '', FILTER_SANITIZE_NUMBER_INT);
 
         // Creamos un objeto de la clase user
         $user = new classUser(
@@ -258,6 +263,12 @@ class User extends Controller
         // Reglas: obligatorio
         if (empty($name)) {
             $error['name'] = 'El nombre es obligatorio';
+        } else if (strlen($name) < 5) {
+            $error['name'] = 'El nombre debe tener al menos 5 caracteres';
+        } else if (strlen($name) > 20) {
+            $error['name'] = 'El nombre debe tener como máximo 20 caracteres';
+        } else if (!$this->model->validateUniqueName($name)) {
+            $error['name'] = 'Nombre existente';
         }
 
         // Validación del email
@@ -266,12 +277,19 @@ class User extends Controller
             $error['email'] = 'El email es obligatorio';
         } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $error['email'] = 'El formato del email no es correcto';
+        } else if (!$this->model->validateUniqueEmail($email)) {
+            $error['email'] = 'El email ya existe';
         }
+       
 
         // Validación del password
         // Reglas: obligatorio
         if (empty($password)) {
-            $error['password'] = 'El password es obligatorio';
+            $error['password'] = 'La contraseña es obligatoria';
+        } else if (strlen($password) < 7) {
+            $error['password'] = 'La contraseña debe tener al menos 7 caracteres';
+        } else if (strcmp($password, $password_confirm) !== 0 ) {
+            $error['password'] = 'Las contraseñas no coinciden';
         }
 
     
@@ -295,7 +313,11 @@ class User extends Controller
 
 
         // Añadimos user a la tabla
-        $this->model->create($user);
+        $id = $this->model->create($name, $email, $password);
+        $this->model->assignRole($id, $role_id);
+
+        // Genero mensaje de éxito
+        $_SESSION['mensaje'] = 'Usuario registrado correctamente';
 
         // redireciona al main de user
         header('location:' . URL . 'user');
@@ -357,6 +379,7 @@ class User extends Controller
 
             // Creo la propiedad user en la vista
             $this->view->user = $_SESSION['user'];
+            $this->view->user->role_id = ''; 
 
             // Creo la propiedad mensaje de error
             $this->view->mensaje_error = 'Error en el formulario';
@@ -374,6 +397,8 @@ class User extends Controller
         // obtener objeto de la clase user con el id pasado
         // Necesito crear el método read en el modelo
         $this->view->user = $this->model->read($this->view->id);
+        $this->view->user->role_id = $this->view->user->role_id ?? ''; // Ensure role_id is set
+        $this->view->roles = $this->model->get_roles();
 
         // cargo la vista
         $this->view->render('user/editar/index');
@@ -425,6 +450,7 @@ class User extends Controller
         $name = filter_var($_POST['name'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
         $email = filter_var($_POST['email'] ??= '', FILTER_SANITIZE_EMAIL);
         $password = filter_var($_POST['password'] ??= '', FILTER_SANITIZE_SPECIAL_CHARS);
+        $role_id = filter_var($_POST['role_id'] ??= '', FILTER_SANITIZE_NUMBER_INT);
 
         // Creamos un objeto de la clase user
         $user_form = new classUser(
@@ -455,12 +481,6 @@ class User extends Controller
             $error['email'] = 'El formato del email no es correcto';
         }
 
-        // Validación del password
-        // Reglas: obligatorio
-        if (empty($password)) {
-            $error['password'] = 'El password es obligatorio';
-        }
-
 
         // Si hay errores
         if (!empty($error)) {
@@ -478,9 +498,11 @@ class User extends Controller
             exit();
         }
 
-        // Actualizo base  de datos
-        // Necesito crear el método update en el modelo
+        // Actualizo base de datos
         $this->model->update($user_form, $id);
+
+        // Asigno el rol al usuario
+        $this->model->updateRole($id, $role_id);
 
         // Genero mensaje de éxito
         $_SESSION['mensaje'] = 'Usuario actualizado con éxito';
@@ -707,7 +729,8 @@ class User extends Controller
         $criterios = [
             1 => 'Id',
             2 => 'Nombre',
-            3 => 'Email'
+            3 => 'Email',
+            4 => 'Perfil'
         ];
 
         // Obtengo el id del campo por el que se ordenarán los usuarios

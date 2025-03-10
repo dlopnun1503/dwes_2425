@@ -40,7 +40,7 @@
                                 <th>Id</th>
                                 <th>Nombre</th>
                                 <th>Email</th>
-                                <th>Password</th>
+                                <th>Perfil</th>
                                 <!-- columna de acciones -->
                                 <th>Acciones</th>
                             </tr>
@@ -53,7 +53,7 @@
                                     <td><?= $user->id ?></td>
                                     <td><?= $user->name ?></td>
                                     <td><?= $user->email ?></td>
-                                    <td><?= $user->password ?></td>
+                                    <td><?= $user->perfil ?></td>
 
                                     <!-- Columna de acciones -->
                                     <td>

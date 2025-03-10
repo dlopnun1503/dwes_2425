@@ -59,16 +59,19 @@
                         </span>
                     </div>
 
-                    <!-- Password -->
+                    <!-- Rol -->
                     <div class="mb-3">
-                        <label for="password" class="form-label">Contraseña</label>
-                        <input type="password" class="form-control <?= (isset($this->error['password'])) ? 'is-invalid' : null ?>"
-                            id="password" name="password" placeholder="Introduzca contraseña" required>
-                        <!-- Mostrar posible error -->
-                        <span class="form-text text-danger" role="alert">
-                            <?= $this->error['password'] ??= null ?>
-                        </span>
+                        <label for="role_id" class="form-label">Rol</label>
+                        <select class="form-control <?= (isset($this->error['role_id'])) ? 'is-invalid' : null ?>" id="role_id" name="role_id" required>
+                            <option value="">Seleccionar Rol</option>
+                            <?php foreach ($this->roles as $role): ?>
+                                <option value="<?= $role->id ?>" <?= ($this->user->role_id == $role->id) ? 'selected' : '' ?>><?= $role->name ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <span class="form-text text-danger" role="alert"><?= $this->error['role_id'] ?? null ?></span>
                     </div>
+
+                    
 
 
             </div>
